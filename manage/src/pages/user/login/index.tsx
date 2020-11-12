@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Button } from 'antd'
 import { history } from 'umi'
 
-export default function Login(props: any) {
+function Login(props: any) {
   const login = useCallback(() => history.push('/dashboard'), [])
   return (
     <div>
@@ -10,3 +10,5 @@ export default function Login(props: any) {
     </div>
   )
 }
+
+export default Login

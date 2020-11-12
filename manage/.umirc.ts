@@ -13,8 +13,8 @@ export default defineConfig({
   antd: {},
   title: 'simpleCMS',
   exportStatic: {},
-  base: '/',
-  publicPath: './',
+  base: '/manage/',
+  publicPath: '/manage/',
   outputPath: 'dist',
   theme: {
     'primary-color': '#2F54EB',
@@ -33,20 +33,25 @@ export default defineConfig({
   routes: [
     {
       path: '/user',
-      component: '@/layouts/index',
       routes: [
-        { path: '/user/login', component: '@/pages/dashboard/index', exact: true },
-        { path: '/user/modify', component: '@/layouts/user/modify/index', exact: true },
+        {
+          path: '/user/login',
+          component: '@/pages/user/login',
+        },
+        {
+          path: '/user/modifyUser',
+          component: '@/pages/user/modify',
+        },
       ],
     },
     {
       path: '/',
       component: '@/layouts/index',
       routes: [
-        { path: '/dashboard', component: '@/pages/dashboard/index', exact: true },
-        { path: '/article', component: '@/pages/article/index', exact: true },
-        { path: '/advert', component: '@/pages/advert/index', exact: true },
-        { path: '/payment', component: '@/pages/payment/index', exact: true },
+        { path: '/dashboard', component: '@/pages/dashboard' },
+        { path: '/article', component: '@/pages/article' },
+        { path: '/advert', component: '@/pages/advert' },
+        { path: '/payment', component: '@/pages/payment' },
       ],
     },
   ],
