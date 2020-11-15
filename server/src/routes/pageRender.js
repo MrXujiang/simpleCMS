@@ -9,6 +9,7 @@ class adminController {
      */
     @get('/')
     async renderHome(ctx, next) {
+        console.log('/')
         await ctx.render('index', {
             contentShow: {
                 'title': '文章标题文章标题文章标题文章标题', 
@@ -33,9 +34,9 @@ class adminController {
      * @param {*} ctx 
      * @param {*} next 
      */
-    @get('/view')
-    async renderView(ctx, next) {
-        await ctx.render('view', {
+    @get('/detail')
+    async renderDetail(ctx, next) {
+        await ctx.render('detail', {
             viewTitle: '文章标题文章标题文章标题文章标题',
             authorInfo: {name: 'huxialei', date: '2020-11-15'},
             descriptionBox: [

@@ -1,0 +1,37 @@
+@import '~less/variables';
+
+.statistics {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .statistic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column wrap;
+    width: 20%;
+    height: 100px;
+    border: 1px solid @border-color;
+    margin-right: 20px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.charts {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+
+  .chart {
+    width: 49%;
+    height: calc((100vh - @header-height - 200px) / 2);
+    margin-bottom: 20px;
+    border: 1px solid @border-color;
+  }
+}
