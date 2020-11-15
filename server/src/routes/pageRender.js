@@ -1,15 +1,29 @@
 import { controller, get, post, del, authAdmin } from '../lib/decorator'
 
-@controller('/')
+@controller('')
 class adminController {
     /**
-     * 获取所有的管理员信息
+     * 首页
      * @param {*} ctx 
      * @param {*} next 
      */
     @get('/')
     async renderHome(ctx, next) {
+        console.log('/')
         await ctx.render('index', {
+            name: 'xujiang',
+            years: '248岁'
+        })
+    }
+    /**
+     * 详情页
+     * @param {*} ctx 
+     * @param {*} next 
+     */
+    @get('/detail')
+    async renderDetail(ctx, next) {
+        console.log('/detail')
+        await ctx.render('view', {
             name: 'xujiang',
             years: '248岁'
         })
