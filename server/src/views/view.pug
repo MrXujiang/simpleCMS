@@ -1,0 +1,12 @@
+extends ./layouts/default
+
+block title
+  title Koa 详情页
+
+block content
+  .container
+    h1 Hi #{name} - detail
+  include ./includes/scripts
+  script.
+    var name = 'detail';
+    console.log(name)

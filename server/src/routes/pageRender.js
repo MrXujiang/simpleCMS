@@ -54,6 +54,19 @@ class adminController {
             ]
         })
     }
+    /**
+     * 详情页
+     * @param {*} ctx 
+     * @param {*} next 
+     */
+    @get('/detail')
+    async renderDetail(ctx, next) {
+        console.log('/detail')
+        await ctx.render('view', {
+            name: 'xujiang',
+            years: '248岁'
+        })
+    }
 }
 
 export default adminController
