@@ -1,7 +1,11 @@
 import React from 'react'
+import FormattedMsg from '@/components/reactIntl/FormattedMsg'
+import styles from './index.less'
 
-export default function Payment(props: any) {
+export default function Payment() {
   return (
-    <div>Payment</div>
+    <div className={styles.paymentWrapper}>
+      <FormattedMsg id="This feature is not yet available" />
+    </div>
   )
 }

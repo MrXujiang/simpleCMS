@@ -1,4 +1,4 @@
-// import request from '@/utils/request';
+// import request from '@/utils/req'
 
 export async function getStatistics(): Promise<any> {
   return new Promise((resolve) => setTimeout(() => resolve([
@@ -23,7 +23,7 @@ export async function getStatistics(): Promise<any> {
       total: 100000,
     }
   ]), 2000))
-  // return request('/api/currentUser');
+  // return request('/api/currentUser')
 }
 
 export async function getChartsData(): Promise<any> {
@@ -101,5 +101,5 @@ export async function getChartsData(): Promise<any> {
       },
     ],
   }), 2000))
-  // return request('/api/currentUser');
+  // return request('/api/currentUser')
 }

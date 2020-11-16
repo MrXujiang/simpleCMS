@@ -14,7 +14,7 @@
   line-height: @header-height;
   padding: 0 24px;
   cursor: pointer;
-  transition: color 0.3s;
+  transition: color @trans-speed;
 
   &:hover {
     color: #1890ff;
@@ -28,15 +28,20 @@
 
 .overlay {
   top: @header-height !important;
+
+  .lang {
+    margin-right: 5px;
+  }
 }
 
-.avatar {
-  width: 30px;
-  height: 30px;
+.currentUser {
+  cursor: pointer;
   margin-right: 10px;
-}
+  margin-left: 10px;
 
-.spin {
-  margin-left: 8px;
-  margin-right: 8px;
+  .avatar {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
 }

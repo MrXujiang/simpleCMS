@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo } from 'react'
+import React, { FC, useEffect, useMemo } from 'react'
 import { Skeleton } from 'antd'
 import { isEmpty } from 'lodash'
 import { connect, Dispatch } from 'umi'
@@ -15,7 +15,7 @@ interface DashboardProps {
   dispatch: Dispatch
 }
 
-function Dashboard({ statistics, chartsData, dispatch }: DashboardProps) {
+const Dashboard: FC<DashboardProps> = ({ statistics, chartsData, dispatch }) => {
   const articleVisits = useMemo(() => ({
     data: chartsData.articleVisits,
     xField: 'year',
@@ -44,14 +44,12 @@ function Dashboard({ statistics, chartsData, dispatch }: DashboardProps) {
   }), [chartsData])
 
   useEffect(() => {
-    if (dispatch) {
-      dispatch({ type: 'dashboard/getStatistics' })
-      dispatch({ type: 'dashboard/getChartsData' })
-    }
+    dispatch({ type: 'dashboard/getStatistics' })
+    dispatch({ type: 'dashboard/getChartsData' })
   }, [])
 
   return (
-    <Fragment>
+    <div className={styles.dashboardWrapper}>
       <div className={styles.statistics}>
         {isEmpty(statistics)
           ? <Skeleton active />
@@ -84,7 +82,7 @@ function Dashboard({ statistics, chartsData, dispatch }: DashboardProps) {
             : <Column {...articleLikes} />}
         </div>
       </div>
-    </Fragment>
+    </div>
   )
 }
 

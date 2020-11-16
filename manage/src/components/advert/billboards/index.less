@@ -1,0 +1,34 @@
+@import '~less/variables';
+
+.header {
+  margin-left: 20%;
+  margin-bottom: 20px;
+  font-size: @size-mid-large;
+  font-weight: @font-bold;
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 50px 20px;
+
+  .label {
+    width: 100px;
+  }
+
+  .control {
+    width: 50%;
+  }
+}
+
+.uploader {
+  width: 50%;
+
+  :global {
+    .ant-upload {
+      width: 128px;
+      height: 128px;
+    }
+  }
+}

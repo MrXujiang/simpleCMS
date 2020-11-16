@@ -7,46 +7,34 @@ import {
   RocketOutlined,
   PayCircleOutlined,
 } from '@ant-design/icons'
-const { SubMenu } = Menu
+import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 
 // Sider
 export const siderMenus: any[] = [
   {
     key: 'dashboard',
     icon: <DashboardOutlined />,
-    text: '仪表盘',
+    text: <FormattedMsg id="Dashboard" />,
     path: '/dashboard',
   },
   {
     key: 'article',
     icon: <ReadOutlined />,
-    text: '文章管理',
+    text: <FormattedMsg id="Article management" />,
     path: '/article',
   },
   {
     key: 'advert',
     icon: <RocketOutlined />,
-    text: '广告管理',
+    text: <FormattedMsg id="Advertising management" />,
     path: '/advert',
   },
   {
     key: 'payment',
     icon: <PayCircleOutlined />,
-    text: '付费专栏',
+    text: <FormattedMsg id="Pay column" />,
     path: '/payment',
   },
-  // {
-  //   key: 'sub1',
-  //   icon: <UserOutlined />,
-  //   title: 'User',
-  //   children: [
-  //     {
-  //       key: 3,
-  //       text: 'Tom',
-  //       path: '/tom',
-  //     },
-  //   ],
-  // },
 ]
 
 interface siderMenuList {
@@ -62,9 +50,9 @@ export function showMenus(menulist: any[]) {
   return menulist.map((menu: siderMenuList) => {
     if (menu.children) {
       return (
-        <SubMenu key={menu.key} icon={menu.icon} title={menu.title}>
+        <Menu.SubMenu key={menu.key} icon={menu.icon} title={menu.title}>
           {showMenus(menu.children)}
-        </SubMenu>
+        </Menu.SubMenu>
       )
     } else {
       return (

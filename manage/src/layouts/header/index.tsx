@@ -1,11 +1,10 @@
-import React, { createElement } from 'react'
+import React, { createElement, FC } from 'react'
 import { Layout } from 'antd'
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
 } from '@ant-design/icons'
 
-import { CurrentUser } from '@/models/user';
 import RightContent from './rightContent'
 
 import styles from './index.less'
@@ -13,19 +12,20 @@ import styles from './index.less'
 interface HeaderProps {
   collapsed: boolean
   toggle: () => void
-  currentUser: CurrentUser
 }
 
 const { Header } = Layout
 
-export default function HeaderLayput({ collapsed, toggle, currentUser }: HeaderProps) {
+const HeaderLayput: FC<HeaderProps> = ({ collapsed, toggle }) => {
   return (
     <Header className={styles.header}>
       {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
         className: styles.trigger,
         onClick: toggle,
       })}
-      <RightContent currentUser={currentUser} />
+      <RightContent />
     </Header>
   )
 }
+
+export default HeaderLayput

@@ -1,14 +1,21 @@
 import { Effect, Reducer } from 'umi'
 
-import { getUserInfo } from '@/services/user';
+import { getUserInfo, login, forget, modify } from '@/services/user'
 
 export interface CurrentUser {
   avatar?: string
-  name?: string
+  username?: string
+  email?: string
+  introduction?: string
+  country?: string
+  address?: string
+  phone?: string
 }
 
 export interface UserModelState {
+  lang: string
   currentUser: CurrentUser
+  isLoading: boolean
 }
 
 interface UserModelType {
@@ -16,16 +23,24 @@ interface UserModelType {
   state: UserModelState
   effects: {
     getUserInfo: Effect,
+    login: Effect,
+    forget: Effect,
+    modify: Effect,
   }
   reducers: {
-    saveCurrentUser: Reducer<UserModelState>
+    startLoading: Reducer,
+    closeLoading: Reducer,
+    changeLocale: Reducer,
+    saveCurrentUser: Reducer,
   }
 }
 
 const UserModel: UserModelType = {
   namespace: 'user',
   state: {
-    currentUser: {}
+    lang: 'zh-cn',
+    currentUser: {},
+    isLoading: false,
   },
   effects: {
     *getUserInfo(_, { call, put }) {
@@ -34,13 +49,39 @@ const UserModel: UserModelType = {
         type: 'saveCurrentUser',
         payload: res,
       })
-    }
+    },
+    *login({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res = yield call(login, payload)
+      console.log('=======token======', res)
+      yield put({ type: 'closeLoading' })
+      return res
+    },
+    *forget({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      yield call(forget, payload)
+      yield put({ type: 'closeLoading' })
+    },
+    *modify({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      yield call(modify, payload)
+      yield put({ type: 'closeLoading' })
+    },
   },
   reducers: {
-    'saveCurrentUser'(state, action) {
-      return {...state, currentUser: action.payload}
-    }
+    'startLoading'(state) {
+      return {...state, isLoading: true}
+    },
+    'closeLoading'(state) {
+      return {...state, isLoading: false}
+    },
+    'changeLocale'(state, { payload }) {
+      return { ...state, lang: payload }
+    },
+    'saveCurrentUser'(state, { payload }) {
+      return {...state, currentUser: payload}
+    },
   },
 }
 
-export default UserModel;
+export default UserModel

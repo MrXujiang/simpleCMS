@@ -1,5 +1,5 @@
-import path from 'path';
-import { defineConfig } from 'umi';
+import path from 'path'
+import { defineConfig } from 'umi'
 
 export default defineConfig({
   nodeModulesTransform: {
@@ -31,28 +31,32 @@ export default defineConfig({
     less: path.resolve(__dirname, 'src/less/'),
   },
   routes: [
-    {
-      path: '/user',
-      routes: [
-        {
-          path: '/user/login',
-          component: '@/pages/user/login',
-        },
-        {
-          path: '/user/modifyUser',
-          component: '@/pages/user/modify',
-        },
-      ],
-    },
+    { path: '/', redirect: '/dashboard' },
     {
       path: '/',
       component: '@/layouts/index',
       routes: [
+        {
+          path: '/user',
+          component: '@/pages/user/index',
+          routes: [
+            {
+              path: '/user/login',
+              component: '@/pages/user/login',
+            },
+            {
+              path: '/user/forget',
+              component: '@/pages/user/forget',
+            },
+          ],
+        },
         { path: '/dashboard', component: '@/pages/dashboard' },
         { path: '/article', component: '@/pages/article' },
+        { path: '/article/release', component: '@/pages/article/release' },
         { path: '/advert', component: '@/pages/advert' },
         { path: '/payment', component: '@/pages/payment' },
+        { path: '/modifyUser', component: '@/pages/user/modify' },
       ],
     },
   ],
-});
+})

@@ -1,6 +1,6 @@
 import { Effect, Reducer } from 'umi'
 
-import { getStatistics, getChartsData } from '@/services/dashboard';
+import { getStatistics, getChartsData } from '@/services/dashboard'
 
 export interface ChartsData {
   articleVisits: any[]
@@ -66,4 +66,4 @@ const DashboardModel: DashboardType = {
   },
 }
 
-export default DashboardModel;
+export default DashboardModel

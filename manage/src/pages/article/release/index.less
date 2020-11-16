@@ -1,0 +1,44 @@
+@import '~less/variables';
+
+.releaseArticleForm {
+  padding: 10px 50px;
+}
+
+.btns {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  margin-left: 168px;
+  margin-bottom: 10px;
+  z-index: 2;
+
+  .btn {
+    margin-right: 10px;
+  }
+}
+
+.tabs {
+  height: calc(100vh - @header-height - 226px);
+
+  :global(.ant-tabs-content) {
+    height: 100%;
+  }
+}
+
+.markdownLayout {
+  display: flex;
+  height: 100%;
+
+  .markdownLeft {
+    width: 50%;
+  }
+
+  .markdownRight {
+    width: 50%;
+    border: 1px solid @border-color;
+    border-top: 0;
+    padding: 5px 11px;
+    overflow-y: scroll;
+  }
+}
