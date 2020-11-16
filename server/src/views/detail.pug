@@ -1,0 +1,40 @@
+extends ./layouts/default
+
+block title
+  title SimpleCMS | 趣写
+
+block style
+  include ./includes/view.css
+
+block content
+  .viewContainer
+    .imgBox
+      img(
+        src='assets/home.jpeg'
+        class='viewImg'
+      )
+    .viewTitle #{viewTitle}
+    .authorBox
+      .avatar
+      .name #{authorInfo.name}
+      .date #{authorInfo.date}
+    .descriptionBox 
+      each val in descriptionBox
+        p #{val}
+    .commentBox
+      .title 评论
+      each val in commentInfoList
+        .commentInof 
+          .commentPersonal
+            .avatar
+            .name #{val.name}
+            .date #{val.date}
+          .commentContent #{val.content}
+          .commentReply 
+      .commentTextarea 
+        .avatar
+        textarea(
+          placeholderNew="评论.."
+          rows="10" 
+          cols="30"
+        )

@@ -1,12 +1,67 @@
 extends ./layouts/default
 
 block title
-  title Koa 首页
+  title SimpleCMS | 趣写
+
+block style
+  include ./includes/home.css
 
 block content
-  .container
-    h1 Hi #{name}
-    p my age is #{years}
+  .contentContainer
+    .carouselBox
+      .content
+        .title #{contentShow['title']}
+        .introduction #{contentShow['introduce']}
+        .foot 
+          .date #{contentShow['date']}
+          .author #{contentShow['author']}
+      img(
+        src='/assets/home.jpeg'
+        class='homeImg'
+      )
+    .recommendBox
+      .title
+        span 最近更新
+        span 热门推荐
+      .childBox
+        .updataBox
+          each val in updataList
+            .childUpdata
+              img(
+                src= val.img
+                class='childUpdataImg'
+              )
+              .updataContent
+                .updataAuthor
+                  .updataAvatar
+                  .updataAuthorName #{val.avatarName}
+                .updatatitle #{val.title}
+                .updatatContent #{val.introduction}
+                .updataOther
+                  .date #{val.date}
+                  .icon 
+                    .like 
+                      img(
+                        src='/assets/like.png'
+                      )
+                      span 122
+                    .favorites
+                      img(
+                        src='/assets/favorites.png'
+                      )
+                      span 34
+        .columnBox
+          .title 专栏推荐
+          each val in colunmList
+            .list
+              img(
+                src='/assets/home.jpeg'
+                class='listImg'
+              )
+              .content
+                .title #{val.title}
+                .introduction #{val.introduction}
+
   include ./includes/scripts
   script.
     var name = 'xujiang';
