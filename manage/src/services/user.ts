@@ -1,4 +1,4 @@
-// import request from '@/utils/req'
+import request from '@/utils/req'
 import { CurrentUser } from '@/models/user'
 
 export async function getUserInfo(): Promise<any> {
@@ -20,12 +20,7 @@ interface LoginParams {
 }
 
 export async function login({ username, password }: LoginParams): Promise<any> {
-  return new Promise(resolve => setTimeout(() => {
-    if (username === 'admin' && password === 'cms') {
-      resolve({ token: 'xxxxxx' })
-    }
-  }, 1000))
-  // return request('/api/currentUser')
+  return request.post('/user/login', { name: username, pwd: password })
 }
 
 export async function forget(): Promise<any> {

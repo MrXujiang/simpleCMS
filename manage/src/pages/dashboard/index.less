@@ -1,26 +1,30 @@
 @import '~less/variables';
 
 .dashboardWrapper {
-  min-width: calc(@content-width - 60px);
+  min-width: @content-width;
 }
 
 .statistics {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 100px;
+  margin-bottom: 20px;
 
   .statistic {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-flow: column wrap;
     width: 20%;
     height: 100px;
-    border: 1px solid @grey;
     margin-right: 20px;
+    text-align: center;
+    border: 1px solid @border-color;
 
     &:last-child {
       margin-right: 0;
+    }
+
+    .title {
+      margin-top: 25px;
+      font-weight: @font-bold;
     }
   }
 }
@@ -30,11 +34,14 @@
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  height: calc(100vh - @header-height - 60px - 120px);
 
   .chart {
-    width: 49%;
-    height: calc((100vh - @header-height - 225px) / 2);
+    flex: 1;
     margin-bottom: 20px;
+
+    .antdc {
+      width: calc((100vw - @sider-width - 100px) / 2)
+    }
   }
 }

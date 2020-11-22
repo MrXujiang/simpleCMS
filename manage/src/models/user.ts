@@ -1,4 +1,4 @@
-import { Effect, Reducer } from 'umi'
+import { Effect, Reducer, history } from 'umi'
 
 import { getUserInfo, login, forget, modify } from '@/services/user'
 
@@ -53,9 +53,8 @@ const UserModel: UserModelType = {
     *login({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
       const res = yield call(login, payload)
-      console.log('=======token======', res)
+      if (res.uid) history.push('/dashboard')
       yield put({ type: 'closeLoading' })
-      return res
     },
     *forget({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })

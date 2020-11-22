@@ -1,10 +1,11 @@
-import React, { useCallback, FC } from 'react'
+import React, { useCallback, useContext, FC } from 'react'
 import { throttle } from 'lodash'
 import { history, connect, Dispatch } from 'umi'
-import { Form, Input, Button, message } from 'antd'
+import { Form, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
+import { IntlContext } from '@/utils/context/intl'
 import { ConnectState } from '@/models/connect'
 
 import styles from '../index.less'
@@ -20,13 +21,10 @@ interface LoginFormValues {
 }
 
 const LoginForm: FC<LoginFormProps> = ({ dispatch, isLoading }) => {
+  const formatMsg = useContext<any>(IntlContext)
+  
   const onFinish: (data: LoginFormValues) => void = useCallback(throttle(values => {
-    dispatch({ type: 'user/login', payload: values }).then(res => {
-      if (res.token) {
-        message.success('成功登录')
-        history.push('/dashboard')
-      }
-    })
+    dispatch({ type: 'user/login', payload: values })
   }, 1000), [])
 
   const go = useCallback(() => history.push('/user/forget'), [])
@@ -36,6 +34,10 @@ const LoginForm: FC<LoginFormProps> = ({ dispatch, isLoading }) => {
       name="loginForm"
       className={styles.form}
       onFinish={onFinish}
+      initialValues={{
+        username: 'test',
+        password: '123456',
+      }}
     >
       <Form.Item
         name="username"
@@ -44,7 +46,7 @@ const LoginForm: FC<LoginFormProps> = ({ dispatch, isLoading }) => {
         <Input
           className={styles.input}
           prefix={<UserOutlined className={styles.icon} />}
-          placeholder="admin"
+          placeholder={formatMsg('Please enter your username')}
         />
       </Form.Item>
       <Form.Item
@@ -55,7 +57,7 @@ const LoginForm: FC<LoginFormProps> = ({ dispatch, isLoading }) => {
           className={styles.input}
           prefix={<LockOutlined className={styles.icon} />}
           type="password"
-          placeholder="cms"
+          placeholder={formatMsg('Please enter your password')}
         />
       </Form.Item>
 

@@ -20,19 +20,19 @@ export const siderMenus: any[] = [
   {
     key: 'article',
     icon: <ReadOutlined />,
-    text: <FormattedMsg id="Article management" />,
+    text: <FormattedMsg id="Article" />,
     path: '/article',
   },
   {
     key: 'advert',
     icon: <RocketOutlined />,
-    text: <FormattedMsg id="Advertising management" />,
+    text: <FormattedMsg id="Advertising" />,
     path: '/advert',
   },
   {
     key: 'payment',
     icon: <PayCircleOutlined />,
-    text: <FormattedMsg id="Pay column" />,
+    text: <FormattedMsg id="Pay" />,
     path: '/payment',
   },
 ]

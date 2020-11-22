@@ -34,11 +34,6 @@ for (let i = 10; i < 36; i++) {
   children.push(<Select.Option key={i.toString(36) + i}>{i.toString(36) + i}</Select.Option>)
 }
 
-const layout = {
-  labelCol: { span: 2 },
-  wrapperCol: { span: 22 },
-}
-
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 }
@@ -139,7 +134,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
       <Spin spinning={isLoading}>
         <Fragment>
           <Form
-            {...layout}
+            layout="inline"
             form={form}
             className={styles.releaseArticleForm}
             name="releaseArticleForm"

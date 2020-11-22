@@ -71,8 +71,12 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={handleEdit.bind(this, record)}>编辑</a>
-          <a onClick={handleDelete.bind(this, record)}>删除</a>
+          <a onClick={handleEdit.bind(this, record)}>
+            <FormattedMsg id="Edit" />
+          </a>
+          <a onClick={handleDelete.bind(this, record)}>
+            <FormattedMsg id="Delete" />
+          </a>
         </Space>
       ),
     },

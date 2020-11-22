@@ -55,8 +55,8 @@ const Dashboard: FC<DashboardProps> = ({ statistics, chartsData, dispatch }) => 
           ? <Skeleton active />
           : statistics.map((statistic: any) => (
             <div className={styles.statistic} key={statistic.title}>
-              <span>{statistic.title}</span>
-              <span>{statistic.total}</span>
+              <div className={styles.title}>{statistic.title}</div>
+              <div className={styles.total}>{statistic.total}</div>
             </div>
           ))}
       </div>
@@ -64,22 +64,22 @@ const Dashboard: FC<DashboardProps> = ({ statistics, chartsData, dispatch }) => 
         <div className={styles.chart}>
           {isEmpty(articleVisits.data)
             ? <Skeleton active />
-            : <Line {...articleVisits} />}
+            : <Line className={styles.antdc} {...articleVisits} />}
         </div>
         <div className={styles.chart}>
           {isEmpty(articleLikes.data)
             ? <Skeleton active />
-            : <Column {...articleLikes} />}
+            : <Column className={styles.antdc} {...articleLikes} />}
         </div>
         <div className={styles.chart}>
           {isEmpty(articleVisits.data)
             ? <Skeleton active />
-            : <Line {...articleVisits} />}
+            : <Line className={styles.antdc} {...articleVisits} />}
         </div>
         <div className={styles.chart}>
           {isEmpty(articleLikes.data)
             ? <Skeleton active />
-            : <Column {...articleLikes} />}
+            : <Column className={styles.antdc} {...articleLikes} />}
         </div>
       </div>
     </div>
