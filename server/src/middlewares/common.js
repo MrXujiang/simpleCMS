@@ -3,6 +3,7 @@ import koaBody from 'koa-body';
 import session from 'koa-session';
 import cors from 'koa2-cors';
 import sessionStore from '../lib/sessionStore';
+import config from '../config';
 
 // 设置日志
 export const Logger = app => app.use(logger())

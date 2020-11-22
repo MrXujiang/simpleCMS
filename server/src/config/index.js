@@ -24,5 +24,6 @@ const publicPath = resolve(__dirname, '../../public');
 export default {
     isDev,
     staticPath,
-    publicPath
+    publicPath,
+    API_VERSION_PATH: '/api/v0',
 }
