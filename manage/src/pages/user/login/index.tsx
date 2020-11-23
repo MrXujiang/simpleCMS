@@ -27,7 +27,7 @@ const LoginForm: FC<LoginFormProps> = ({ dispatch, isLoading }) => {
     dispatch({ type: 'user/login', payload: values })
   }, 1000), [])
 
-  const go = useCallback(() => history.push('/user/forget'), [])
+  const go = () => history.push('/user/forget')
 
   return (
     <Form

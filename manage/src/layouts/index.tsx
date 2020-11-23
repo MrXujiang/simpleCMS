@@ -30,12 +30,14 @@ interface BasicLayoutProps {
 const BasicLayout: FC<BasicLayoutProps> = ({ children, location, lang, dispatch, currentUser }) => {
   // silder
   const [ collapsed, setCollapsed ] = useState<boolean>(false)
+
   const toggle: () => void = useCallback(() => setCollapsed(!collapsed), [collapsed])
 
   // globalLanguage
   const changeLocale: (locale: string) => void = useCallback(localeValue => {
     dispatch({ type: 'user/changeLocale', payload: localeValue })
   }, [])
+
   const getLocale: (lang: string, type: string) => any = useCallback((lang, type) => {
     let language = null
     switch (lang) {
@@ -61,6 +63,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children, location, lang, dispatch,
     },
     cache
   ), [lang])
+  
   const formatMsg: (id: string, defaultMsg?: string) => any = useCallback((id, defaultMsg) => intl.formatMessage(
     {
       id,

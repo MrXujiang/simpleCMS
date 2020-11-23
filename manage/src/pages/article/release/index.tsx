@@ -4,15 +4,7 @@ import { connect, Dispatch, history } from 'umi'
 
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/index.css'
-
-import ReactMarkdown from 'react-markdown'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-
-import gfm from 'remark-gfm'
-import {InlineMath, BlockMath} from 'react-katex'
-import math from 'remark-math'
-import 'katex/dist/katex.min.css'
+import Editor from 'for-editor'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
@@ -20,14 +12,6 @@ import { ArticleType } from '@/models/article'
 import { ConnectState } from '@/models/connect'
 
 import styles from './index.less'
-
-const renderers = {
-  code: ({ language, value }: any) => {
-    return <SyntaxHighlighter style={dark} language={language} children={value} />
-  },
-  inlineMath: ({ value }: any) => <InlineMath math={value} />,
-  math: ({ value }: any) => <BlockMath math={value} />
-}
 
 const children: any[] = []
 for (let i = 10; i < 36; i++) {
@@ -64,7 +48,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
   //   const htmlContent = editorState.toHTML()
   //   const result = await saveEditorContent(htmlContent)
   // }
-  const handleEditorChange: (value: any) => void = editorState => setEditorState(editorState)
+  const handleEditorChange: (value: any) => void = useCallback(editorState => setEditorState(editorState), [])
 
   // form
   const onFinish: (values: ReleaseArticleFormValues, type?: string) => void =
@@ -108,10 +92,17 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
       }
     }, [curTab, editorState, markdown])
 
+  const checkLabelsLength: (_: any, values: string[]) => void = useCallback((_, values) => {
+    if (values && values.length > 5) {
+      return Promise.reject()
+    }
+    return Promise.resolve()
+  }, [])
+
   // tabs
   const toggleTabs = useCallback((key) => setCurTab(key), [])
 
-  const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => setMarkdown(e.target.value)
+  const handleChangeText = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => setMarkdown(e.target.value), [])
 
   useEffect(() => {
     if (location && location.query && location.query.key) {
@@ -120,10 +111,10 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
         payload: location.query.key
       }).then((res: ArticleType) => form.setFieldsValue(res))
     }
-    dispatch({ type: 'article/getEditorContent' }).then((htmlContent: any) => {
-      setEditorState(BraftEditor.createEditorState(htmlContent))
-      setMarkdown(htmlContent)
-    })
+    // dispatch({ type: 'article/getEditorContent' }).then((htmlContent: any) => {
+    //   setEditorState(BraftEditor.createEditorState(htmlContent))
+    //   setMarkdown(htmlContent)
+    // })
   }, [])
 
   return (
@@ -148,7 +139,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
                 message: <FormattedMsg id="Please input articles title" />
               }]}
             >
-              <Input />
+              <Input style={{ width: 300 }} />
             </Form.Item>
             <Form.Item
               label={<FormattedMsg id="Label" />}
@@ -156,12 +147,15 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
               rules={[{
                 required: true,
                 message: <FormattedMsg id="Please select articles label" />
+              }, {
+                validator: checkLabelsLength,
+                message: <FormattedMsg id="Select up to five tags" />
               }]}
             >
               <Select
                 mode="multiple"
                 allowClear
-                style={{ width: '100%' }}
+                style={{ width: 380 }}
               >
                 {children}
               </Select>
@@ -205,15 +199,19 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
             <Tabs.TabPane tab="Markdown" key="markdown">
               <div className={styles.markdownLayout}>
                 <Input.TextArea
-                  className={styles.markdownLeft}
+                  style={{ padding: '10px 14px' }}
+                  className={styles.markdown}
                   onChange={handleChangeText}
                   value={markdown}
+                  placeholder={formatMsg('Started editing')}
                 />
-                <div className={styles.markdownRight}>
-                  <ReactMarkdown
-                    plugins={[gfm, math]}
-                    renderers={renderers}
-                    children={markdown}
+                <div className={styles.markdown}>
+                  <Editor
+                    preview
+                    value={markdown}
+                    height="100%"
+                    style={{ borderRadius: 0 }}
+                    toolbar={{}}
                   />
                 </div>
               </div>

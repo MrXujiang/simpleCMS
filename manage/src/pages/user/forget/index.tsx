@@ -28,7 +28,7 @@ const ForgetForm: FC<ForgetFormProps> = ({ dispatch, isLoading }) => {
     dispatch({ type: 'user/forget', payload: values }).then(() => history.replace('/user/login'))
   }, [])
 
-  const go: () => void = useCallback(() => history.push('/user/login'), [])
+  const go: () => void = () => history.push('/user/login')
 
   return (
     <Form

@@ -17,18 +17,18 @@ interface ArticleProps {
 }
 
 const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
-  const handleDelete: (data: ArticleType) => void = useCallback(record => {
+  const handleDelete: (data: ArticleType) => void = record => {
     dispatch({ type: 'article/deleteArticle', payload: record })
-  }, [])
+  }
 
-  const handleEdit: (data: ArticleType) => void = useCallback(record => {
+  const handleEdit: (data: ArticleType) => void = record => {
     history.push({
       pathname: '/article/release',
       query: {
         key: record.key,
       },
     })
-  }, [])
+  }
 
   const columns: ColumnsType<ArticleType> = useMemo(() => [
     {

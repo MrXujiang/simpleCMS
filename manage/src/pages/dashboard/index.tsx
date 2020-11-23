@@ -63,22 +63,22 @@ const Dashboard: FC<DashboardProps> = ({ statistics, chartsData, dispatch }) => 
       <div className={styles.charts}>
         <div className={styles.chart}>
           {isEmpty(articleVisits.data)
-            ? <Skeleton active />
+            ? <Skeleton active className={styles.antdc} />
             : <Line className={styles.antdc} {...articleVisits} />}
         </div>
         <div className={styles.chart}>
           {isEmpty(articleLikes.data)
-            ? <Skeleton active />
+            ? <Skeleton active className={styles.antdc} />
             : <Column className={styles.antdc} {...articleLikes} />}
         </div>
         <div className={styles.chart}>
           {isEmpty(articleVisits.data)
-            ? <Skeleton active />
+            ? <Skeleton active className={styles.antdc} />
             : <Line className={styles.antdc} {...articleVisits} />}
         </div>
         <div className={styles.chart}>
           {isEmpty(articleLikes.data)
-            ? <Skeleton active />
+            ? <Skeleton active className={styles.antdc} />
             : <Column className={styles.antdc} {...articleLikes} />}
         </div>
       </div>

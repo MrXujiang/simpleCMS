@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useState, FC, ChangeEvent } from 'react'
+import React, { useContext, useCallback, useState, FC, ChangeEvent, useMemo } from 'react'
 import { Input, Upload, message } from 'antd'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 
@@ -60,14 +60,14 @@ const Billboards: FC<BillboardsProps> = ({
     }
   }
 
-  const uploadButton = (
+  const uploadButton = useMemo(() => (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>
         <FormattedMsg id="Upload" />
       </div>
     </div>
-  )
+  ), [loading])
 
   return (
     <div>
