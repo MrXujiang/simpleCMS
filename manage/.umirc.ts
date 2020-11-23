@@ -2,7 +2,7 @@ import path from 'path'
 import { defineConfig } from 'umi'
 
 export default defineConfig({
-  // favicon: path.resolve(__dirname, 'src/assets/favicon.ico'),
+  favicon: 'favicon.ico',
   nodeModulesTransform: {
     type: 'none',
   },

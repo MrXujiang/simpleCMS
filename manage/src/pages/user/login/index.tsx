@@ -6,13 +6,11 @@ import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
-import { ConnectState } from '@/models/connect'
 
 import styles from '../index.less'
 
 interface LoginFormProps {
   dispatch: Dispatch
-  isLoading: boolean
 }
 
 interface LoginFormValues {
@@ -20,7 +18,7 @@ interface LoginFormValues {
   password: string
 }
 
-const LoginForm: FC<LoginFormProps> = ({ dispatch, isLoading }) => {
+const LoginForm: FC<LoginFormProps> = ({ dispatch }) => {
   const formatMsg = useContext<any>(IntlContext)
   
   const onFinish: (data: LoginFormValues) => void = useCallback(throttle(values => {
@@ -62,7 +60,7 @@ const LoginForm: FC<LoginFormProps> = ({ dispatch, isLoading }) => {
       </Form.Item>
 
       <Form.Item>
-        <Button block type="primary" htmlType="submit" loading={isLoading}>
+        <Button block type="primary" htmlType="submit">
           <FormattedMsg id="Login" />
         </Button>
         <div className={styles.otherWay}>
@@ -76,6 +74,4 @@ const LoginForm: FC<LoginFormProps> = ({ dispatch, isLoading }) => {
   )
 }
 
-export default connect(({ user }: ConnectState) => ({
-  isLoading: user.isLoading,
-}))(LoginForm)
+export default connect()(LoginForm)

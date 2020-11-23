@@ -50,11 +50,9 @@ const UserModel: UserModelType = {
         payload: res,
       })
     },
-    *login({ payload }, { call, put }) {
-      yield put({ type: 'startLoading' })
+    *login({ payload }, { call }) {
       const res = yield call(login, payload)
-      if (res.uid) history.push('/dashboard')
-      yield put({ type: 'closeLoading' })
+      if (res && res.uid) history.push('/dashboard')
     },
     *forget({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
