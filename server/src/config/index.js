@@ -16,14 +16,19 @@ function getIPAdress() {
 }
 
 const IP = getIPAdress();
-const staticPath = isDev ? `http://${IP}:3000` : 'http://47.107.76.132:3000';
-
+const serverPort = isDev ? 3000 : 80;
+const staticPath = isDev ? `http://${IP}:${serverPort}` : `测试环境地址`;
 const publicPath = resolve(__dirname, '../../public');
-
+const appStaticPath = resolve(__dirname, '../../static');
+const routerPath = resolve(__dirname, '../router');
 
 export default {
-    isDev,
-    staticPath,
-    publicPath,
-    API_VERSION_PATH: '/api/v0',
+  protocol: 'http:',
+  host: 'localhost',
+  serverPort,
+  staticPath,
+  appStaticPath,
+  publicPath,
+  API_VERSION_PATH: '/api/v0',
+  routerPath
 }

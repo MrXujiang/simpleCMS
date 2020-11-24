@@ -4,7 +4,7 @@ import { message } from 'antd'
 const isDev = process.env.NODE_ENV === 'development'
 
 const instance = axios.create({
-    baseURL: isDev ? 'http://192.168.56.1:3000/api/v0' : '线上的测试地址',
+    baseURL: isDev ? 'http://localhost:3000/api/v0' : '线上的测试地址',
     timeout: 10000,
     withCredentials: true
 });

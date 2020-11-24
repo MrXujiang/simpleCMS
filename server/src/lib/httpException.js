@@ -1,64 +1,23 @@
-
-class HttpException extends Error{
-    constructor(msg='服务器异常',errorCode=10000, code=400){
-        super()
-        this.errorCode = errorCode
-        this.code = code
-        this.msg = msg
-    }
+const HttpException = {
+    '200': '请求成功',
+    '201': '创建成功',
+    '202': '正在处理请求',
+    '203': '非授权信息',
+    '204': '服务器成功处理，但未返回内容',
+    '205': '服务器处理成功,请刷新页面获取最新信息',
+    '206': '部分内容处理完成',
+    '301': '请求的资源已被永久的移动到新URI, 正在为您重定向',
+    '304': '请求的资源未修改',
+    '400': '客户端请求的语法错误，服务器无法理解',
+    '401': '请求要求用户的身份认证',
+    '403': '服务器拒绝执行此请求',
+    '404': '资源未找到',
+    '408': '客户端请求超时',
+    '413': '客户端请求的参数过大，服务器无法处理',
+    '414': '请求的URI过长',
+    '500': '服务器错误',
+    '502': '网关错误',
+    '504': '服务器或网关超时'
 }
 
-class ParameterException extends HttpException{
-    constructor(msg, errorCode){
-        super()
-        this.code = 400
-        this.msg = msg || '参数错误'
-        this.errorCode = errorCode || 10000
-    }
-}
-
-class Success extends HttpException{
-    constructor(msg, errorCode){
-        super()
-        this.code = 201
-        this.msg = msg || 'ok'
-        this.errorCode = errorCode || 0
-    }
-}
-
-class NotFound extends HttpException{
-    constructor(msg, errorCode) {
-        super()
-        this.msg = msg || '资源未找到'
-        this.errorCode = errorCode || 10000
-        this.code = 404
-    }
-}
-
-class AuthFailed  extends HttpException {
-    constructor(msg, errorCode) {
-        super()
-        this.msg = msg || '授权失败'
-        this.errorCode = errorCode || 10004
-        this.code = 401
-    }
-}
-
-class Forbbiden extends HttpException {
-    constructor(msg, errorCode) {
-        super()
-        this.msg = msg || '禁止访问'
-        this.errorCode = errorCode || 10006
-        this.code = 403
-    }
-}
-
-
-export {
-    HttpException,
-    ParameterException,
-    Success,
-    NotFound,
-    AuthFailed,
-    Forbbiden
-}
+export default HttpException

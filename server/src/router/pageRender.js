@@ -1,14 +1,25 @@
-import { controller, get, post, del, authAdmin } from '../lib/decorator'
+import fs from 'fs'
+import { delFile, WF, RF } from '../lib/upload'
+import { uuid } from '../lib/tool'
+import { auth } from '../service'
+import config from '../config'
+import htr from '../lib/htr'
+/**
+ * 文章路由
+ * @param {*} router 
+ * @param {*} apiPath
+ * 待优化：1.将成功响应和失败响应统一封装 
+ */
+const pageRenderRouter = (router) => {
+  // api路径
+  const api = {
+    home: '/',
+    detail: '/detail',
+  }
 
-@controller('')
-class adminController {
-    /**
-     * 首页
-     * @param {*} ctx 
-     * @param {*} next 
-     */
-    @get('/')
-    async renderHome(ctx, next) {
+  // 渲染首页
+  router.get(api.home,
+    async ctx => {
         console.log('/')
         await ctx.render('index', {
             contentShow: {
@@ -29,13 +40,11 @@ class adminController {
             ]
         })
     }
-    /**
-     * 详情页
-     * @param {*} ctx 
-     * @param {*} next 
-     */
-    @get('/detail')
-    async renderDetail(ctx, next) {
+  );
+
+  // 渲染详情页
+  router.get(api.detail,
+    async ctx => {
         await ctx.render('detail', {
             viewTitle: '文章标题文章标题文章标题文章标题',
             authorInfo: {name: 'huxialei', date: '2020-11-15'},
@@ -54,6 +63,8 @@ class adminController {
             ]
         })
     }
+  );
+
 }
 
-export default adminController
+export default pageRenderRouter

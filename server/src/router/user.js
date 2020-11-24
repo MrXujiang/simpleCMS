@@ -1,22 +1,24 @@
 import fs from 'fs'
-import { WF, RF } from '../lib/upload'
-import { controller, get, post, del } from '../lib/decorator'
-import {
-    
-} from '../service/user'
-import htr from '../lib/htr'
+import { delFile, WF, RF } from '../lib/upload'
 import { uuid, xib } from '../lib/tool'
+import { auth } from '../service'
 import config from '../config'
+import htr from '../lib/htr'
+/**
+ * 文章路由
+ * @param {*} router 
+ * @param {*} apiPath
+ * 待优化：1.将成功响应和失败响应统一封装 
+ */
+const userRouter = (router, apiPath) => {
+  // api路径
+  const api = {
+    login: apiPath + '/user/login',
+  }
 
-@controller('/api/v0/user')
-class adminController {
-    /**
-     * 获取所有的管理员信息
-     * @param {*} ctx 
-     * @param {*} next 
-     */
-    @get('/login')
-    async userLogin(ctx, next) {
+  // 渲染首页
+  router.post(api.login,
+    async ctx => {
         const { name, pwd } = ctx.request.body;
         const filePath = `${config.publicPath}/db/user/user.json`;
         const data = RF(filePath);
@@ -33,6 +35,8 @@ class adminController {
             ctx.body = htr(500, null, '用户名/密码错误')
         }
     }
+  );
+
 }
 
-export default adminController
+export default userRouter
