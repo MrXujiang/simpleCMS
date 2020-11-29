@@ -82,13 +82,21 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
           dispatch({
             type: 'article/add',
             payload: finalValues,
-          }).then(() => history.replace('/article'))
+          }).then((res: any) => {
+            if (res.fid) {
+              history.replace('/article')
+            }
+          })
           break;
         case 'save':
           dispatch({
             type: 'article/add',
             payload: finalValues,
-          }).then(() => history.replace('/article'))
+          }).then((res: any) => {
+            if (res.fid) {
+              history.replace('/article')
+            }
+          })
           break;
         case 'preview':
           window.open('https://www.baidu.com/')
@@ -112,16 +120,18 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
   // const onSave = values => console.log(99, aa, aa.current.$blockPreview.current.innerHTML)
 
   useEffect(() => {
-    if (location && location.query && location.query.key) {
+    if (location && location.query && location.query.id) {
       dispatch({
         type: 'article/getArticleDetail',
-        payload: location.query.key
-      }).then((res: ArticleType) => form.setFieldsValue(res))
+        payload: location.query.id
+      }).then((res: ArticleType) => {
+        form.setFieldsValue(res)
+        if (res.content) {
+          setEditorState(BraftEditor.createEditorState(res.content))
+          setMarkdown(res.content)
+        }
+      })
     }
-    // dispatch({ type: 'article/getEditorContent' }).then((htmlContent: any) => {
-    //   setEditorState(BraftEditor.createEditorState(htmlContent))
-    //   setMarkdown(htmlContent)
-    // })
   }, [])
 
   return (

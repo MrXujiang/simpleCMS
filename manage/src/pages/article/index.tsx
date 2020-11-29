@@ -2,11 +2,12 @@ import React, { useCallback, useEffect, useMemo, FC } from 'react'
 import { connect, Dispatch, history } from 'umi'
 import { Button, Table, Space, Tag } from 'antd'
 import { ColumnsType } from 'antd/es/table'
-import { isEmpty } from 'lodash'
+import moment from 'moment'
 
 import { ConnectState } from '@/models/connect'
 import { ArticleList, ArticleType } from '@/models/article'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
+import { TIME_FORMAT } from '@/utils/index'
 
 import styles from './index.less'
 
@@ -17,15 +18,17 @@ interface ArticleProps {
 }
 
 const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
-  const handleDelete: (data: ArticleType) => void = record => {
-    dispatch({ type: 'article/del', payload: record })
+  const handleDelete: (data: ArticleType) => void = ({fid}) => {
+    dispatch({ type: 'article/del', payload: fid }).then(() => {
+      dispatch({ type: 'article/getAll' })
+    })
   }
 
-  const handleEdit: (data: ArticleType) => void = record => {
+  const handleEdit: (data: ArticleType) => void = ({fid}) => {
     history.push({
       pathname: '/article/release',
       query: {
-        key: record.id,
+        id: fid,
       },
     })
   }
@@ -57,6 +60,18 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
           })}
         </>
       ),
+    },
+    {
+      title: <FormattedMsg id="Visible" />,
+      dataIndex: 'visible',
+      key: 'visible',
+      render: visible => <FormattedMsg id={visible ? 'For all to see' : 'Only visible to oneself'} />
+    },
+    {
+      title: <FormattedMsg id="Creation time" />,
+      dataIndex: 'ct',
+      key: 'Creation time',
+      render: ct => moment(ct).format(TIME_FORMAT)
     },
     {
       title: '操作',
@@ -95,7 +110,7 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
       <Table
         className={styles.table}
         size="small"
-        loading={isEmpty(articleList) || isLoading}
+        loading={isLoading}
         columns={columns}
         dataSource={articleList}
         scroll={{ y: 'calc(100vh - 260px)' }}

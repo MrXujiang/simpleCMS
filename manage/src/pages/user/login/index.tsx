@@ -34,7 +34,7 @@ const LoginForm: FC<LoginFormProps> = ({ dispatch }) => {
       onFinish={onFinish}
       initialValues={{
         username: 'test',
-        password: '123456',
+        password: '12345678',
       }}
     >
       <Form.Item
