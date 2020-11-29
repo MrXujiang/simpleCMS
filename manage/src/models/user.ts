@@ -1,6 +1,7 @@
 import { Effect, Reducer, history } from 'umi'
 
 import { getUserInfo, login, forget, modify } from '@/services/user'
+import { locale } from 'moment'
 
 export interface CurrentUser {
   avatar?: string
@@ -52,7 +53,10 @@ const UserModel: UserModelType = {
     },
     *login({ payload }, { call }) {
       const res = yield call(login, payload)
-      if (res && res.uid) history.push('/dashboard')
+      if (res && res.uid) {
+        localStorage.setItem('nickname', res.name)
+        history.push('/dashboard')
+      }
     },
     *forget({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })

@@ -1,20 +1,23 @@
-import token from '../config/secret'
+import { RF } from '../lib/upload'
+import config from '../config'
+import htr from '../lib/htr'
+import { xib } from '../lib/tool'
 
-// router或者koa的中间件一定要用await处理next，否则将不能正常响应数据
-export default async (ctx, next) => {
-  const t = ctx.request.header.authorization
-  let uid = ctx.request.header['x-requested-with']
-  let uidArr = uid.split(',')
-  if(uidArr.length > 1) {
-      uid = uidArr.pop().trim()
-  }
-    if(token[uid] && token[uid][1] === t) {
+const useVip = (ctx) => ({ co: ctx.cookies.get('uid'), n: decodeURIComponent(ctx.request.header['x-requested-with'])})
+
+const auth = async (ctx, next) => {
+    const filePath = `${config.publicPath}/db/user/user.json`;
+    const { co, n } = useVip(ctx);
+    const data = RF(filePath);
+    const vip = data.filter(item => (item.name === n) && (item.pwd === xib.uxip(co)))[0];
+    if(vip) {
         await next()
     }else {
         ctx.status = 403;
-        ctx.body = {
-            state: 403,
-            msg: '你没有权限操作'
-        }
+        ctx.body = htr(403, null, '会员登录过期,请重新登录')
     }  
+}
+
+export {
+    auth
 }

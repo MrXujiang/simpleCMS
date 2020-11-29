@@ -14,8 +14,6 @@ const articleRouter = (router, apiPath) => {
   // api路径
   const api = {
     add: apiPath + '/articles/add',
-    addRelativeArticle: apiPath + '/articles/addRelativeArticle',
-    getRelativeArticle: apiPath + '/relativeArticles',
     mod: apiPath + '/articles/mod',
     get: apiPath + '/articles/get',
     del: apiPath + '/articles/del',
@@ -28,16 +26,16 @@ const articleRouter = (router, apiPath) => {
   router.post(api.add,
     auth,
     async ctx => {
-      let { did, title, author, label, desc, type, content } = ctx.request.body;
-      if(title && author && label && type && content) {
+      let { title, author, label, visible, content } = ctx.request.body;
+      if(title && label && content) {
         // 1. 写入文章数据
-        const uid = uuid(8, 10);
-        const filename = `${config.publicPath}/db/articles/${uid}.json`;
-        const id = 'ax_' + uid; 
+        const fid = uuid(6, 16);
+        const ct = Date.now();
+        const filename = `${config.publicPath}/db/articles/${fid}.json`;
         try {
-          const res = WF(filename, { fid: uid, content })
+          const res = WF(filename, { fid, title, author, label, ct, content })
           if(res) {
-            ctx.body = htr(200, {id, fid: uid}, '文章发布成功')
+            ctx.body = htr(200, {fid}, '文章发布成功')
           }
         }catch(err) {
           ctx.status = 200
@@ -46,29 +44,10 @@ const articleRouter = (router, apiPath) => {
 
         // 2. 将文章索引添加到索引文件中
         const indexFilePath = `${config.publicPath}/db/article_index.json`
-        const ct = Date.now()
         try{
-          WF(indexFilePath, { [uid] : { uid, title, author, label, type, ct, desc } }, 1)
+          WF(indexFilePath, { fid, title, author, label, visible, ct }, 1)
         }catch(err) {
           console.log('addArticle', err)
-        }
-
-        // 3. 如果是草稿被发布，则删除对应草稿文件和索引
-        if(did) {
-          const draftPath = `${config.publicPath}/db/drafts/draft_${did}.json`
-          const draftIdxPath = `${config.publicPath}/db/draft_index.json`
-          if (fs.existsSync(draftPath) && fs.existsSync(draftIdxPath)) {
-            delFile(draftPath)
-            // 2.删除文章索引
-            const draftIdxsStr = fs.readFileSync(draftIdxPath);
-            try{
-              const draftIdxs = JSON.parse(draftIdxsStr);
-              delete draftIdxs[did]
-              WF(draftIdxPath, draftIdxs)
-            }catch(err) {
-              console.error(err)
-            }
-          }
         }
       }else {
         ctx.code = 500
@@ -116,22 +95,14 @@ const articleRouter = (router, apiPath) => {
       let { id } = ctx.query;
       if(id) {
         const articlePath = `${config.publicPath}/db/articles/${id}.json`
-        const articleIdxPath = `${config.publicPath}/db/article_index.json`
-        if (!fs.existsSync(articlePath) && !fs.existsSync(articleIdxPath)) {
+        if (!fs.existsSync(articlePath)) {
           ctx.status = 200
-          ctx.body = htr(500, null, '文件读取失败')
+          ctx.body = htr(500, null, '文件不存在')
         }else {
           const articleStr = fs.readFileSync(articlePath);
-          const articleIdxsStr = fs.readFileSync(articleIdxPath);
           try{
             const article = JSON.parse(articleStr);
-            const articleIdxs = JSON.parse(articleIdxsStr);
-            const data = {
-              fid: article.fid,
-              content: article.content,
-              ...articleIdxs[id]
-            }
-            ctx.body = htr(200, data)
+            ctx.body = htr(200, article)
           }catch(err) {
             console.error(err)
           }
@@ -147,7 +118,7 @@ const articleRouter = (router, apiPath) => {
   router.delete(api.del,
     auth,
     async ctx => {
-      const { id, type } = ctx.query
+      const { id } = ctx.query
       if(id && type) {
         const articlePath = `${config.publicPath}/db/articles/${id}.json`
         const articleIdxPath = `${config.publicPath}/db/article_index.json`
@@ -158,17 +129,11 @@ const articleRouter = (router, apiPath) => {
             ctx.body = htr(200, null, '删除成功')
   
             // 2.删除文章索引
-            const articleIdxsStr = fs.readFileSync(articleIdxPath);
-            try{
-              const articleIdxs = JSON.parse(articleIdxsStr);
-              delete articleIdxs[id]
-              wfPromise(articleIdxPath, articleIdxs, 1, true).then(res => {
-                // 
-              }).catch(err => {
-                console.error(err)
-              })
-            }catch(err) {
-              console.error(err)
+            const articles = RF(articleIdxPath);
+            articles = articles.filter(item => item.fid !== id);
+            const res = WF(articleIdxPath, articles);
+            if(res) {
+              ctx.body = htr(200, {id, fid}, '文章删除成功')
             }
           }else {
             ctx.status = 200
@@ -193,7 +158,7 @@ const articleRouter = (router, apiPath) => {
         const articleIdxPath = `${config.publicPath}/db/article_index.json`
         if(fs.existsSync(articleIdxPath)) {
           const articleIdxs = RF(articleIdxPath)
-          ctx.body = htr(200, articleIdxs ? Object.values(articleIdxs) : [])
+          ctx.body = htr(200, articleIdxs)
         }else {
           ctx.body = htr(200, [])
         }
