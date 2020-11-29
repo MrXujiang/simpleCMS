@@ -1,6 +1,7 @@
 import { Effect, Reducer, history } from 'umi'
 
 import { getUserInfo, login, forget, modify } from '@/services/user'
+import { locale } from 'moment'
 
 export interface CurrentUser {
   avatar?: string

@@ -16,7 +16,7 @@ const userRouter = (router, apiPath) => {
     login: apiPath + '/user/login',
   }
 
-  // 渲染首页
+  // 登录逻辑
   router.post(api.login,
     async ctx => {
         const { name, pwd } = ctx.request.body;
