@@ -1,19 +1,19 @@
 import { Effect, Reducer } from 'umi'
 
 import {
-  getArticleList,
+  getAll,
   getArticleDetail,
   getEditorContent,
-  deleteArticle,
-  releaseArticle,
+  del,
+  add,
 } from '@/services/article'
 
 export interface ArticleType {
-  key: string
+  id: string
   title: string
-  description: string
   author: string
-  labels: []
+  label: []
+  visible: number,
   content?: any
 }
 
@@ -29,16 +29,16 @@ interface ArticleModelType {
   namespace: 'article'
   state: ArticleState
   effects: {
-    getArticleList: Effect,
+    getAll: Effect,
     getArticleDetail: Effect,
     getEditorContent: Effect,
-    deleteArticle: Effect,
-    releaseArticle: Effect,
+    del: Effect,
+    add: Effect,
   }
   reducers: {
     startLoading: Reducer,
     closeLoading: Reducer,
-    saveArticleList: Reducer,
+    saveAll: Reducer,
     saveEditorContent: Reducer,
   }
 }
@@ -51,10 +51,10 @@ const ArticleModel: ArticleModelType = {
     isLoading: false,
   },
   effects: {
-    *getArticleList(_, { call, put }) {
-      const res = yield call(getArticleList)
+    *getAll(_, { call, put }) {
+      const res = yield call(getAll)
       yield put({
-        type: 'saveArticleList',
+        type: 'saveAll',
         payload: res,
       })
     },
@@ -72,17 +72,17 @@ const ArticleModel: ArticleModelType = {
       })
       return res
     },
-    *deleteArticle({ payload }, { call, put }) {
+    *del({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
-      const res = yield call(deleteArticle, payload)
+      const res = yield call(del, payload)
       if (res) {
         yield call(getEditorContent)
       }
       yield put({ type: 'closeLoading' })
     },
-    *releaseArticle({ payload }, { call, put }) {
+    *add({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
-      yield call(releaseArticle, payload)
+      yield call(add, payload)
       yield put({ type: 'closeLoading' })
     },
   },
@@ -93,7 +93,7 @@ const ArticleModel: ArticleModelType = {
     'closeLoading'(state) {
       return {...state, isLoading: false}
     },
-    'saveArticleList'(state, { payload }) {
+    'saveAll'(state, { payload }) {
       return {...state, articleList: payload}
     },
     'saveEditorContent'(state, { payload }) {

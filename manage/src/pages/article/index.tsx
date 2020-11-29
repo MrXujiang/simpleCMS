@@ -18,48 +18,40 @@ interface ArticleProps {
 
 const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
   const handleDelete: (data: ArticleType) => void = record => {
-    dispatch({ type: 'article/deleteArticle', payload: record })
+    dispatch({ type: 'article/del', payload: record })
   }
 
   const handleEdit: (data: ArticleType) => void = record => {
     history.push({
       pathname: '/article/release',
       query: {
-        key: record.key,
+        key: record.id,
       },
     })
   }
 
   const columns: ColumnsType<ArticleType> = useMemo(() => [
     {
-      title: '文章',
+      title: <FormattedMsg id="Title" />,
       dataIndex: 'title',
       key: 'title',
     },
     {
-      title: '描述',
-      dataIndex: 'description',
-      key: 'description',
-    },
-    {
-      title: '作者',
+      title: <FormattedMsg id="Author" />,
       dataIndex: 'author',
       key: 'author',
     },
     {
-      title: 'Tags',
-      key: 'labels',
-      dataIndex: 'labels',
+      title: <FormattedMsg id="Label" />,
+      key: 'label',
+      dataIndex: 'label',
       render: labels => (
         <>
-          {labels.map((label: string) => {
-            let color = label.length > 5 ? 'geekblue' : 'green';
-            if (label === 'a10') {
-              color = 'volcano';
-            }
+          {labels.map((l: string) => {
+            let color = l.length > 3 ? 'volcano' : '#51B266'
             return (
-              <Tag color={color} key={label}>
-                {label.toUpperCase()}
+              <Tag color={color} key={l}>
+                {l.toUpperCase()}
               </Tag>
             );
           })}
@@ -85,12 +77,17 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
   const release: () => void = useCallback(() => history.push('/article/release'), [])
 
   useEffect(() => {
-    dispatch({ type: 'article/getArticleList' })
+    dispatch({ type: 'article/getAll' })
   }, [])
 
   return (
     <>
       <div className={styles.btns}>
+        <Button danger style={{ marginRight: 5 }}>
+          <FormattedMsg id="Draft box" />
+          &nbsp;
+          (5)
+        </Button>
         <Button type="primary" onClick={release}>
           <FormattedMsg id="Publish articles" />
         </Button>
@@ -101,7 +98,7 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
         loading={isEmpty(articleList) || isLoading}
         columns={columns}
         dataSource={articleList}
-        scroll={{ y: 'calc(100vh - 240px)' }}
+        scroll={{ y: 'calc(100vh - 260px)' }}
       />
     </>
   )

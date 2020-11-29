@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect, Key, FC } from 'react
 import { Link } from 'umi'
 import { Layout, Menu } from 'antd'
 
+import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import logo from 'assets/logo.svg'
 import { title } from '@/utils'
 import { siderMenus, showMenus } from '../schema'
@@ -34,7 +35,9 @@ const SiderLayput: FC<SiderProps> = ({ collapsed, location: { pathname } }) => {
         <Link to="/">
           <img src={logo} alt="logo" width={30} height={30} />
         </Link>
-        <span className={collapsed ? styles.hideTitle : styles.showTitle}>{title}</span>
+        <span className={collapsed ? styles.hideTitle : styles.showTitle}>
+          <FormattedMsg id={title} />
+        </span>
       </div>
       <Menu theme="dark" selectedKeys={[selectedKey]} mode="inline" onClick={onMenuClick}>
         {showMenus(siderMenus)}

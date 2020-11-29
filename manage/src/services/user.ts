@@ -20,7 +20,7 @@ interface LoginParams {
 }
 
 export async function login({ username, password }: LoginParams): Promise<any> {
-  return request.post('/user/login', { name: username, pwd: password })
+  return request.post('/user/login', { name: username, pwd: password }).catch(e => console.log(e))
 }
 
 export async function forget(): Promise<any> {

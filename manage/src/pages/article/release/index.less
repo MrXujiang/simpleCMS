@@ -1,10 +1,14 @@
 @import '~less/variables';
 
 .releaseArticleForm {
-  padding: 10px 50px;
+  padding: 10px 30px;
 
-  :global(.ant-form-item) {
+  :global(.ant-form-item-has-error) {
     margin-bottom: 0;
+  }
+
+  :global(.ant-form-item:nth-last-child(2)) {
+    margin-right: 0;
   }
 }
 
@@ -15,6 +19,7 @@
   width: 100%;
   margin-left: @sider-width;
   margin-bottom: 10px !important;
+  text-align: center;
   z-index: 2;
 
   .btn {
@@ -27,14 +32,5 @@
 
   :global(.ant-tabs-content) {
     height: 100%;
-  }
-}
-
-.markdownLayout {
-  display: flex;
-  height: 100%;
-
-  .markdown {
-    width: 50%;
   }
 }

@@ -1,10 +1,10 @@
-import React, { useCallback, useState, useEffect, useContext, FC, Fragment, ChangeEvent } from 'react'
+import React, { useCallback, useState, useEffect, useContext, FC, Fragment, ChangeEvent, useRef } from 'react'
 import { Form, Input, Button, Select, message, Spin, Tabs } from 'antd'
 import { connect, Dispatch, history } from 'umi'
 
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/index.css'
-import Editor from 'for-editor'
+import ForEditor from 'for-editor'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
@@ -18,8 +18,9 @@ for (let i = 10; i < 36; i++) {
   children.push(<Select.Option key={i.toString(36) + i}>{i.toString(36) + i}</Select.Option>)
 }
 
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
+enum Visible {
+  oneself,
+  all,
 }
 
 interface ReleaseArticleProps {
@@ -30,15 +31,18 @@ interface ReleaseArticleProps {
 
 interface ReleaseArticleFormValues {
   title: string
-  labels: string[]
+  label: string[]
+  author: string
 }
 
 const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading }) => {
   const [form] = Form.useForm()
   const formatMsg = useContext<any>(IntlContext)
+  const forEditor = useRef(null)
+  console.log('forEditorRef: ', forEditor.current)
 
   const [markdown, setMarkdown] = useState<any>('')
-  const [editorState, setEditorState] = useState<any>(null)
+  const [editorState, setEditorState] = useState<any>(BraftEditor.createEditorState(''))
   const [curTab, setCurTab] = useState<string>('edit')
 
   // editor
@@ -52,7 +56,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
 
   // form
   const onFinish: (values: ReleaseArticleFormValues, type?: string) => void =
-    useCallback(function(values: ReleaseArticleFormValues, type = 'publish'): void {
+    useCallback(function(values: ReleaseArticleFormValues, type = 'add'): void {
       if ((curTab === 'edit' && editorState.isEmpty()) || (curTab === 'markdown' && !markdown.trim())) {
         message.warning(formatMsg('Article content cannot be empty'))
         return
@@ -63,6 +67,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
         case 'edit':
           content = editorState.toHTML()
           break;
+        // 需要修改
         case 'markdown':
           content = markdown
           break;
@@ -71,16 +76,17 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
           break;
       }
       const finalValues = Object.assign({}, values, { content })
+      console.log('finalValues: ', finalValues)
       switch (type) {
-        case 'publish':
+        case 'add':
           dispatch({
-            type: 'article/releaseArticle',
+            type: 'article/add',
             payload: finalValues,
           }).then(() => history.replace('/article'))
           break;
         case 'save':
           dispatch({
-            type: 'article/releaseArticle',
+            type: 'article/add',
             payload: finalValues,
           }).then(() => history.replace('/article'))
           break;
@@ -93,7 +99,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
     }, [curTab, editorState, markdown])
 
   const checkLabelsLength: (_: any, values: string[]) => void = useCallback((_, values) => {
-    if (values && values.length > 5) {
+    if (values && values.length > 3) {
       return Promise.reject()
     }
     return Promise.resolve()
@@ -102,7 +108,8 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
   // tabs
   const toggleTabs = useCallback((key) => setCurTab(key), [])
 
-  const handleChangeText = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => setMarkdown(e.target.value), [])
+  const handleChangeText = useCallback((value: string) => setMarkdown(value), [])
+  // const onSave = values => console.log(99, aa, aa.current.$blockPreview.current.innerHTML)
 
   useEffect(() => {
     if (location && location.query && location.query.key) {
@@ -130,6 +137,9 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
             className={styles.releaseArticleForm}
             name="releaseArticleForm"
             onFinish={onFinish}
+            initialValues={{
+              visible: 1
+            }}
           >
             <Form.Item
               label={<FormattedMsg id="Title" />}
@@ -139,28 +149,51 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
                 message: <FormattedMsg id="Please input articles title" />
               }]}
             >
-              <Input style={{ width: 300 }} />
+              <Input style={{ width: 200 }} />
             </Form.Item>
             <Form.Item
               label={<FormattedMsg id="Label" />}
-              name="labels"
+              name="label"
               rules={[{
                 required: true,
                 message: <FormattedMsg id="Please select articles label" />
               }, {
                 validator: checkLabelsLength,
-                message: <FormattedMsg id="Select up to five tags" />
+                message: <FormattedMsg id="Select up to three tags" />
               }]}
             >
               <Select
                 mode="multiple"
                 allowClear
-                style={{ width: 380 }}
+                style={{ width: 200 }}
               >
                 {children}
               </Select>
             </Form.Item>
-            <Form.Item {...tailLayout} className={styles.btns}>
+            <Form.Item
+              label={<FormattedMsg id="Author" />}
+              name="author"
+              rules={[{
+                required: true,
+                message: <FormattedMsg id="Please input author" />
+              }]}
+            >
+              <Input style={{ width: 100 }} />
+            </Form.Item>
+            <Form.Item
+              label={<FormattedMsg id="Visible" />}
+              name="visible"
+            >
+              <Select style={{ width: 120 }}>
+                <Select.Option value={Visible.all}>
+                  <FormattedMsg id="For all to see" />
+                </Select.Option>
+                <Select.Option value={Visible.oneself}>
+                  <FormattedMsg id="Only visible to oneself" />
+                </Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item className={styles.btns}>
               <Button type="primary" htmlType="submit" className={styles.btn}>
                 <FormattedMsg id="Published" />
               </Button>
@@ -197,24 +230,17 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
               />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Markdown" key="markdown">
-              <div className={styles.markdownLayout}>
-                <Input.TextArea
-                  style={{ padding: '10px 14px' }}
-                  className={styles.markdown}
-                  onChange={handleChangeText}
-                  value={markdown}
-                  placeholder={formatMsg('Started editing')}
-                />
-                <div className={styles.markdown}>
-                  <Editor
-                    preview
-                    value={markdown}
-                    height="100%"
-                    style={{ borderRadius: 0 }}
-                    toolbar={{}}
-                  />
-                </div>
-              </div>
+              <ForEditor
+                preview
+                subfield
+                value={markdown}
+                height="100%"
+                style={{ borderRadius: 0 }}
+                onChange={handleChangeText}
+                toolbar={{}}
+                ref={forEditor}
+                // onSave={onSave}
+              />
             </Tabs.TabPane>
           </Tabs>
         </Fragment>

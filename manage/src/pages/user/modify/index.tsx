@@ -12,24 +12,6 @@ import styles from './index.less'
 
 const { Option } = Select
 
-const props = {
-  name: 'file',
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  headers: {
-    authorization: 'authorization-text',
-  },
-  onChange(info: any) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList)
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`)
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`)
-    }
-  },
-}
-
 interface ModifyProps {
   dispatch: Dispatch
   currentUser: CurrentUser
@@ -49,6 +31,7 @@ interface modifyFormValues {
 
 const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
   const formatMsg = useContext<any>(IntlContext)
+  const nickname = useMemo(() => localStorage.getItem('nickname'), [localStorage.getItem('nickname')])
 
   const prefixSelector: JSX.Element = useMemo(() => (
     <Form.Item name="prefix" noStyle>
@@ -65,6 +48,17 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
       type: 'user/modify',
       payload: values,
     })
+  }, [])
+
+  const onUpload = useCallback((info: any) => {
+    if (info.file.status !== 'uploading') {
+      console.log('uploaded successfully')
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} ${formatMsg('uploaded successfully')}`)
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} ${formatMsg('uploaded failed')}`)
+    }
   }, [])
   
   return (
@@ -158,7 +152,16 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
                 />
               ) : <Avatar size={144} icon={<UserOutlined />} />}
             </div>
-            <Upload {...props}>
+            <Upload
+              name="file"
+              action="http://localhost:3000/api/v0/files/upload/free"
+              headers={{
+                authorization: 'wsyzdbzasn5211314',
+                'X-Requested-With': nickname ? nickname : ''
+              }}
+              onChange={onUpload}
+              showUploadList={false}
+            >
               <Button icon={<UploadOutlined />}>
                 <FormattedMsg id="Replace the avatar" />
               </Button>

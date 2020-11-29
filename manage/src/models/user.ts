@@ -52,7 +52,10 @@ const UserModel: UserModelType = {
     },
     *login({ payload }, { call }) {
       const res = yield call(login, payload)
-      if (res && res.uid) history.push('/dashboard')
+      if (res && res.uid) {
+        localStorage.setItem('nickname', res.name)
+        history.push('/dashboard')
+      }
     },
     *forget({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
