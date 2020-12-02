@@ -10,7 +10,6 @@
 | 登录  | /user/login | post | { name: string, pwd: string } | { name: 'test', pwd: '123456', role: '0/1/2'}, 0为超级管理员
 
 
-
 ### 2. 文件模块
 |  名称   | api地址  |  方法  |  参数  |  resopnse |
 |  ----  |  ----  |  ----  | ----————————  |  ----  |
@@ -21,7 +20,20 @@
 ### 3. 文章模块
 |  名称   | api地址  |  方法  |  参数  |  resopnse |
 |  ----  |  ----  |  ----  | ----————————  |  ----  |
-| 添加文章  | /articles/add | post | { title, author, label, visible, content } | { fid }
-| 查看文章  | /articles/get | get | id(文章id) | { title, author, label, ct, content }
-| 查看所有文章  | /articles/all | get | query(可选) | [{title, author, label, ct, content}]
+| 添加文章  | /articles/add | post | { title, author, label, visible, type, content } | { fid }
+| 修改文章  | /articles/mod | put | { title, author, label, visible, type, content } | { fid }
+| 查看文章  | /articles/get | get | id(文章id) | { title, author, label, ct, content, html }
+| 查看所有文章  | /articles/all | get | query(可选) | [{title, author, label, ct, ut, content}]
 | 删除文章  | /articles/del | delete | id | 删除的文章id
+| 保存草稿  | /articles/drafts/save | post | 同添加文章 | 同添加文章
+| 获取草稿列表  | /articles/drafts | get | 同查看所有文章 | 同查看所有文章
+| 获取单篇草稿  | /articles/draft/get | get | 同查看文章 | 同查看文章
+| 删除草稿  | /articles/draft/del | delete | id | 删除的草稿id
+
+### 4. 网站配置模块
+|  名称   | api地址  |  方法  |  参数  |  resopnse |
+|  ----  |  ----  |  ----  | ----————————  |  ----  |
+| 更新用户信息(需登录)  | /setting/userInfo/save | put | {email, username, desc, country, addr, phone, wx, tx, job} | {msg: "更新成功/失败"}
+| 获取用户信息  | /setting/userInfo/get | get | 无需参数 | {email, username, desc, country, addr, phone, wx, tx, job}
+| 更新网站信息(需登录)  | /setting/website/save | put | {logo, title, desc, r_text, r_link} | {msg: "更新成功/失败"}
+| 获取网站信息  | /setting/website/get | get | 无需参数 | {logo, title, desc, r_text, r_link}

@@ -61,7 +61,7 @@ async function start() {
     })
 
     //使用模版引擎
-    app.use(views(resolve(__dirname, './views'), { extension: 'pug' }));
+    app.use(views(resolve(__dirname, './views'), { extension: 'pug' }))
       
     app.use(router.routes()).use(router.allowedMethods())
 

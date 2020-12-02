@@ -4,6 +4,8 @@ import { uuid } from '../lib/tool'
 import { auth } from '../service'
 import config from '../config'
 import htr from '../lib/htr'
+import marked from 'marked'
+
 /**
  * 文章路由
  * @param {*} router 
@@ -20,20 +22,22 @@ const articleRouter = (router, apiPath) => {
     all: apiPath + '/articles/all',
     saveDraft: apiPath + '/articles/draft/save',
     getDrafts: apiPath + '/articles/drafts',
-    getDraft: apiPath + '/articles/draft/get'
+    getDraft: apiPath + '/articles/draft/get',
+    delDraft: apiPath + '/articles/draft/del'
   }
   // 添加文章
   router.post(api.add,
     auth,
     async ctx => {
-      let { title, author, label, visible, content } = ctx.request.body;
+      let { title, author, label, visible, type, content } = ctx.request.body;
       if(title && label && content) {
         // 1. 写入文章数据
         const fid = uuid(6, 16);
         const ct = Date.now();
         const filename = `${config.publicPath}/db/articles/${fid}.json`;
         try {
-          const res = WF(filename, { fid, title, author, label, ct, content })
+          // type  0 富文本  1 markdown
+          const res = WF(filename, { fid, title, author, label, ct, type, visible, content, html: type ? marked(content) : '' })
           if(res) {
             ctx.body = htr(200, {fid}, '文章发布成功')
           }
@@ -60,14 +64,15 @@ const articleRouter = (router, apiPath) => {
   router.put(api.mod,
     auth,
     async ctx => {
-      let { fid, title, author, label, desc, type, content } = ctx.request.body;
-      if(fid && title && author && label && desc && type && content) {
+      let { fid, title, author, label, visible, type, content } = ctx.request.body;
+      if(fid && title && author && label && content) {
         // 1. 更新文件
         const filePath = `${config.publicPath}/db/articles/${fid}.json`
+        const ut = Date.now()
         try {
-          const res = await wfPromise(filePath, { fid, content }, 1)
+          const res = WF(filePath, { fid, title, author, label, ct, ut, type, visible, content, html: type ? marked(content) : '' })
           if(res) {
-            ctx.body = htr(200, {fid}, '文章修改成功')
+            ctx.body = htr(200, { fid }, '文章修改成功')
           }
         }catch(err) {
           ctx.status = 200
@@ -76,9 +81,19 @@ const articleRouter = (router, apiPath) => {
         
         // 2. 修改文章索引
         const indexFilePath = `${config.publicPath}/db/article_index.json`
-        const ut = Date.now()
+        
         try {
-          WF(indexFilePath, { [fid] : { uid: fid, title, author, label, type, ct: ut, desc } }, 1)
+          let articles = RF(indexFilePath)
+          articles = articles.map(item => {
+            if(item.fid === fid) {
+              return {
+                fid, title, author, label, visible, ct, ut
+              }
+            }
+            return item
+          })
+
+          WF(indexFilePath, articles)
         }catch(err) {
           console.log('mod article', err)
         }
@@ -119,7 +134,7 @@ const articleRouter = (router, apiPath) => {
     auth,
     async ctx => {
       const { id } = ctx.query
-      if(id && type) {
+      if(id) {
         const articlePath = `${config.publicPath}/db/articles/${id}.json`
         const articleIdxPath = `${config.publicPath}/db/article_index.json`
         // 1.删除文章
@@ -129,11 +144,11 @@ const articleRouter = (router, apiPath) => {
             ctx.body = htr(200, null, '删除成功')
   
             // 2.删除文章索引
-            const articles = RF(articleIdxPath);
+            let articles = RF(articleIdxPath);
             articles = articles.filter(item => item.fid !== id);
             const res = WF(articleIdxPath, articles);
             if(res) {
-              ctx.body = htr(200, {id, fid}, '文章删除成功')
+              ctx.body = htr(200, { id }, '文章删除成功')
             }
           }else {
             ctx.status = 200
@@ -156,14 +171,10 @@ const articleRouter = (router, apiPath) => {
       const { q } = ctx.query
       if(!q) {
         const articleIdxPath = `${config.publicPath}/db/article_index.json`
-        if(fs.existsSync(articleIdxPath)) {
-          const articleIdxs = RF(articleIdxPath)
-          ctx.body = htr(200, articleIdxs)
-        }else {
-          ctx.body = htr(200, [])
-        }
+        const articleIdxs = RF(articleIdxPath)
+        ctx.body = htr(200, articleIdxs)
       }else {
-
+        ctx.body = htr(200, [])
       } 
     }
   );
@@ -173,30 +184,30 @@ const articleRouter = (router, apiPath) => {
   router.post(api.saveDraft,
     auth,
     async ctx => {
-      let { title, author, label, desc, type, content } = ctx.request.body;
+      let { title, author, label, visible, type, content } = ctx.request.body;
       if(title) {
         // 1. 写入文章数据
-        const uid = uuid(8, 10);
-        const filename = `${config.publicPath}/db/drafts/draft_${uid}.json`;
-        const id = 'DRAFT_' + uid; 
+        const fid = uuid(6, 16);
+        const filename = `${config.publicPath}/db/drafts/${fid}.json`;
+        const ct = Date.now();
         try {
-          const res = await wfsPromise(filename, { fid: uid, content })
+          // type  0 富文本  1 markdown
+          const res = WF(filename, { fid, title, author, label, ct, type, visible, content, html: type ? marked(content) : '' })
           if(res) {
-            ctx.body = htr(200, {id, fid: uid}, '草稿保存成功')
+            ctx.body = htr(200, {fid}, '草稿保存成功')
           }
         }catch(err) {
           ctx.status = 200
-          ctx.body = htr(500, null, '文章写入错误')
+          ctx.body = htr(500, null, '草稿写入错误')
         }
 
-        // 2. 将文章索引添加到索引文件中
-        const indexFilePath = `${config.publicPath}/db/${type}/draft_index.json`
-        const ct = Date.now()
-        wfPromise(indexFilePath, { [uid] : { uid, title, author, type, label, ct, desc } }, 1).then(res => {
-          // 一些操作
-        }).catch(err => {
-          console.error(err)
-        })
+        // 2. 将草稿文章索引添加到索引文件中
+        const indexFilePath = `${config.publicPath}/db/draft_index.json`
+        try{
+          WF(indexFilePath, { fid, title, author, label, visible, ct }, 1)
+        }catch(err) {
+          console.log('saveDraft', err)
+        }
 
       }else {
         ctx.code = 500
@@ -210,12 +221,8 @@ const articleRouter = (router, apiPath) => {
     auth,
     ctx => {
       const draftIdxPath = `${config.publicPath}/db/draft_index.json`
-      if(fs.existsSync(draftIdxPath)) {
-        const drafts = RF(draftIdxPath)
-        ctx.body = htr(200, drafts ? Object.values(drafts) : [])
-      }else {
-        ctx.body = htr(200, [])
-      }
+      const drafts = RF(draftIdxPath)
+      ctx.body = htr(200, drafts)
     }
   )
 
@@ -224,21 +231,15 @@ const articleRouter = (router, apiPath) => {
     ctx => {
       let { id } = ctx.query;
       if(id) {
-        const draftPath = `${config.publicPath}/db/draft/draft_${id}.json`
-        const draftIdxPath = `${config.publicPath}/db/draft_index.json`
-        if (!fs.existsSync(draftPath) && !fs.existsSync(draftIdxPath)) {
+        const draftPath = `${config.publicPath}/db/drafts/${id}.json`
+        if (!fs.existsSync(draftPath)) {
           ctx.status = 200
-          ctx.body = htr(500, null, '文件读取失败')
+          ctx.body = htr(500, null, '文件不存在')
         }else {
+          const articleStr = fs.readFileSync(draftPath);
           try{
-            const draft = RF(draftPath);
-            const draftIdxs = RF(draftIdxPath);
-            const data = {
-              fid: draft.fid,
-              content: draft.content,
-              ...draftIdxs[id]
-            }
-            ctx.body = htr(200, data)
+            const article = JSON.parse(articleStr);
+            ctx.body = htr(200, article)
           }catch(err) {
             console.error(err)
           }
@@ -247,6 +248,42 @@ const articleRouter = (router, apiPath) => {
         ctx.status = 200
         ctx.body = htr(500, null, '参数不存在')
       }
+    }
+  );
+
+  // 删除草稿
+  router.delete(api.delDraft,
+    auth,
+    async ctx => {
+      const { id } = ctx.query
+      if(id) {
+        const articlePath = `${config.publicPath}/db/drifts/${id}.json`
+        const articleIdxPath = `${config.publicPath}/db/drift_index.json`
+
+        if(fs.existsSync(articlePath)) {
+          const err = await delFile(articlePath)
+          if(!err) {
+            ctx.body = htr(200, null, '删除成功')
+  
+            // 2.删除文章索引
+            let articles = RF(articleIdxPath);
+            articles = articles.filter(item => item.fid !== id);
+            const res = WF(articleIdxPath, articles);
+            if(res) {
+              ctx.body = htr(200, { id }, '草稿删除成功')
+            }
+          }else {
+            ctx.status = 200
+            ctx.body = htr(500, null, '文件不存在，删除失败')
+          } 
+        }else {
+          ctx.body = htr(500, null, '文件不存在, 请刷新页面查看最新数据')
+        }
+        
+      }else {
+        ctx.status = 200
+        ctx.body = htr(500, null, 'id不能为空')
+      }  
     }
   );
 }
