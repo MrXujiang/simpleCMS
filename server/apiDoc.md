@@ -29,6 +29,9 @@
 | 获取草稿列表  | /articles/drafts | get | 同查看所有文章 | 同查看所有文章
 | 获取单篇草稿  | /articles/draft/get | get | 同查看文章 | 同查看文章
 | 删除草稿  | /articles/draft/del | delete | id | 删除的草稿id
+| 评论文章  | /article/comment/save | post | {id, comment} | {msg: '评论成功'}
+| 文章点赞  | /article/flover/save | post | {id} | {msg: '点赞成功'}
+| 获取评论点赞数据  | /article/comments | get | {id} | {views: 21, flover: 12, comments: []}
 
 ### 4. 网站配置模块
 |  名称   | api地址  |  方法  |  参数  |  resopnse |

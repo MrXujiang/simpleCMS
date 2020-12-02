@@ -20,6 +20,9 @@ const articleRouter = (router, apiPath) => {
     get: apiPath + '/articles/get',
     del: apiPath + '/articles/del',
     all: apiPath + '/articles/all',
+    comment: apiPath + '/article/comment/save',
+    comments: apiPath + '/article/comments',
+    addFlover: apiPath + '/article/flover/add',
     saveDraft: apiPath + '/articles/draft/save',
     getDrafts: apiPath + '/articles/drafts',
     getDraft: apiPath + '/articles/draft/get',
@@ -179,6 +182,124 @@ const articleRouter = (router, apiPath) => {
     }
   );
 
+  
+  /******* 评论/点赞功能 **************/
+  // 评论
+  router.post(api.comment,
+    ctx => {
+      let { id, comment } = ctx.request.body;
+      if(id && comment) {
+        const commentPath = `${config.publicPath}/db/comments/${id}.json`
+        const res = RF(commentPath)
+        let result
+        if(res) {
+          if(res.comments) {
+            res.comments = [...res.comments, comment]
+            result = WF(commentPath, res)
+          }else {
+            res.comments = [comment]
+            result = WF(commentPath, res)
+          }
+        }else {
+          const comment_config = {
+            flover: 0,
+            comments: [comment],
+            views: 1
+          }
+          result = WF(commentPath, comment_config)
+        }
+
+        if(result) {
+          ctx.status = 200
+          ctx.body = htr(200, null, '评论成功')
+          return
+        }
+
+        ctx.status = 500
+        ctx.body = htr(500, null, '服务器错误')
+      }else {
+        ctx.status = 200
+        ctx.body = htr(500, null, '缺少参数')
+      }
+    }
+  );
+
+  // 点赞
+  router.post(api.addFlover,
+    ctx => {
+      let { id } = ctx.request.body;
+      if(id) {
+        const commentPath = `${config.publicPath}/db/comments/${id}.json`
+        const res = RF(commentPath)
+        let result
+        if(res) {
+          if(res.flover) {
+            res.flover = res.flover + 1
+            result = WF(commentPath, res)
+          }else {
+            res.flover = 1
+            result = WF(commentPath, res)
+          }
+        }else {
+          const comment_config = {
+            flover: 1,
+            comments: [],
+            views: 1
+          }
+          result = WF(commentPath, comment_config)
+        }
+        
+        if(result) {
+          ctx.status = 200
+          ctx.body = htr(200, null, '已赞')
+          return
+        }
+
+        ctx.status = 500
+        ctx.body = htr(500, null, '服务器错误')
+      }else {
+        ctx.status = 200
+        ctx.body = htr(500, null, '缺少参数')
+      }
+    }
+  );
+
+  // 获取文章访问量, 点赞数据
+  router.get(api.comments,
+    ctx => {
+      let { id } = ctx.query;
+      if(id) {
+        const commentPath = `${config.publicPath}/db/comments/${id}.json`
+        const res = RF(commentPath)
+        let result
+        if(res) {
+          res.views = res.views + 1;
+          result = res
+        }else {
+          const comment_config = {
+            flover: 0,
+            comments: [],
+            views: 1
+          }
+          result = comment_config
+        }
+        
+        if(result) {
+          ctx.status = 200
+          ctx.body = htr(200, result)
+          WF(commentPath, result)
+          return
+        }
+
+        ctx.status = 500
+        ctx.body = htr(500, null, '服务器错误')
+      }else {
+        ctx.status = 200
+        ctx.body = htr(500, null, '缺少参数')
+      }
+    }
+  );
+  
   /************* 草稿功能 ************/
   // 保存草稿
   router.post(api.saveDraft,
