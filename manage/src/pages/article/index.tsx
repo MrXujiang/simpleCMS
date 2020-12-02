@@ -74,7 +74,7 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
       render: ct => moment(ct).format(TIME_FORMAT)
     },
     {
-      title: '操作',
+      title: <FormattedMsg id="Action" />,
       key: 'action',
       render: (_, record) => (
         <Space size="middle">

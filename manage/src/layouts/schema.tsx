@@ -6,6 +6,7 @@ import {
   ReadOutlined,
   RocketOutlined,
   PayCircleOutlined,
+  SettingOutlined,
 } from '@ant-design/icons'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 
@@ -34,6 +35,12 @@ export const siderMenus: any[] = [
     icon: <PayCircleOutlined />,
     text: <FormattedMsg id="Pay" />,
     path: '/payment',
+  },
+  {
+    key: 'configuration',
+    icon: <SettingOutlined />,
+    text: <FormattedMsg id="Configuration" />,
+    path: '/configuration',
   },
 ]
 

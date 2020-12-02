@@ -159,7 +159,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
                 message: <FormattedMsg id="Please input articles title" />
               }]}
             >
-              <Input style={{ width: 200 }} />
+              <Input style={{ width: 180 }} />
             </Form.Item>
             <Form.Item
               label={<FormattedMsg id="Label" />}
