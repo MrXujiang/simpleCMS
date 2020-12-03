@@ -3,7 +3,7 @@ import layouts from './layouts'
 import article from './article'
 import user from './user'
 import advert from './advert'
-import configuration from './configuration'
+import setting from './setting'
 
 export default {
   ...base,
@@ -11,5 +11,5 @@ export default {
   ...article,
   ...user,
   ...advert,
-  ...configuration,
+  ...setting,
 }

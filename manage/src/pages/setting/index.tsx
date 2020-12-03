@@ -6,19 +6,19 @@ import { connect, Dispatch } from 'umi'
 import { ConnectState } from '@/models/connect'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
-import { ConfigurationType } from '@/models/configuration'
+import { SettingType } from '@/models/setting'
 
 import styles from './index.less'
 
-interface ConfigurationProps {
+interface SettingProps {
   dispatch: Dispatch
   isLoading: boolean
 }
 
 const getBase64: (img: any, cb: any) => void = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
+  const reader = new FileReader()
+  reader.addEventListener('load', () => callback(reader.result))
+  reader.readAsDataURL(img)
 }
 
 const layout = {
@@ -30,14 +30,13 @@ const tailLayout = {
   wrapperCol: { offset: 7, span: 17 },
 }
 
-const Configuration: FC<ConfigurationProps> = ({ dispatch, isLoading }) => {
+const Setting: FC<SettingProps> = ({ dispatch, isLoading }) => {
   const formatMsg = useContext<any>(IntlContext)
   const [form] = Form.useForm()
+  const nickname = useMemo(() => localStorage.getItem('nickname'), [localStorage.getItem('nickname')])
 
   const [loading, setLoading] = useState<boolean>(false)
   const [imageUrl, setImageUrl] = useState<string>('')
-
-  const nickname = useMemo(() => localStorage.getItem('nickname'), [localStorage.getItem('nickname')])
 
   const onUpload = useCallback((info: any) => {
     if (info.file.status === 'uploading') {
@@ -53,7 +52,7 @@ const Configuration: FC<ConfigurationProps> = ({ dispatch, isLoading }) => {
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }
-  }, [])
+  }, [formatMsg])
 
   const uploadButton = useMemo(() =>(
     <div>
@@ -64,12 +63,14 @@ const Configuration: FC<ConfigurationProps> = ({ dispatch, isLoading }) => {
     </div>
   ), [loading])
 
-  const onFinish: (values: ConfigurationType) => void = useCallback(values => {
-    console.log('Success:', values);
-  }, [])
+  const onFinish: (values: SettingType) => void = useCallback(values => {
+    dispatch({ type: 'setting/saveWebsite', payload: values }).then(() => {
+      message.success(formatMsg('Update successful'))
+    })
+  }, [formatMsg])
 
   useEffect(() => {
-    dispatch({ type: 'configuration/getConfiguration' }).then((res: ConfigurationType) => {
+    dispatch({ type: 'setting/getWebsite' }).then((res: SettingType) => {
       form.setFieldsValue(res)
       if (res.logo) {
         setImageUrl(res.logo)
@@ -78,12 +79,12 @@ const Configuration: FC<ConfigurationProps> = ({ dispatch, isLoading }) => {
   }, [])
 
   return (
-    <div className={styles.configurationWrapper}>
+    <div className={styles.settingWrapper}>
       <Spin spinning={isLoading}>
         <Form
           {...layout}
           form={form}
-          name="configurationForm"
+          name="settingForm"
           onFinish={onFinish}
         >
           <Form.Item
@@ -107,14 +108,14 @@ const Configuration: FC<ConfigurationProps> = ({ dispatch, isLoading }) => {
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Website name" />}
-            name="name"
+            name="title"
             rules={[{ required: true, message: <FormattedMsg id="Please input your website name" /> }]}
           >
             <Input placeholder={formatMsg('Please input your website name')} />
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Website description" />}
-            name="description"
+            name="desc"
             rules={[{ required: true, message: 'Please enter your website description' }]}
           >
             <Input.TextArea
@@ -124,14 +125,14 @@ const Configuration: FC<ConfigurationProps> = ({ dispatch, isLoading }) => {
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Website text" />}
-            name="text"
+            name="r_text"
             rules={[{ required: true, message: <FormattedMsg id="Please enter your text" /> }]}
           >
             <Input placeholder={formatMsg('Please enter your text')} />
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Website link" />}
-            name="link"
+            name="r_link"
             rules={[{ required: true, message: <FormattedMsg id="Please enter your link" /> }]}
           >
             <Input placeholder={formatMsg('Please enter your link')} />
@@ -147,6 +148,6 @@ const Configuration: FC<ConfigurationProps> = ({ dispatch, isLoading }) => {
   )
 }
 
-export default connect(({ configuration }: ConnectState) => ({
-  isLoading: configuration.isLoading,
-}))(Configuration)
+export default connect(({ setting }: ConnectState) => ({
+  isLoading: setting.isLoading,
+}))(Setting)

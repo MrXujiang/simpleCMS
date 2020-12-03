@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useContext, FC, Fragment, ChangeEvent, useRef } from 'react'
+import React, { useCallback, useState, useEffect, useContext, FC, Fragment, useRef } from 'react'
 import { Form, Input, Button, Select, message, Spin, Tabs } from 'antd'
 import { connect, Dispatch, history } from 'umi'
 
@@ -26,6 +26,7 @@ enum Visible {
 interface ReleaseArticleProps {
   dispatch: Dispatch
   location: any
+  articleDetail: ArticleType
   isLoading: boolean
 }
 
@@ -35,17 +36,16 @@ interface ReleaseArticleFormValues {
   author: string
 }
 
-const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading }) => {
+const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDetail, isLoading }) => {
   const [form] = Form.useForm()
   const formatMsg = useContext<any>(IntlContext)
   const forEditor = useRef(null)
-  console.log('forEditorRef: ', forEditor.current)
 
   const [markdown, setMarkdown] = useState<any>('')
   const [editorState, setEditorState] = useState<any>(BraftEditor.createEditorState(''))
   const [curTab, setCurTab] = useState<string>('edit')
 
-  // editor
+  // editor ctrl+s
   // const submitContent = async () => {
   //   // 在编辑器获得焦点时按下ctrl+s会执行此方法
   //   // 编辑器内容提交到服务端之前，可直接调用editorState.toHTML()来获取HTML格式的内容
@@ -55,56 +55,70 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
   const handleEditorChange: (value: any) => void = useCallback(editorState => setEditorState(editorState), [])
 
   // form
-  const onFinish: (values: ReleaseArticleFormValues, type?: string) => void =
-    useCallback(function(values: ReleaseArticleFormValues, type = 'add'): void {
+  const operation: (action: string | undefined, finalValues: ReleaseArticleFormValues) => void = useCallback((action, finalValues) => {
+    switch (action) {
+      case 'save':
+        dispatch({
+          // 等开发完编辑草稿接口后对接
+          type: location.query.draft ? 'article/save' : 'article/save',
+          payload: finalValues,
+        }).then((res: any) => {
+          if (res.fid) {
+            history.replace('/article')
+          }
+        })
+      break
+      case 'preview':
+        window.open('https://www.baidu.com/')
+      break
+      default:
+        dispatch({
+          type: location.query.draft && location.query.id
+            ? 'article/add'
+            : (location.query.id ? 'article/mod' : 'article/add'),
+          payload: finalValues,
+        }).then((res: any) => {
+          if (res.fid) {
+            history.replace('/article')
+          }
+        })
+      break
+    }
+  }, [])
+
+  const onFinish: (values: ReleaseArticleFormValues, action?: string) => void =
+    useCallback(function(values, action): void {
       if ((curTab === 'edit' && editorState.isEmpty()) || (curTab === 'markdown' && !markdown.trim())) {
         message.warning(formatMsg('Article content cannot be empty'))
         return
       }
   
       let content
+      let type
       switch (curTab) {
         case 'edit':
           content = editorState.toHTML()
-          break;
-        // 需要修改
+          type = 0
+          break
         case 'markdown':
           content = markdown
-          break;
-        default:
-          content = editorState.toHTML()
-          break;
+          type = 1
+          break
       }
-      const finalValues = Object.assign({}, values, { content })
-      console.log('finalValues: ', finalValues)
-      switch (type) {
-        case 'add':
-          dispatch({
-            type: 'article/add',
-            payload: finalValues,
-          }).then((res: any) => {
-            if (res.fid) {
-              history.replace('/article')
-            }
-          })
-          break;
-        case 'save':
-          dispatch({
-            type: 'article/add',
-            payload: finalValues,
-          }).then((res: any) => {
-            if (res.fid) {
-              history.replace('/article')
-            }
-          })
-          break;
-        case 'preview':
-          window.open('https://www.baidu.com/')
-          break;
-        default:
-          break;
+      const finalValues = Object.assign(
+        {},
+        values,
+        location.query.id ? {content, type, fid: articleDetail.fid} : {content, type}
+      )
+
+      if (!!action) {
+        form.validateFields().then(() => {
+          operation(action, finalValues)
+        })
+      } else {
+        operation(undefined, finalValues)
       }
-    }, [curTab, editorState, markdown])
+    }, [curTab, editorState, markdown, formatMsg])
 
   const checkLabelsLength: (_: any, values: string[]) => void = useCallback((_, values) => {
     if (values && values.length > 3) {
@@ -117,18 +131,22 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
   const toggleTabs = useCallback((key) => setCurTab(key), [])
 
   const handleChangeText = useCallback((value: string) => setMarkdown(value), [])
-  // const onSave = values => console.log(99, aa, aa.current.$blockPreview.current.innerHTML)
 
   useEffect(() => {
-    if (location && location.query && location.query.id) {
+    if (location.query.id) {
       dispatch({
-        type: 'article/getArticleDetail',
+        type: location.query.draft ? 'article/getDraftDetail' : 'article/getArticleDetail',
         payload: location.query.id
       }).then((res: ArticleType) => {
         form.setFieldsValue(res)
         if (res.content) {
-          setEditorState(BraftEditor.createEditorState(res.content))
+          if (!!res.type) {
+            setCurTab('markdown')
+          } else {
+            setCurTab('edit')
+          }
           setMarkdown(res.content)
+          setEditorState(BraftEditor.createEditorState(res.content))
         }
       })
     }
@@ -136,7 +154,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
 
   return (
     <Fragment>
-      <header>
+      <header className={styles.header}>
         <FormattedMsg id="Publish articles" />
       </header>
       <Spin spinning={isLoading}>
@@ -236,7 +254,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
               <BraftEditor
                 value={editorState}
                 onChange={handleEditorChange}
-                // onSave={submitContent} // ctrl + s
+                // onSave={submitContent}
               />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Markdown" key="markdown">
@@ -249,7 +267,6 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
                 onChange={handleChangeText}
                 toolbar={{}}
                 ref={forEditor}
-                // onSave={onSave}
               />
             </Tabs.TabPane>
           </Tabs>
@@ -261,4 +278,5 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
 
 export default connect(({ article }: ConnectState) => ({
   isLoading: article.isLoading,
+  articleDetail: article.articleDetail,
 }))(ReleaseArticle)

@@ -1,16 +1,17 @@
 import React, { useCallback, useContext, FC } from 'react'
-import { throttle } from 'lodash'
 import { history, connect, Dispatch } from 'umi'
 import { Form, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
+import { ConnectState } from '@/models/connect'
 
 import styles from '../index.less'
 
-interface LoginFormProps {
+interface LoginProps {
   dispatch: Dispatch
+  isLoading: boolean
 }
 
 interface LoginFormValues {
@@ -18,12 +19,17 @@ interface LoginFormValues {
   password: string
 }
 
-const LoginForm: FC<LoginFormProps> = ({ dispatch }) => {
+const Login: FC<LoginProps> = ({ dispatch, isLoading }) => {
   const formatMsg = useContext<any>(IntlContext)
   
-  const onFinish: (data: LoginFormValues) => void = useCallback(throttle(values => {
-    dispatch({ type: 'user/login', payload: values })
-  }, 1000), [])
+  const onFinish: (data: LoginFormValues) => void = useCallback(values => {
+    dispatch({ type: 'user/login', payload: values }).then((res: any) => {
+      if (res && res.uid) {
+        localStorage.setItem('nickname', res.name)
+        history.push('/dashboard')
+      }
+    })
+  }, [])
 
   const go = () => history.push('/user/forget')
 
@@ -34,7 +40,7 @@ const LoginForm: FC<LoginFormProps> = ({ dispatch }) => {
       onFinish={onFinish}
       initialValues={{
         username: 'test',
-        password: '12345678',
+        password: '123456',
       }}
     >
       <Form.Item
@@ -60,7 +66,7 @@ const LoginForm: FC<LoginFormProps> = ({ dispatch }) => {
       </Form.Item>
 
       <Form.Item>
-        <Button block type="primary" htmlType="submit">
+        <Button block type="primary" htmlType="submit" loading={isLoading}>
           <FormattedMsg id="Login" />
         </Button>
         <div className={styles.otherWay}>
@@ -74,4 +80,6 @@ const LoginForm: FC<LoginFormProps> = ({ dispatch }) => {
   )
 }
 
-export default connect()(LoginForm)
+export default connect(({user}: ConnectState) => ({
+  isLoading: user.isLoading,
+}))(Login)

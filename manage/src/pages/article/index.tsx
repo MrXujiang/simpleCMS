@@ -14,24 +14,31 @@ import styles from './index.less'
 interface ArticleProps {
   dispatch: Dispatch
   articleList: ArticleList
+  draftList: ArticleList
   isLoading: boolean
 }
 
-const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
-  const handleDelete: (data: ArticleType) => void = ({fid}) => {
-    dispatch({ type: 'article/del', payload: fid }).then(() => {
-      dispatch({ type: 'article/getAll' })
-    })
-  }
+const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading }) => {
+  const isDraftPage = useMemo(() => location.pathname.includes('draft'), [location.pathname])
 
-  const handleEdit: (data: ArticleType) => void = ({fid}) => {
-    history.push({
-      pathname: '/article/release',
+  const handleDelete: (data: ArticleType) => void = useCallback(({fid}) => {
+    dispatch({ type: isDraftPage ? 'article/delDraft' : 'article/del', payload: fid })
+  }, [isDraftPage])
+
+  const handleEdit: (data: ArticleType) => void = useCallback(({fid}) => {
+    history.push(isDraftPage ? {
+      pathname: '/release',
+      query: {
+        id: fid,
+        draft: true,
+      },
+    } : {
+      pathname: '/release',
       query: {
         id: fid,
       },
     })
-  }
+  }, [isDraftPage])
 
   const columns: ColumnsType<ArticleType> = useMemo(() => [
     {
@@ -56,7 +63,7 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
               <Tag color={color} key={l}>
                 {l.toUpperCase()}
               </Tag>
-            );
+            )
           })}
         </>
       ),
@@ -89,30 +96,37 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
     },
   ], [])
 
-  const release: () => void = useCallback(() => history.push('/article/release'), [])
+  const go: (path: string) => void = useCallback((path) => history.push(path), [])
 
   useEffect(() => {
-    dispatch({ type: 'article/getAll' })
+    !isDraftPage && dispatch({ type: 'article/getAll' })
+    dispatch({ type: 'article/getAllDrafts' })
   }, [])
 
   return (
     <>
-      <div className={styles.btns}>
-        <Button danger style={{ marginRight: 5 }}>
+      {isDraftPage ? (
+        <header className={styles.header}>
           <FormattedMsg id="Draft box" />
-          &nbsp;
-          (5)
-        </Button>
-        <Button type="primary" onClick={release}>
-          <FormattedMsg id="Publish articles" />
-        </Button>
-      </div>
+        </header>
+      ) : (
+        <div className={styles.btns}>
+          <Button danger style={{ marginRight: 5 }} onClick={go.bind(this, 'draft')}>
+            <FormattedMsg id="Draft box" />
+            &nbsp;
+            ({draftList.length})
+          </Button>
+          <Button type="primary" onClick={go.bind(this, 'release')}>
+            <FormattedMsg id="Publish articles" />
+          </Button>
+        </div>
+      )}
       <Table
         className={styles.table}
         size="small"
         loading={isLoading}
         columns={columns}
-        dataSource={articleList}
+        dataSource={isDraftPage ? draftList : articleList}
         scroll={{ y: 'calc(100vh - 260px)' }}
       />
     </>
@@ -121,5 +135,6 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, isLoading }) => {
 
 export default connect(({ article }: ConnectState) => ({
   articleList: article.articleList,
+  draftList: article.draftList,
   isLoading: article.isLoading,
 }))(Article)

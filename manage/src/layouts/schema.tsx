@@ -37,10 +37,10 @@ export const siderMenus: any[] = [
     path: '/payment',
   },
   {
-    key: 'configuration',
+    key: 'setting',
     icon: <SettingOutlined />,
-    text: <FormattedMsg id="Configuration" />,
-    path: '/configuration',
+    text: <FormattedMsg id="Config page" />,
+    path: '/setting',
   },
 ]
 
