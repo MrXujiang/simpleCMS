@@ -3,6 +3,9 @@ import { uploadSingleCatchError, delFile } from '../lib/upload'
 import config from '../config'
 import htr from '../lib/htr'
 import { auth } from '../service'
+import os from 'os'
+
+const os_flag = (os.platform().toLowerCase() === 'win32') ? '\\' : '/';
 
 const uploadRouter = (router, apiPath) => {
     const api = {
@@ -18,7 +21,7 @@ const uploadRouter = (router, apiPath) => {
           let { filename, path, size } = ctx.file;
           let { source } = ctx.request.body || 'unknow';
 
-          let url = `${config.staticPath}${path.split('/public')[1]}`
+          let url = `${config.staticPath}${path.split(`${os_flag}public`)[1]}`
           
           ctx.body = htr(200, {filename, url, source, size}, '文件上传成功')
       }
@@ -30,7 +33,7 @@ const uploadRouter = (router, apiPath) => {
           let { filename, path, size } = ctx.file;
           let { source } = ctx.request.body || 'unknow';
 
-          let url = `${config.staticPath}${path.split('/public')[1]}`
+          let url = `${config.staticPath}${path.split(`${os_flag}public`)[1]}`
           
           ctx.body = htr(200, {filename, url, source, size}, '文件上传成功')
       }
@@ -41,7 +44,7 @@ const uploadRouter = (router, apiPath) => {
           let { filename, path, size } = ctx.file;
           let { source } = ctx.request.body || 'unknow';
 
-          let url = `${config.staticPath}${path.split('/public')[1]}`
+          let url = `${config.staticPath}${path.split(`${os_flag}public`)[1]}`
           
           ctx.body = htr(200, {filename, url, source, size}, '文件上传成功')
       }
@@ -50,7 +53,7 @@ const uploadRouter = (router, apiPath) => {
     // 读取文件
     router.get(api.files,
       ctx => {
-          const files = glob.sync(`${config.publicPath}/uploads/*`)
+          const files = glob.sync(`${config.publicPath}${os_flag}uploads/*`)
           const result = files.map(item => {
               return `${config.staticPath}${item.split('public')[1]}`
           })
@@ -64,7 +67,7 @@ const uploadRouter = (router, apiPath) => {
       async ctx => {
         const { id } = ctx.query
         if(id) {
-            const err = await delFile(`${config.publicPath}/uploads/${id}`)
+            const err = await delFile(`${config.publicPath}${os_flag}uploads${os_flag}${id}`)
             if(!err) {
               ctx.body = htr(200, null, '删除成功')
             }else {
