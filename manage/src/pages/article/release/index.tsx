@@ -13,8 +13,26 @@ import { ConnectState } from '@/models/connect'
 
 import styles from './index.less'
 
+const CATES = [
+  '前端',
+  '后端',
+  '人工智能',
+  '产品',
+  '运营',
+  '设计',
+  'javascript',
+  'HTML5',
+  'Css3',
+  'Java',
+  'PHP',
+  'Go',
+  'Python',
+  'AI',
+  '算法'
+]
+
 const children: any[] = []
-for (let i = 10; i < 36; i++) {
+for (let i = 0, len = CATES.length; i < len; i++) {
   children.push(<Select.Option key={i.toString(36) + i}>{i.toString(36) + i}</Select.Option>)
 }
 

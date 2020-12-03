@@ -6,6 +6,7 @@ import config from '../config'
 import htr from '../lib/htr'
 import marked from 'marked'
 
+
 /**
  * 文章路由
  * @param {*} router 
@@ -26,7 +27,8 @@ const articleRouter = (router, apiPath) => {
     saveDraft: apiPath + '/articles/draft/save',
     getDrafts: apiPath + '/articles/drafts',
     getDraft: apiPath + '/articles/draft/get',
-    delDraft: apiPath + '/articles/draft/del'
+    delDraft: apiPath + '/articles/draft/del',
+    editDraft: apiPath + '/articles/draft/edit'
   }
   // 添加文章
   router.post(api.add,
@@ -337,6 +339,50 @@ const articleRouter = (router, apiPath) => {
     }
   );
 
+  // 修改草稿
+  router.put(api.editDraft,
+    auth,
+    async ctx => {
+      let { fid, title, author, label, visible, type, content } = ctx.request.body;
+      if(fid && title && author && label && content) {
+        // 1. 更新文件
+        const filePath = `${config.publicPath}/db/drafts/${fid}.json`
+        const ut = Date.now()
+        try {
+          const res = WF(filePath, { fid, title, author, label, ct, ut, type, visible, content, html: type ? marked(content) : '' })
+          if(res) {
+            ctx.body = htr(200, { fid }, '草稿修改成功')
+          }
+        }catch(err) {
+          ctx.status = 200
+          ctx.body = htr(500, null, '服务器错误, 文章修改失败')
+        }
+        
+        // 2. 修改文章索引
+        const indexFilePath = `${config.publicPath}/db/draft_index.json`
+        
+        try {
+          let articles = RF(indexFilePath)
+          articles = articles.map(item => {
+            if(item.fid === fid) {
+              return {
+                fid, title, author, label, visible, ct, ut
+              }
+            }
+            return item
+          })
+
+          WF(indexFilePath, articles)
+        }catch(err) {
+          console.log('mod draft', err)
+        }
+      }else {
+        ctx.code = 500
+        ctx.body = htr(500, null, '内容不完整, 草稿修改失败')
+      }
+    }
+  );
+
   // 获取草稿箱内容列表
   router.get(api.getDrafts,
     auth,
@@ -378,8 +424,8 @@ const articleRouter = (router, apiPath) => {
     async ctx => {
       const { id } = ctx.query
       if(id) {
-        const articlePath = `${config.publicPath}/db/drifts/${id}.json`
-        const articleIdxPath = `${config.publicPath}/db/drift_index.json`
+        const articlePath = `${config.publicPath}/db/drafts/${id}.json`
+        const articleIdxPath = `${config.publicPath}/db/draft_index.json`
 
         if(fs.existsSync(articlePath)) {
           const err = await delFile(articlePath)
