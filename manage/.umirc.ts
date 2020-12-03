@@ -56,6 +56,7 @@ export default defineConfig({
         { path: '/article/release', component: '@/pages/article/release' },
         { path: '/advert', component: '@/pages/advert' },
         { path: '/payment', component: '@/pages/payment' },
+        { path: '/configuration', component: '@/pages/configuration' },
         { path: '/modifyUser', component: '@/pages/user/modify' },
       ],
     },

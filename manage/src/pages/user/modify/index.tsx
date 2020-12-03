@@ -52,12 +52,12 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
 
   const onUpload = useCallback((info: any) => {
     if (info.file.status !== 'uploading') {
-      console.log('uploaded successfully')
+      console.log('Uploaded successfully')
     }
     if (info.file.status === 'done') {
-      message.success(`${info.file.name} ${formatMsg('uploaded successfully')}`)
+      message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} ${formatMsg('uploaded failed')}`)
+      message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }
   }, [])
   
