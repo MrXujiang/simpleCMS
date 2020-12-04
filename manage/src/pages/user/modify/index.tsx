@@ -8,6 +8,7 @@ import { ConnectState } from '@/models/connect'
 import { CurrentUser } from '@/models/user'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
+import { getBase64 } from '@/utils'
 import avatar from '@/assets/avatar.png'
 
 import styles from './index.less'
@@ -30,7 +31,6 @@ interface modifyFormValues {
 const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
   const [form] = Form.useForm()
   const formatMsg = useContext<any>(IntlContext)
-  // const nickname = useMemo(() => localStorage.getItem('nickname'), [localStorage.getItem('nickname')])
 
   const prefixSelector: JSX.Element = useMemo(() => (
     <Form.Item name="prefix" noStyle>
@@ -47,6 +47,7 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
       payload: values,
     }).then(() => {
       message.success(formatMsg('Update successful'))
+      // 同步 rightContent 的用户昵称
       if (values.username !== currentUser.username) {
         dispatch({ type: 'user/getUserInfo' })
       }
@@ -55,19 +56,29 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
 
   const onUpload: (info: any) => void = useCallback(info => {
     if (info.file.status === 'done') {
-      dispatch({ type: 'user/saveUserInfo', payload: Object.assign({}, {username: localStorage.getItem('nickname')}, {tx: info.fileList[0]['response']['result']['url']}) })
+      getBase64(info.file.originFileObj, (imageUrl: string) => {
+        dispatch({
+          type: 'user/saveUserInfo',
+          payload: Object.assign(
+            {},
+            currentUser,
+            {tx: imageUrl},
+          )
+        }).then(() => {
+          dispatch({ type: 'user/getUserInfo' })
+        })
+      })
       message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }
-  }, [formatMsg])
+  }, [formatMsg, currentUser])
 
   useEffect(() => {
     if (!isEmpty(currentUser)) {
       form.setFieldsValue(currentUser)
     }
   }, [currentUser])
-  console.log(11, currentUser)
   
   return (
     <Fragment>
@@ -158,22 +169,18 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
           </div>
           <div className={styles.basicViewRight}>
             <div className={styles.avatar}>
-              {currentUser.tx ?  <Avatar src={currentUser.tx} /> : (
+              {currentUser.tx ? <Avatar src={currentUser.tx} style={{ width: 144, height: 144 }} /> : (
                 <img
                   alt="avatar"
                   width={144}
                   height={144}
-                  src={avatar}
+                  src={currentUser.tx ? currentUser.tx : avatar}
                 />
               )}
             </div>
             <Upload
               name="file"
               action="http://localhost:3000/api/v0/files/upload/free"
-              // headers={{
-              //   authorization: 'wsyzdbzasn5211314',
-              //   'X-Requested-With': nickname ? nickname : ''
-              // }}
               onChange={onUpload}
               showUploadList={false}
             >

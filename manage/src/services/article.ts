@@ -37,3 +37,7 @@ export async function mod(data: ArticleType): Promise<any> {
 export async function save(data: ArticleType): Promise<any> {
   return request.post('/articles/draft/save', data)
 }
+
+export async function edit(data: ArticleType): Promise<any> {
+  return request.put('/articles/draft/edit', data)
+}

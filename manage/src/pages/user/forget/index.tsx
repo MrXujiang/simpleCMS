@@ -1,4 +1,4 @@
-import React, { useCallback, FC, useContext } from 'react'
+import React, { FC, useCallback, useContext } from 'react'
 import { history, connect, Dispatch } from 'umi'
 import { Form, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'

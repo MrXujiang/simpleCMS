@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useContext, FC, Fragment, useRef } from 'react'
+import React, { FC, Fragment, useCallback, useState, useEffect, useContext, useRef } from 'react'
 import { Form, Input, Button, Select, message, Spin, Tabs } from 'antd'
 import { connect, Dispatch, history } from 'umi'
 
@@ -31,11 +31,6 @@ const CATES = [
   '算法'
 ]
 
-const children: any[] = []
-for (let i = 0, len = CATES.length; i < len; i++) {
-  children.push(<Select.Option key={i.toString(36) + i}>{i.toString(36) + i}</Select.Option>)
-}
-
 enum Visible {
   oneself,
   all,
@@ -44,7 +39,6 @@ enum Visible {
 interface ReleaseArticleProps {
   dispatch: Dispatch
   location: any
-  articleDetail: ArticleType
   isLoading: boolean
 }
 
@@ -54,7 +48,7 @@ interface ReleaseArticleFormValues {
   author: string
 }
 
-const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDetail, isLoading }) => {
+const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading }) => {
   const [form] = Form.useForm()
   const formatMsg = useContext<any>(IntlContext)
   const forEditor = useRef(null)
@@ -70,23 +64,23 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
   //   const htmlContent = editorState.toHTML()
   //   const result = await saveEditorContent(htmlContent)
   // }
+
   const handleEditorChange: (value: any) => void = useCallback(editorState => setEditorState(editorState), [])
 
-  // form
   const operation: (action: string | undefined, finalValues: ReleaseArticleFormValues) => void = useCallback((action, finalValues) => {
     switch (action) {
       case 'save':
         dispatch({
-          // 等开发完编辑草稿接口后对接
-          type: location.query.draft ? 'article/save' : 'article/save',
+          type: location.query.draft ? 'article/edit' : 'article/save',
           payload: finalValues,
         }).then((res: any) => {
           if (res.fid) {
-            history.replace('/article')
+            history.replace('/draft')
           }
         })
       break
       case 'preview':
+        // 等小胖开发完前台后对接
         window.open('https://www.baidu.com/')
       break
       default:
@@ -102,7 +96,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
         })
       break
     }
-  }, [])
+  }, [location.query])
 
   const onFinish: (values: ReleaseArticleFormValues, action?: string) => void =
     useCallback(function(values, action): void {
@@ -126,7 +120,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
       const finalValues = Object.assign(
         {},
         values,
-        location.query.id ? {content, type, fid: articleDetail.fid} : {content, type}
+        location.query.id ? {content, type, fid: location.query.id} : {content, type}
       )
 
       if (!!action) {
@@ -138,6 +132,13 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
       }
     }, [curTab, editorState, markdown, formatMsg])
 
+  // const handleChangeLabels: (values: string[]) => void = useCallback(values => {
+  //   if (values.length > 3) {
+  //     form.setFieldsValue({ label: values.slice(0, 3) })
+  //     message.warning(formatMsg('Select up to three tags'))
+  //   }
+  // }, [formatMsg, form])
+
   const checkLabelsLength: (_: any, values: string[]) => void = useCallback((_, values) => {
     if (values && values.length > 3) {
       return Promise.reject()
@@ -145,7 +146,6 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
     return Promise.resolve()
   }, [])
 
-  // tabs
   const toggleTabs = useCallback((key) => setCurTab(key), [])
 
   const handleChangeText = useCallback((value: string) => setMarkdown(value), [])
@@ -212,8 +212,13 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
                 mode="multiple"
                 allowClear
                 style={{ width: 200 }}
+                // onChange={handleChangeLabels}
               >
-                {children}
+                {CATES.map(cate => (
+                  <Select.Option key={cate} value={cate}>
+                    {cate}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
             <Form.Item
@@ -296,5 +301,4 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
 
 export default connect(({ article }: ConnectState) => ({
   isLoading: article.isLoading,
-  articleDetail: article.articleDetail,
 }))(ReleaseArticle)

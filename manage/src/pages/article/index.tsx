@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, FC } from 'react'
+import React, { FC, useCallback, useEffect, useMemo } from 'react'
 import { connect, Dispatch, history } from 'umi'
 import { Button, Table, Space, Tag } from 'antd'
 import { ColumnsType } from 'antd/es/table'
@@ -26,15 +26,12 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
   }, [isDraftPage])
 
   const handleEdit: (data: ArticleType) => void = useCallback(({fid}) => {
-    history.push(isDraftPage ? {
+    history.push({
       pathname: '/release',
-      query: {
+      query: isDraftPage ? {
         id: fid,
         draft: true,
-      },
-    } : {
-      pathname: '/release',
-      query: {
+      } : {
         id: fid,
       },
     })
@@ -111,12 +108,12 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
         </header>
       ) : (
         <div className={styles.btns}>
-          <Button danger style={{ marginRight: 5 }} onClick={go.bind(this, 'draft')}>
+          <Button danger style={{ marginRight: 5 }} onClick={go.bind(this, '/draft')}>
             <FormattedMsg id="Draft box" />
             &nbsp;
             ({draftList.length})
           </Button>
-          <Button type="primary" onClick={go.bind(this, 'release')}>
+          <Button type="primary" onClick={go.bind(this, '/release')}>
             <FormattedMsg id="Publish articles" />
           </Button>
         </div>
@@ -127,6 +124,7 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
         loading={isLoading}
         columns={columns}
         dataSource={isDraftPage ? draftList : articleList}
+        rowKey="fid"
         scroll={{ y: 'calc(100vh - 260px)' }}
       />
     </>

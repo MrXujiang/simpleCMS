@@ -7,18 +7,13 @@ import { ConnectState } from '@/models/connect'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
 import { SettingType } from '@/models/setting'
+import { getBase64 } from '@/utils'
 
 import styles from './index.less'
 
 interface SettingProps {
   dispatch: Dispatch
   isLoading: boolean
-}
-
-const getBase64: (img: any, cb: any) => void = (img, callback) => {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
 }
 
 const layout = {
@@ -33,7 +28,6 @@ const tailLayout = {
 const Setting: FC<SettingProps> = ({ dispatch, isLoading }) => {
   const formatMsg = useContext<any>(IntlContext)
   const [form] = Form.useForm()
-  const nickname = useMemo(() => localStorage.getItem('nickname'), [localStorage.getItem('nickname')])
 
   const [loading, setLoading] = useState<boolean>(false)
   const [imageUrl, setImageUrl] = useState<string>('')
@@ -96,10 +90,6 @@ const Setting: FC<SettingProps> = ({ dispatch, isLoading }) => {
               name="file"
               listType="picture-card"
               action="http://localhost:3000/api/v0/files/upload/free"
-              headers={{
-                authorization: 'wsyzdbzasn5211314',
-                'X-Requested-With': nickname ? nickname : ''
-              }}
               onChange={onUpload}
               showUploadList={false}
             >

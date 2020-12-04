@@ -1,4 +1,4 @@
-import React, { Key, FC, useCallback, useMemo } from 'react'
+import React, { FC, Key, useCallback, useMemo } from 'react'
 import { Dropdown, Menu } from 'antd'
 import { CopyrightOutlined, GlobalOutlined } from '@ant-design/icons'
 import { connect, Dispatch } from 'umi'

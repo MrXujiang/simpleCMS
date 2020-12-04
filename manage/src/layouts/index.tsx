@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, FC, Fragment } from 'react'
+import React, { FC, Fragment, useMemo, useCallback, useState } from 'react'
 import { connect } from 'umi'
 import { ConfigProvider, Layout } from 'antd'
 import enUS from 'antd/lib/locale/en_US'
@@ -24,7 +24,6 @@ interface BasicLayoutProps {
 }
 
 const BasicLayout: FC<BasicLayoutProps> = ({ children, location, lang }) => {
-  // silder
   const [ collapsed, setCollapsed ] = useState<boolean>(false)
 
   const toggle: () => void = useCallback(() => setCollapsed(!collapsed), [collapsed])

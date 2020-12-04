@@ -10,6 +10,7 @@ import {
   add,
   mod,
   save,
+  edit,
 } from '@/services/article'
 
 export interface ArticleType {
@@ -45,6 +46,7 @@ interface ArticleModelType {
     add: Effect,
     mod: Effect,
     save: Effect,
+    edit: Effect,
   }
   reducers: {
     startLoading: Reducer,
@@ -67,6 +69,7 @@ const ArticleModel: ArticleModelType = {
       label: [],
       visible: 1,
       content: '',
+      type: 0,
       ct: 0,
     },
     isLoading: false,
@@ -140,6 +143,12 @@ const ArticleModel: ArticleModelType = {
     *save({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
       const res =  yield call(save, payload)
+      yield put({ type: 'closeLoading' })
+      return res || {}
+    },
+    *edit({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res =  yield call(edit, payload)
       yield put({ type: 'closeLoading' })
       return res || {}
     },

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, FC } from 'react'
+import React, { FC, useCallback, useContext } from 'react'
 import { history, connect, Dispatch } from 'umi'
 import { Form, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
@@ -40,7 +40,7 @@ const Login: FC<LoginProps> = ({ dispatch, isLoading }) => {
       onFinish={onFinish}
       initialValues={{
         username: 'test',
-        password: '123456',
+        password: '12345678',
       }}
     >
       <Form.Item
