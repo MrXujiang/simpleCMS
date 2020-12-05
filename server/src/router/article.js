@@ -69,7 +69,7 @@ const articleRouter = (router, apiPath) => {
   router.put(api.mod,
     auth,
     async ctx => {
-      let { fid, title, author, label, visible, type, content } = ctx.request.body;
+      let { fid, title, author, label, visible, type, content, ct } = ctx.request.body;
       if(fid && title && author && label && content) {
         // 1. 更新文件
         const filePath = `${config.publicPath}/db/articles/${fid}.json`
@@ -343,7 +343,7 @@ const articleRouter = (router, apiPath) => {
   router.put(api.editDraft,
     auth,
     async ctx => {
-      let { fid, title, author, label, visible, type, content } = ctx.request.body;
+      let { fid, title, author, label, visible, type, content, ct } = ctx.request.body;
       if(fid && title && author && label && content) {
         // 1. 更新文件
         const filePath = `${config.publicPath}/db/drafts/${fid}.json`
@@ -366,7 +366,7 @@ const articleRouter = (router, apiPath) => {
           articles = articles.map(item => {
             if(item.fid === fid) {
               return {
-                fid, title, author, label, visible, ct, ut
+                fid, title, author, label, visible, ct: item.ct, ut
               }
             }
             return item
