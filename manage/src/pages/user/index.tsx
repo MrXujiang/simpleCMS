@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, Key, FC } from 'react'
+import React, { FC, Key, useCallback, useMemo } from 'react'
 import { Dropdown, Menu } from 'antd'
 import { CopyrightOutlined, GlobalOutlined } from '@ant-design/icons'
 import { connect, Dispatch } from 'umi'
@@ -17,12 +17,12 @@ interface UserLayoutProps {
 }
 
 const UserLayout: FC<UserLayoutProps> = ({ children, lang, dispatch }) => {
-  const onMenuClick: (key: { key: Key }) => void = useCallback(({ key }) => {
+  const handleChangeLanguage: (key: { key: Key }) => void = useCallback(({ key }) => {
     dispatch({ type: 'user/changeLocale', payload: key })
   }, [])
 
   const globalLanguageDropdown: JSX.Element = useMemo(() => (
-    <Menu selectedKeys={[lang]} onClick={onMenuClick}>
+    <Menu selectedKeys={[lang]} onClick={handleChangeLanguage}>
       <Menu.Item key="en">
         <span className={styles.lang}>US</span>
         English
@@ -59,14 +59,12 @@ const UserLayout: FC<UserLayoutProps> = ({ children, lang, dispatch }) => {
         <div className={styles.footerTop}>
           <FormattedMsg id={title} />
         </div>
-        <div className={styles.copyright}>
-          Copyright <CopyrightOutlined /> <FormattedMsg id="CopyrightText" />
-        </div>
+        <FormattedMsg id="Copyright" /> <CopyrightOutlined /> <FormattedMsg id="CopyrightText" />
       </footer>
     </div>
   )
 }
 
 export default connect(({ user }: ConnectState) => ({
-  lang: user.lang
+  lang: user.lang,
 }))(UserLayout)

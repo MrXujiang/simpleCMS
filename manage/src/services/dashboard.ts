@@ -22,7 +22,7 @@ export async function getStatistics(): Promise<any> {
       title: '广告点击总数',
       total: 100000,
     }
-  ]), 2000))
+  ]), 1000))
   // return request('/api/currentUser')
 }
 
@@ -100,6 +100,6 @@ export async function getChartsData(): Promise<any> {
         sales: 38,
       },
     ],
-  }), 2000))
+  }), 1000))
   // return request('/api/currentUser')
 }

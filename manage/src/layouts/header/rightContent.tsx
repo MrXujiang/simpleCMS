@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useContext, Key } from 'react'
+import React, { FC, Key, useMemo, useCallback, useEffect } from 'react'
 import { Dropdown, Menu, Avatar, Spin } from 'antd'
 import { history } from 'umi'
 import {
@@ -6,15 +6,22 @@ import {
   LogoutOutlined,
   GlobalOutlined,
 } from '@ant-design/icons'
+import { connect, Dispatch } from 'umi'
 
-import { HeaderContext, HeaderContextType } from '@/utils/context/header'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
+import { ConnectState } from '@/models/connect'
+import { CurrentUser } from '@/models/user'
+import avatar from '@/assets/avatar.png'
 
 import styles from './index.less'
 
-const RightContent: () => JSX.Element = () => {
-  const { locale, changeLocale, currentUser } = useContext<HeaderContextType>(HeaderContext)
+interface RightContentProps {
+  currentUser: CurrentUser
+  lang: string
+  dispatch: Dispatch
+}
 
+const RightContent: FC<RightContentProps> = ({ currentUser, lang, dispatch }) => {
   const onMenuClick: (params: { key: Key }) => void = useCallback(({ key }) => {
     switch (key) {
       case 'logout':
@@ -24,10 +31,10 @@ const RightContent: () => JSX.Element = () => {
         history.push('/modifyUser')
         break
       case 'zh-cn':
-        changeLocale && changeLocale('zh-cn')
+        dispatch({ type: 'user/changeLocale', payload: 'zh-cn' })
         break
       case 'en':
-        changeLocale && changeLocale('en')
+        dispatch({ type: 'user/changeLocale', payload: 'en' })
         break
     }
   }, [])
@@ -47,7 +54,7 @@ const RightContent: () => JSX.Element = () => {
   ), [])
 
   const globalLanguageDropdown: JSX.Element = useMemo(() => (
-    <Menu selectedKeys={[locale]} onClick={onMenuClick}>
+    <Menu selectedKeys={[lang]} onClick={onMenuClick}>
       <Menu.Item key="en">
         <span className={styles.lang}>US</span>
         English
@@ -58,7 +65,11 @@ const RightContent: () => JSX.Element = () => {
         <FormattedMsg id="Simplified Chinese" />
       </Menu.Item>
     </Menu>
-  ), [locale])
+  ), [lang])
+
+  useEffect(() => {
+    dispatch({ type: 'user/getUserInfo' })
+  }, [])
 
   return (
     <div className={styles.rightContent}>
@@ -69,7 +80,7 @@ const RightContent: () => JSX.Element = () => {
           placement="bottomRight"
         >
           <span className={styles.currentUser}>
-            <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
+            <Avatar size="small" className={styles.avatar} src={currentUser.tx || avatar} alt="avatar" />
             <span>{currentUser.username}</span>
           </span>
         </Dropdown>
@@ -87,4 +98,7 @@ const RightContent: () => JSX.Element = () => {
   )
 }
 
-export default RightContent
+export default connect(({ user }: ConnectState) => ({
+  lang: user.lang,
+  currentUser: user.currentUser,
+}))(RightContent)

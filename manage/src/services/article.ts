@@ -1,48 +1,43 @@
-// import request from '@/utils/req'
+import request from '@/utils/req'
 
 import { ArticleType } from '@/models/article'
 
-export async function getArticleList(): Promise<any> {
-  return new Promise((resolve) => setTimeout(() => resolve(
-    new Array(100).fill(1).map(() => ({
-      key: Math.random(),
-      title: '文章',
-      author: 'John Brown',
-      description: 'This book is very funny!',
-      labels: ['a10', 'b11'],
-    }))
-  ), 1000))
-  // return request('/api/currentUser')
+export async function getAll(): Promise<any> {
+  return request.get('/articles/all')
+}
+
+export async function getAllDrafts(): Promise<any> {
+  return request.get('/articles/drafts')
 }
 
 export async function getArticleDetail(payload: string): Promise<any> {
-  return new Promise((resolve) => setTimeout(() => resolve({
-    key: Math.random(),
-    title: '文章',
-    author: 'John Brown',
-    description: 'This book is very funny!',
-    labels: ['a10', 'b11'],
-  }), 1000))
-  // return request('/api/currentUser')
+  return request.get(`/articles/get?id=${payload}`)
 }
 
-export async function getEditorContent(): Promise<any> {
-  return new Promise((resolve) => setTimeout(() => resolve('+ qw'), 1000))
-  // return request('/api/currentUser')
+export async function getDraftDetail(payload: string): Promise<any> {
+  return request.get(`/articles/draft/get?id=${payload}`)
 }
 
-export async function deleteArticle(data: ArticleType): Promise<any> {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(''), 1000)
-  })
-  // return request('/api/currentUser')
+export async function del(id: string): Promise<any> {
+  return request.delete(`/articles/del?id=${id}`)
 }
 
-export async function releaseArticle(data: ArticleType): Promise<any> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve('')
-    }, 1000)
-  })
-  // return request('/api/currentUser')
+export async function delDraft(id: string): Promise<any> {
+  return request.delete(`/articles/draft/del?id=${id}`)
+}
+
+export async function add(data: ArticleType): Promise<any> {
+  return request.post('/articles/add', data)
+}
+
+export async function mod(data: ArticleType): Promise<any> {
+  return request.put('/articles/mod', data)
+}
+
+export async function save(data: ArticleType): Promise<any> {
+  return request.post('/articles/draft/save', data)
+}
+
+export async function edit(data: ArticleType): Promise<any> {
+  return request.put('/articles/draft/edit', data)
 }

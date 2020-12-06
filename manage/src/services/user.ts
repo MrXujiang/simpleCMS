@@ -2,16 +2,11 @@ import request from '@/utils/req'
 import { CurrentUser } from '@/models/user'
 
 export async function getUserInfo(): Promise<any> {
-  return new Promise((resolve) => setTimeout(() => resolve({
-    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-    username: 'Serati Ma',
-    email: '515151515@qq.com',
-    introduction: 'Hello, my name is Serati Ma',
-    country: 'china',
-    address: 'ZheJiang',
-    phone: '15105898989',
-  }), 1000))
-  // return request('/api/currentUser')
+  return request.get('/setting/userInfo/get')
+}
+
+export async function saveUserInfo(data: CurrentUser): Promise<any> {
+  return request.put('/setting/userInfo/save', data)
 }
 
 interface LoginParams {
@@ -20,15 +15,10 @@ interface LoginParams {
 }
 
 export async function login({ username, password }: LoginParams): Promise<any> {
-  return request.post('/user/login', { name: username, pwd: password })
+  return request.post('/user/login', { name: username, pwd: password }).catch(e => console.log(e))
 }
 
 export async function forget(): Promise<any> {
   return new Promise((resolve) => setTimeout(() => resolve(), 1000))
-  // return request('/api/currentUser')
-}
-
-export async function modify(data: CurrentUser): Promise<any> {
-  return new Promise((resolve) => setTimeout(() => resolve(data), 1000))
   // return request('/api/currentUser')
 }

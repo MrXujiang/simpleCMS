@@ -36,7 +36,7 @@ instance.interceptors.response.use(function (response) {
         message.error('请求资源未发现');
     }else if(response.status === 403) {
         message.error(response.data.msg, () => {
-            window.location.href = '/login'
+            window.location.href = '/manage/user/login'
             localStorage.clear()
         });
     }else {

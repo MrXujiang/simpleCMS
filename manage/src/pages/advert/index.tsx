@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect, Fragment, useCallback } from 'react'
+import React, { Fragment, ChangeEvent, useState, useEffect, useCallback } from 'react'
 import { Spin, Button } from 'antd'
 import { connect, Dispatch } from 'umi'
 

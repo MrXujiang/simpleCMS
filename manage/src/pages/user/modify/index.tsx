@@ -1,34 +1,17 @@
-import React, { FC, Fragment, useCallback, useMemo, useContext } from 'react'
+import React, { FC, Fragment, useCallback, useMemo, useContext, useEffect } from 'react'
 import { Form, Input, Select, Button, Upload, message, Spin, Avatar } from 'antd'
-import { UploadOutlined, UserOutlined } from '@ant-design/icons'
+import { UploadOutlined } from '@ant-design/icons'
 import { connect, Dispatch } from 'umi'
+import { isEmpty } from 'lodash'
 
 import { ConnectState } from '@/models/connect'
 import { CurrentUser } from '@/models/user'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
+import { getBase64 } from '@/utils'
+import avatar from '@/assets/avatar.png'
 
 import styles from './index.less'
-
-const { Option } = Select
-
-const props = {
-  name: 'file',
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  headers: {
-    authorization: 'authorization-text',
-  },
-  onChange(info: any) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList)
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`)
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`)
-    }
-  },
-}
 
 interface ModifyProps {
   dispatch: Dispatch
@@ -38,39 +21,69 @@ interface ModifyProps {
 
 interface modifyFormValues {
   username: string
-  password: string
-  confirm: string
   email: string
-  introduction: string
+  desc: string
   country: string
-  address: string
+  addr: string
   phone: string
 }
 
 const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
+  const [form] = Form.useForm()
   const formatMsg = useContext<any>(IntlContext)
 
   const prefixSelector: JSX.Element = useMemo(() => (
     <Form.Item name="prefix" noStyle>
       <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
+        <Select.Option value="86">+86</Select.Option>
+        <Select.Option value="87">+87</Select.Option>
       </Select>
     </Form.Item>
   ), [])
 
   const onFinish: (data: modifyFormValues) => void = useCallback(values => {
-    console.log('Received values of form: ', values)
     dispatch({
-      type: 'user/modify',
+      type: 'user/saveUserInfo',
       payload: values,
+    }).then(() => {
+      message.success(formatMsg('Update successful'))
+      // 同步 rightContent 的用户昵称
+      if (values.username !== currentUser.username) {
+        dispatch({ type: 'user/getUserInfo' })
+      }
     })
-  }, [])
+  }, [formatMsg, currentUser])
+
+  const onUpload: (info: any) => void = useCallback(info => {
+    if (info.file.status === 'done') {
+      getBase64(info.file.originFileObj, (imageUrl: string) => {
+        dispatch({
+          type: 'user/saveUserInfo',
+          payload: Object.assign(
+            {},
+            currentUser,
+            {tx: imageUrl},
+          )
+        }).then(() => {
+          dispatch({ type: 'user/getUserInfo' })
+        })
+      })
+      message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
+    }
+  }, [formatMsg, currentUser])
+
+  useEffect(() => {
+    if (!isEmpty(currentUser)) {
+      form.setFieldsValue(currentUser)
+    }
+  }, [currentUser])
   
   return (
     <Fragment>
       <header className={styles.header}>
-        <FormattedMsg id="Setting" />
+        <FormattedMsg id="Basic Setting" />
       </header>
       <Spin spinning={isLoading}>
         <section className={styles.basicView}>
@@ -78,8 +91,9 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
             <Form
               layout="vertical"
               name="modifyForm"
+              form={form}
               onFinish={onFinish}
-              initialValues={Object.assign({}, currentUser, { prefix: '86' })}
+              initialValues={{ prefix: '86' }}
               scrollToFirstError
             >
               <Form.Item
@@ -103,7 +117,7 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
                 <Input placeholder={formatMsg('Please enter your username')} />
               </Form.Item>
               <Form.Item
-                name="introduction"
+                name="desc"
                 label={<FormattedMsg id="Personal profile" />}
                 rules={[{ required: true, message: <FormattedMsg id="Please enter your personal profile" /> }]}
               >
@@ -124,7 +138,7 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
                 </Select>
               </Form.Item>
               <Form.Item
-                name="address"
+                name="addr"
                 label={<FormattedMsg id="Detailed address" />}
                 rules={[{ required: true, message: <FormattedMsg id="Please enter your detailed address" /> }]}
               >
@@ -133,7 +147,13 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
               <Form.Item
                 name="phone"
                 label={<FormattedMsg id="Mobile phone number" />}
-                rules={[{ required: true, message: <FormattedMsg id="Please enter your mobile phone number" /> }]}
+                rules={[{
+                  required: true,
+                  message: <FormattedMsg id="Please enter your mobile phone number" />,
+                }, {
+                  pattern: /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/,
+                  message: <FormattedMsg id="Invalid cell phone number" />
+                }]}
               >
                 <Input
                   addonBefore={prefixSelector} style={{ width: '100%' }}
@@ -149,16 +169,21 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
           </div>
           <div className={styles.basicViewRight}>
             <div className={styles.avatar}>
-              {currentUser.avatar ? (
+              {currentUser.tx ? <Avatar src={currentUser.tx} style={{ width: 144, height: 144 }} /> : (
                 <img
                   alt="avatar"
                   width={144}
                   height={144}
-                  src={currentUser.avatar}
+                  src={currentUser.tx ? currentUser.tx : avatar}
                 />
-              ) : <Avatar size={144} icon={<UserOutlined />} />}
+              )}
             </div>
-            <Upload {...props}>
+            <Upload
+              name="file"
+              action="http://localhost:3000/api/v0/files/upload/free"
+              onChange={onUpload}
+              showUploadList={false}
+            >
               <Button icon={<UploadOutlined />}>
                 <FormattedMsg id="Replace the avatar" />
               </Button>

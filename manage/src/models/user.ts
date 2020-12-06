@@ -1,16 +1,15 @@
-import { Effect, Reducer, history } from 'umi'
+import { Effect, Reducer } from 'umi'
 
-import { getUserInfo, login, forget, modify } from '@/services/user'
-import { locale } from 'moment'
+import { getUserInfo, login, forget, saveUserInfo } from '@/services/user'
 
 export interface CurrentUser {
-  avatar?: string
-  username?: string
-  email?: string
-  introduction?: string
-  country?: string
-  address?: string
-  phone?: string
+  tx: string
+  username: string
+  email: string
+  desc: string
+  country: string
+  addr: string
+  phone: string
 }
 
 export interface UserModelState {
@@ -26,7 +25,7 @@ interface UserModelType {
     getUserInfo: Effect,
     login: Effect,
     forget: Effect,
-    modify: Effect,
+    saveUserInfo: Effect,
   }
   reducers: {
     startLoading: Reducer,
@@ -40,7 +39,15 @@ const UserModel: UserModelType = {
   namespace: 'user',
   state: {
     lang: 'zh-cn',
-    currentUser: {},
+    currentUser: {
+      tx: '',
+      username: '',
+      email: '',
+      desc: '',
+      country: '',
+      addr: '',
+      phone: '',
+    },
     isLoading: false,
   },
   effects: {
@@ -48,24 +55,23 @@ const UserModel: UserModelType = {
       const res = yield call(getUserInfo)
       yield put({
         type: 'saveCurrentUser',
-        payload: res,
+        payload: res || {},
       })
     },
-    *login({ payload }, { call }) {
+    *login({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
       const res = yield call(login, payload)
-      if (res && res.uid) {
-        localStorage.setItem('nickname', res.name)
-        history.push('/dashboard')
-      }
+      yield put({ type: 'closeLoading' })
+      return res || {}
     },
     *forget({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
       yield call(forget, payload)
       yield put({ type: 'closeLoading' })
     },
-    *modify({ payload }, { call, put }) {
+    *saveUserInfo({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
-      yield call(modify, payload)
+      yield call(saveUserInfo, payload)
       yield put({ type: 'closeLoading' })
     },
   },

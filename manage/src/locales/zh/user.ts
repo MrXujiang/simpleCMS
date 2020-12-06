@@ -1,9 +1,10 @@
 export default {
   simpleCMS_DESC: '简单易用的cms系统, 助力每个人都能拥有自己的网站博客。',
-  CopyrightText: '2020 XXX 出品',
+  CopyrightText: 'SimpleCMS 研发团队',
+  Copyright: '版权所有',
   Login: '登录',
   Email: '邮箱',
-  Setting: '基本设置',
+  'Basic Setting': '基本设置',
   Username: '用户名',
   Country: '国家',
   China: '中国',
@@ -15,6 +16,7 @@ export default {
   'Detailed address': '详细地址',
   'Mobile phone number': '手机号码',
   'Update basic information': '更新基本信息',
+  'Update successful': '更新成功',
   'Replace the avatar': '更换头像',
   'Forgot password': '忘记密码',
   'Please enter your username': '请输入您的用户名',
@@ -26,4 +28,6 @@ export default {
   'Please select your country': '请选择您所在的国家',
   'Please enter your detailed address': '请输入您的详细地址',
   'Please enter your mobile phone number': '请输入您的手机号码',
+  'Invalid cell phone number': '无效的手机号',
+  'Please modify the information first': '请先修改信息',
 }

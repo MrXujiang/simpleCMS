@@ -1,27 +1,35 @@
 import { Effect, Reducer } from 'umi'
 
 import {
-  getArticleList,
+  getAll,
+  getAllDrafts,
   getArticleDetail,
-  getEditorContent,
-  deleteArticle,
-  releaseArticle,
+  getDraftDetail,
+  del,
+  delDraft,
+  add,
+  mod,
+  save,
+  edit,
 } from '@/services/article'
 
 export interface ArticleType {
-  key: string
+  fid: string
   title: string
-  description: string
   author: string
-  labels: []
-  content?: any
+  label: []
+  visible: number
+  content: any
+  type: number
+  ct: number
 }
 
 export type ArticleList = ArticleType[]
 
 export interface ArticleState {
   articleList: ArticleList
-  articleContent: any
+  draftList: ArticleList
+  articleDetail: ArticleType
   isLoading: boolean
 }
 
@@ -29,17 +37,23 @@ interface ArticleModelType {
   namespace: 'article'
   state: ArticleState
   effects: {
-    getArticleList: Effect,
+    getAll: Effect,
+    getAllDrafts: Effect,
     getArticleDetail: Effect,
-    getEditorContent: Effect,
-    deleteArticle: Effect,
-    releaseArticle: Effect,
+    getDraftDetail: Effect,
+    del: Effect,
+    delDraft: Effect,
+    add: Effect,
+    mod: Effect,
+    save: Effect,
+    edit: Effect,
   }
   reducers: {
     startLoading: Reducer,
     closeLoading: Reducer,
-    saveArticleList: Reducer,
-    saveEditorContent: Reducer,
+    saveAll: Reducer,
+    saveAllDrafts: Reducer,
+    saveArticleDetail: Reducer,
   }
 }
 
@@ -47,43 +61,96 @@ const ArticleModel: ArticleModelType = {
   namespace: 'article',
   state: {
     articleList: [],
-    articleContent: '',
+    draftList: [],
+    articleDetail: {
+      fid: '',
+      title: '',
+      author: '',
+      label: [],
+      visible: 1,
+      content: '',
+      type: 0,
+      ct: 0,
+    },
     isLoading: false,
   },
   effects: {
-    *getArticleList(_, { call, put }) {
-      const res = yield call(getArticleList)
-      yield put({
-        type: 'saveArticleList',
-        payload: res,
-      })
+    *getAll(_, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res = yield call(getAll)
+      if (Array.isArray(res)) {
+        yield put({
+          type: 'saveAll',
+          payload: res,
+        })
+      }
+      yield put({ type: 'closeLoading' })
+    },
+    *getAllDrafts(_, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res = yield call(getAllDrafts)
+      if (Array.isArray(res)) {
+        yield put({
+          type: 'saveAllDrafts',
+          payload: res,
+        })
+      }
+      yield put({ type: 'closeLoading' })
     },
     *getArticleDetail({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
       const res = yield call(getArticleDetail, payload)
-      yield put({ type: 'closeLoading' })
-      return res
-    },
-    *getEditorContent(_, { call, put }) {
-      const res = yield call(getEditorContent)
-      yield put({
-        type: 'saveEditorContent',
-        payload: res,
-      })
-      return res
-    },
-    *deleteArticle({ payload }, { call, put }) {
-      yield put({ type: 'startLoading' })
-      const res = yield call(deleteArticle, payload)
-      if (res) {
-        yield call(getEditorContent)
+      if (res && res.fid) {
+        yield put({ type: 'saveArticleDetail', payload: res })
       }
       yield put({ type: 'closeLoading' })
+      return res || {}
     },
-    *releaseArticle({ payload }, { call, put }) {
+    *getDraftDetail({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
-      yield call(releaseArticle, payload)
+      const res = yield call(getDraftDetail, payload)
       yield put({ type: 'closeLoading' })
+      return res || {}
+    },
+    *del({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res = yield call(del, payload)
+      yield put({ type: 'closeLoading' })
+      if (res && res.id) {
+        yield put({ type: 'getAll' })
+      }
+    },
+    *delDraft({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res = yield call(delDraft, payload)
+      yield put({ type: 'closeLoading' })
+      if (res && res.id) {
+        yield put({ type: 'getAllDrafts' })
+      }
+    },
+    *add({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res =  yield call(add, payload)
+      yield put({ type: 'closeLoading' })
+      return res || {}
+    },
+    *mod({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res =  yield call(mod, payload)
+      yield put({ type: 'closeLoading' })
+      return res || {}
+    },
+    *save({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res =  yield call(save, payload)
+      yield put({ type: 'closeLoading' })
+      return res || {}
+    },
+    *edit({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res =  yield call(edit, payload)
+      yield put({ type: 'closeLoading' })
+      return res || {}
     },
   },
   reducers: {
@@ -93,11 +160,14 @@ const ArticleModel: ArticleModelType = {
     'closeLoading'(state) {
       return {...state, isLoading: false}
     },
-    'saveArticleList'(state, { payload }) {
+    'saveAll'(state, { payload }) {
       return {...state, articleList: payload}
     },
-    'saveEditorContent'(state, { payload }) {
-      return {...state, articleContent: payload}
+    'saveAllDrafts'(state, { payload }) {
+      return {...state, draftList: payload}
+    },
+    'saveArticleDetail'(state, { payload }) {
+      return {...state, articleDetail: payload}
     },
   },
 }

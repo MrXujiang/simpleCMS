@@ -1,10 +1,10 @@
-import React, { useCallback, useState, useEffect, useContext, FC, Fragment, ChangeEvent } from 'react'
+import React, { FC, Fragment, useCallback, useState, useEffect, useContext, useRef } from 'react'
 import { Form, Input, Button, Select, message, Spin, Tabs } from 'antd'
 import { connect, Dispatch, history } from 'umi'
 
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/index.css'
-import Editor from 'for-editor'
+import ForEditor from 'for-editor'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
@@ -12,14 +12,29 @@ import { ArticleType } from '@/models/article'
 import { ConnectState } from '@/models/connect'
 
 import styles from './index.less'
+import { isEmpty } from 'lodash'
 
-const children: any[] = []
-for (let i = 10; i < 36; i++) {
-  children.push(<Select.Option key={i.toString(36) + i}>{i.toString(36) + i}</Select.Option>)
-}
+const CATES = [
+  '前端',
+  '后端',
+  '人工智能',
+  '产品',
+  '运营',
+  '设计',
+  'javascript',
+  'HTML5',
+  'Css3',
+  'Java',
+  'PHP',
+  'Go',
+  'Python',
+  'AI',
+  '算法'
+]
 
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
+enum Visible {
+  oneself,
+  all,
 }
 
 interface ReleaseArticleProps {
@@ -30,96 +45,125 @@ interface ReleaseArticleProps {
 
 interface ReleaseArticleFormValues {
   title: string
-  labels: string[]
+  label: string[]
+  author: string
 }
 
 const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading }) => {
   const [form] = Form.useForm()
   const formatMsg = useContext<any>(IntlContext)
+  const forEditor = useRef(null)
 
   const [markdown, setMarkdown] = useState<any>('')
-  const [editorState, setEditorState] = useState<any>(null)
+  const [editorState, setEditorState] = useState<any>(BraftEditor.createEditorState(''))
   const [curTab, setCurTab] = useState<string>('edit')
 
-  // editor
-  // const submitContent = async () => {
-  //   // 在编辑器获得焦点时按下ctrl+s会执行此方法
-  //   // 编辑器内容提交到服务端之前，可直接调用editorState.toHTML()来获取HTML格式的内容
-  //   const htmlContent = editorState.toHTML()
-  //   const result = await saveEditorContent(htmlContent)
-  // }
   const handleEditorChange: (value: any) => void = useCallback(editorState => setEditorState(editorState), [])
 
-  // form
-  const onFinish: (values: ReleaseArticleFormValues, type?: string) => void =
-    useCallback(function(values: ReleaseArticleFormValues, type = 'publish'): void {
+  const onFinish: (values: ReleaseArticleFormValues, action?: string) => void =
+    useCallback(function(values, action): void {
       if ((curTab === 'edit' && editorState.isEmpty()) || (curTab === 'markdown' && !markdown.trim())) {
-        message.warning(formatMsg('Article content cannot be empty'))
+        message.error(formatMsg('Article content cannot be empty'))
         return
       }
   
       let content
+      let type
       switch (curTab) {
         case 'edit':
           content = editorState.toHTML()
-          break;
+          type = 0
+          break
         case 'markdown':
           content = markdown
-          break;
-        default:
-          content = editorState.toHTML()
-          break;
+          type = 1
+          break
       }
-      const finalValues = Object.assign({}, values, { content })
-      switch (type) {
-        case 'publish':
-          dispatch({
-            type: 'article/releaseArticle',
-            payload: finalValues,
-          }).then(() => history.replace('/article'))
-          break;
+      const finalValues = Object.assign(
+        {},
+        values,
+        location.query.id ? {content, type, fid: location.query.id} : {content, type}
+      )
+
+      switch (action) {
         case 'save':
           dispatch({
-            type: 'article/releaseArticle',
+            type: location.query.draft ? 'article/edit' : 'article/save',
             payload: finalValues,
-          }).then(() => history.replace('/article'))
-          break;
+          }).then((res: any) => {
+            if (res.fid) {
+              history.replace('/draft')
+            }
+          })
+        break
         case 'preview':
+          // 等小胖开发完前台后对接
           window.open('https://www.baidu.com/')
-          break;
+        break
         default:
-          break;
+          dispatch({
+            type: location.query.draft && location.query.id
+              ? 'article/add'
+              : (location.query.id ? 'article/mod' : 'article/add'),
+            payload: finalValues,
+          }).then((res: any) => {
+            if (res.fid) {
+              history.replace('/article')
+            }
+          })
+        break
       }
-    }, [curTab, editorState, markdown])
+    }, [curTab, editorState, markdown, formatMsg, location.query.draft, location.query.id])
 
-  const checkLabelsLength: (_: any, values: string[]) => void = useCallback((_, values) => {
-    if (values && values.length > 5) {
-      return Promise.reject()
+  const handleAction: (action: string) => void = useCallback((action) => {
+    const values = form.getFieldsValue()
+    if (!values.title) {
+      message.error(formatMsg('Please input articles title'))
+      return
+    } else if (!values.label || isEmpty(values.label)) {
+      message.error(formatMsg('Please select articles label'))
+      return
+    } else if (!values.author) {
+      message.error(formatMsg('Please input author'))
+      return
     }
-    return Promise.resolve()
-  }, [])
+    onFinish(values, action)
+  }, [formatMsg, onFinish])
 
-  // tabs
+  const handleChangeLabels: (values: string[]) => void = useCallback(values => {
+    if (values.length > 3) {
+      form.setFieldsValue({ label: values.slice(0, 3) })
+      message.error(formatMsg('Select up to three tags'))
+    }
+  }, [formatMsg, form])
+
   const toggleTabs = useCallback((key) => setCurTab(key), [])
 
-  const handleChangeText = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => setMarkdown(e.target.value), [])
+  const handleChangeText = useCallback((value: string) => setMarkdown(value), [])
 
   useEffect(() => {
-    if (location && location.query && location.query.key) {
+    if (location.query.id) {
       dispatch({
-        type: 'article/getArticleDetail',
-        payload: location.query.key
-      }).then((res: ArticleType) => form.setFieldsValue(res))
+        type: location.query.draft ? 'article/getDraftDetail' : 'article/getArticleDetail',
+        payload: location.query.id
+      }).then((res: ArticleType) => {
+        form.setFieldsValue(res)
+        if (res.content) {
+          if (!!res.type) {
+            setCurTab('markdown')
+          } else {
+            setCurTab('edit')
+          }
+          setMarkdown(res.content)
+          setEditorState(BraftEditor.createEditorState(res.content))
+        }
+      })
     }
-    // dispatch({ type: 'article/getEditorContent' }).then((htmlContent: any) => {
-    //   setEditorState(BraftEditor.createEditorState(htmlContent))
-    //   setMarkdown(htmlContent)
-    // })
   }, [])
 
   return (
     <Fragment>
-      <header>
+      <header className={styles.header}>
         <FormattedMsg id="Publish articles" />
       </header>
       <Spin spinning={isLoading}>
@@ -130,6 +174,9 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
             className={styles.releaseArticleForm}
             name="releaseArticleForm"
             onFinish={onFinish}
+            initialValues={{
+              visible: 1
+            }}
           >
             <Form.Item
               label={<FormattedMsg id="Title" />}
@@ -139,28 +186,53 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
                 message: <FormattedMsg id="Please input articles title" />
               }]}
             >
-              <Input style={{ width: 300 }} />
+              <Input style={{ width: 180 }} />
             </Form.Item>
             <Form.Item
               label={<FormattedMsg id="Label" />}
-              name="labels"
+              name="label"
               rules={[{
                 required: true,
                 message: <FormattedMsg id="Please select articles label" />
-              }, {
-                validator: checkLabelsLength,
-                message: <FormattedMsg id="Select up to five tags" />
               }]}
             >
               <Select
                 mode="multiple"
                 allowClear
-                style={{ width: 380 }}
+                style={{ width: 200 }}
+                onChange={handleChangeLabels}
               >
-                {children}
+                {CATES.map(cate => (
+                  <Select.Option key={cate} value={cate}>
+                    {cate}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
-            <Form.Item {...tailLayout} className={styles.btns}>
+            <Form.Item
+              label={<FormattedMsg id="Author" />}
+              name="author"
+              rules={[{
+                required: true,
+                message: <FormattedMsg id="Please input author" />
+              }]}
+            >
+              <Input style={{ width: 100 }} />
+            </Form.Item>
+            <Form.Item
+              label={<FormattedMsg id="Visible" />}
+              name="visible"
+            >
+              <Select style={{ width: 120 }}>
+                <Select.Option value={Visible.all}>
+                  <FormattedMsg id="For all to see" />
+                </Select.Option>
+                <Select.Option value={Visible.oneself}>
+                  <FormattedMsg id="Only visible to oneself" />
+                </Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item className={styles.btns}>
               <Button type="primary" htmlType="submit" className={styles.btn}>
                 <FormattedMsg id="Published" />
               </Button>
@@ -168,13 +240,13 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
                 type="primary"
                 className={styles.btn}
                 danger
-                onClick={onFinish.bind(this, form.getFieldsValue(), 'save')}
+                onClick={handleAction.bind(this, 'save')}
               >
                 <FormattedMsg id="Save drafts" />
               </Button>
               <Button
                 type="dashed"
-                onClick={onFinish.bind(this, form.getFieldsValue(), 'preview')}
+                onClick={handleAction.bind(this, 'preview')}
               >
                 <FormattedMsg id="Preview" />
               </Button>
@@ -193,28 +265,19 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
               <BraftEditor
                 value={editorState}
                 onChange={handleEditorChange}
-                // onSave={submitContent} // ctrl + s
               />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Markdown" key="markdown">
-              <div className={styles.markdownLayout}>
-                <Input.TextArea
-                  style={{ padding: '10px 14px' }}
-                  className={styles.markdown}
-                  onChange={handleChangeText}
-                  value={markdown}
-                  placeholder={formatMsg('Started editing')}
-                />
-                <div className={styles.markdown}>
-                  <Editor
-                    preview
-                    value={markdown}
-                    height="100%"
-                    style={{ borderRadius: 0 }}
-                    toolbar={{}}
-                  />
-                </div>
-              </div>
+              <ForEditor
+                preview
+                subfield
+                value={markdown}
+                height="100%"
+                style={{ borderRadius: 0 }}
+                onChange={handleChangeText}
+                toolbar={{}}
+                ref={forEditor}
+              />
             </Tabs.TabPane>
           </Tabs>
         </Fragment>

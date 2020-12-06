@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useState, FC, ChangeEvent, useMemo } from 'react'
+import React, { FC, ChangeEvent, useContext, useCallback, useState, useMemo } from 'react'
 import { Input, Upload, message } from 'antd'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 
@@ -44,7 +44,7 @@ const Billboards: FC<BillboardsProps> = ({
       message.error(formatMsg('Image must smaller than 2MB'))
     }
     return isJpgOrPng && isLt2M
-  }, [])
+  }, [formatMsg])
 
   const handleChange = (info: any) => {
     if (info.file.status === 'uploading') {
