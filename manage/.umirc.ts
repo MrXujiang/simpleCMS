@@ -18,8 +18,8 @@ export default defineConfig({
   publicPath: '/manage/',
   outputPath: 'dist',
   theme: {
-    'primary-color': '#2F54EB',
-    "btn-primary-bg": "#2F54EB"
+    'primary-color': '#51B266',
+    'btn-primary-bg': "#51B266"
   },
   analytics: {
     ga: 'google analytics code',
@@ -32,7 +32,7 @@ export default defineConfig({
     less: path.resolve(__dirname, 'src/less/'),
   },
   routes: [
-    { path: '/', redirect: '/user/login' },
+    { path: '/', redirect: '/dashboard' },
     {
       path: '/',
       component: '@/layouts/index',
@@ -59,6 +59,9 @@ export default defineConfig({
         { path: '/payment', component: '@/pages/payment' },
         { path: '/setting', component: '@/pages/setting' },
         { path: '/modifyUser', component: '@/pages/user/modify' },
+        {
+          component: '@/pages/404'
+        }
       ],
     },
   ],

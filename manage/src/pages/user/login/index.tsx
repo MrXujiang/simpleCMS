@@ -1,7 +1,11 @@
 import React, { FC, useCallback, useContext } from 'react'
 import { history, connect, Dispatch } from 'umi'
 import { Form, Input, Button } from 'antd'
-import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
+import {
+  UserOutlined,
+  LockOutlined,
+  // MailOutlined,
+} from '@ant-design/icons'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
@@ -31,7 +35,7 @@ const Login: FC<LoginProps> = ({ dispatch, isLoading }) => {
     })
   }, [])
 
-  const go = () => history.push('/user/forget')
+  // const go = () => history.push('/user/forget')
 
   return (
     <Form
@@ -69,12 +73,12 @@ const Login: FC<LoginProps> = ({ dispatch, isLoading }) => {
         <Button block type="primary" htmlType="submit" loading={isLoading}>
           <FormattedMsg id="Login" />
         </Button>
-        <div className={styles.otherWay}>
+        {/* <div className={styles.otherWay}>
           <FormattedMsg id="Other login methods" /> <MailOutlined className={styles.emailIcon} />
           <span className={styles.forgotText} onClick={go}>
             <FormattedMsg id="Forgot password" />
           </span>
-        </div>
+        </div> */}
       </Form.Item>
     </Form>
   )

@@ -8,4 +8,7 @@ export default {
   'Uploaded failed': '上传失败',
   'Submit': '提交',
   'Action': '操作',
+  'Not Found': '未找到页面',
+  NOT_FOUND_DESC:
+    '🙇 对不起没有找到相关资源，系统将在 {time}s 后返回首页'
 }

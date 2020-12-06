@@ -11,7 +11,7 @@ import { connect, Dispatch } from 'umi'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { ConnectState } from '@/models/connect'
 import { CurrentUser } from '@/models/user'
-import avatar from '@/assets/avatar.png'
+import avatar from '@/assets/avatar.svg'
 
 import styles from './index.less'
 

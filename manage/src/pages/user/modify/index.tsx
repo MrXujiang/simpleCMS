@@ -9,7 +9,7 @@ import { CurrentUser } from '@/models/user'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
 import { getBase64 } from '@/utils'
-import avatar from '@/assets/avatar.png'
+import avatar from '@/assets/avatar.svg'
 
 import styles from './index.less'
 
