@@ -12,6 +12,7 @@ import { ArticleType } from '@/models/article'
 import { ConnectState } from '@/models/connect'
 
 import styles from './index.less'
+import { isEmpty } from 'lodash'
 
 const CATES = [
   '前端',
@@ -57,51 +58,12 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
   const [editorState, setEditorState] = useState<any>(BraftEditor.createEditorState(''))
   const [curTab, setCurTab] = useState<string>('edit')
 
-  // editor ctrl+s
-  // const submitContent = async () => {
-  //   // 在编辑器获得焦点时按下ctrl+s会执行此方法
-  //   // 编辑器内容提交到服务端之前，可直接调用editorState.toHTML()来获取HTML格式的内容
-  //   const htmlContent = editorState.toHTML()
-  //   const result = await saveEditorContent(htmlContent)
-  // }
-
   const handleEditorChange: (value: any) => void = useCallback(editorState => setEditorState(editorState), [])
-
-  const operation: (action: string | undefined, finalValues: ReleaseArticleFormValues) => void = useCallback((action, finalValues) => {
-    switch (action) {
-      case 'save':
-        dispatch({
-          type: location.query.draft ? 'article/edit' : 'article/save',
-          payload: finalValues,
-        }).then((res: any) => {
-          if (res.fid) {
-            history.replace('/draft')
-          }
-        })
-      break
-      case 'preview':
-        // 等小胖开发完前台后对接
-        window.open('https://www.baidu.com/')
-      break
-      default:
-        dispatch({
-          type: location.query.draft && location.query.id
-            ? 'article/add'
-            : (location.query.id ? 'article/mod' : 'article/add'),
-          payload: finalValues,
-        }).then((res: any) => {
-          if (res.fid) {
-            history.replace('/article')
-          }
-        })
-      break
-    }
-  }, [location.query])
 
   const onFinish: (values: ReleaseArticleFormValues, action?: string) => void =
     useCallback(function(values, action): void {
       if ((curTab === 'edit' && editorState.isEmpty()) || (curTab === 'markdown' && !markdown.trim())) {
-        message.warning(formatMsg('Article content cannot be empty'))
+        message.error(formatMsg('Article content cannot be empty'))
         return
       }
   
@@ -123,28 +85,57 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
         location.query.id ? {content, type, fid: location.query.id} : {content, type}
       )
 
-      if (!!action) {
-        form.validateFields().then(() => {
-          operation(action, finalValues)
-        })
-      } else {
-        operation(undefined, finalValues)
+      switch (action) {
+        case 'save':
+          dispatch({
+            type: location.query.draft ? 'article/edit' : 'article/save',
+            payload: finalValues,
+          }).then((res: any) => {
+            if (res.fid) {
+              history.replace('/draft')
+            }
+          })
+        break
+        case 'preview':
+          // 等小胖开发完前台后对接
+          window.open('https://www.baidu.com/')
+        break
+        default:
+          dispatch({
+            type: location.query.draft && location.query.id
+              ? 'article/add'
+              : (location.query.id ? 'article/mod' : 'article/add'),
+            payload: finalValues,
+          }).then((res: any) => {
+            if (res.fid) {
+              history.replace('/article')
+            }
+          })
+        break
       }
-    }, [curTab, editorState, markdown, formatMsg])
+    }, [curTab, editorState, markdown, formatMsg, location.query.draft, location.query.id])
 
-  // const handleChangeLabels: (values: string[]) => void = useCallback(values => {
-  //   if (values.length > 3) {
-  //     form.setFieldsValue({ label: values.slice(0, 3) })
-  //     message.warning(formatMsg('Select up to three tags'))
-  //   }
-  // }, [formatMsg, form])
-
-  const checkLabelsLength: (_: any, values: string[]) => void = useCallback((_, values) => {
-    if (values && values.length > 3) {
-      return Promise.reject()
+  const handleAction: (action: string) => void = useCallback((action) => {
+    const values = form.getFieldsValue()
+    if (!values.title) {
+      message.error(formatMsg('Please input articles title'))
+      return
+    } else if (!values.label || isEmpty(values.label)) {
+      message.error(formatMsg('Please select articles label'))
+      return
+    } else if (!values.author) {
+      message.error(formatMsg('Please input author'))
+      return
     }
-    return Promise.resolve()
-  }, [])
+    onFinish(values, action)
+  }, [formatMsg, onFinish])
+
+  const handleChangeLabels: (values: string[]) => void = useCallback(values => {
+    if (values.length > 3) {
+      form.setFieldsValue({ label: values.slice(0, 3) })
+      message.error(formatMsg('Select up to three tags'))
+    }
+  }, [formatMsg, form])
 
   const toggleTabs = useCallback((key) => setCurTab(key), [])
 
@@ -203,16 +194,13 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
               rules={[{
                 required: true,
                 message: <FormattedMsg id="Please select articles label" />
-              }, {
-                validator: checkLabelsLength,
-                message: <FormattedMsg id="Select up to three tags" />
               }]}
             >
               <Select
                 mode="multiple"
                 allowClear
                 style={{ width: 200 }}
-                // onChange={handleChangeLabels}
+                onChange={handleChangeLabels}
               >
                 {CATES.map(cate => (
                   <Select.Option key={cate} value={cate}>
@@ -252,13 +240,13 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
                 type="primary"
                 className={styles.btn}
                 danger
-                onClick={onFinish.bind(this, form.getFieldsValue(), 'save')}
+                onClick={handleAction.bind(this, 'save')}
               >
                 <FormattedMsg id="Save drafts" />
               </Button>
               <Button
                 type="dashed"
-                onClick={onFinish.bind(this, form.getFieldsValue(), 'preview')}
+                onClick={handleAction.bind(this, 'preview')}
               >
                 <FormattedMsg id="Preview" />
               </Button>
@@ -277,7 +265,6 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, isLoading
               <BraftEditor
                 value={editorState}
                 onChange={handleEditorChange}
-                // onSave={submitContent}
               />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Markdown" key="markdown">

@@ -6,7 +6,7 @@ import { connect, Dispatch } from 'umi'
 import { ConnectState } from '@/models/connect'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
-import { SettingType } from '@/models/setting'
+import { WebsiteType } from '@/models/setting'
 import { getBase64 } from '@/utils'
 
 import styles from './index.less'
@@ -14,6 +14,7 @@ import styles from './index.less'
 interface SettingProps {
   dispatch: Dispatch
   isLoading: boolean
+  website: WebsiteType
 }
 
 const layout = {
@@ -25,7 +26,7 @@ const tailLayout = {
   wrapperCol: { offset: 7, span: 17 },
 }
 
-const Setting: FC<SettingProps> = ({ dispatch, isLoading }) => {
+const Setting: FC<SettingProps> = ({ dispatch, isLoading, website }) => {
   const formatMsg = useContext<any>(IntlContext)
   const [form] = Form.useForm()
 
@@ -39,14 +40,16 @@ const Setting: FC<SettingProps> = ({ dispatch, isLoading }) => {
     }
     if (info.file.status === 'done') {
       getBase64(info.file.originFileObj, (imageUrl: string) => {
-        setLoading(false)
-        setImageUrl(imageUrl)
+        dispatch({ type: 'setting/saveWebsite', payload: Object.assign({}, website, {logo: imageUrl}) }).then(() => {
+          setLoading(false)
+          setImageUrl(imageUrl)
+          message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
+        })
       })
-      message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }
-  }, [formatMsg])
+  }, [formatMsg, website])
 
   const uploadButton = useMemo(() =>(
     <div>
@@ -57,14 +60,15 @@ const Setting: FC<SettingProps> = ({ dispatch, isLoading }) => {
     </div>
   ), [loading])
 
-  const onFinish: (values: SettingType) => void = useCallback(values => {
+  const onFinish: (values: WebsiteType) => void = useCallback(values => {
+    delete values.logo
     dispatch({ type: 'setting/saveWebsite', payload: values }).then(() => {
       message.success(formatMsg('Update successful'))
     })
   }, [formatMsg])
 
   useEffect(() => {
-    dispatch({ type: 'setting/getWebsite' }).then((res: SettingType) => {
+    dispatch({ type: 'setting/getWebsite' }).then((res: WebsiteType) => {
       form.setFieldsValue(res)
       if (res.logo) {
         setImageUrl(res.logo)
@@ -93,7 +97,7 @@ const Setting: FC<SettingProps> = ({ dispatch, isLoading }) => {
               onChange={onUpload}
               showUploadList={false}
             >
-              {imageUrl ? <img src={imageUrl} alt="logo" style={{ width: '100%' }} /> : uploadButton}
+              {imageUrl ? <img src={imageUrl} alt="websiteLogo" style={{ width: '100%' }} /> : uploadButton}
             </Upload>
           </Form.Item>
           <Form.Item
@@ -140,4 +144,5 @@ const Setting: FC<SettingProps> = ({ dispatch, isLoading }) => {
 
 export default connect(({ setting }: ConnectState) => ({
   isLoading: setting.isLoading,
+  website: setting.website,
 }))(Setting)
