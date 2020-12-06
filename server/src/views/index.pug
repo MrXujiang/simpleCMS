@@ -16,7 +16,7 @@ block content
           .date #{contentShow['date']}
           .author #{contentShow['author']}
       img(
-        src='/assets/home.jpeg'
+        src='/assets/home.png'
         class='homeImg'
       )
     .recommendBox
@@ -55,7 +55,7 @@ block content
           each val in colunmList
             .list
               img(
-                src='/assets/home.jpeg'
+                src='/assets/child.png'
                 class='listImg'
               )
               .content
@@ -63,6 +63,3 @@ block content
                 .introduction #{val.introduction}
 
   include ./includes/scripts
-  script.
-    var name = 'xujiang';
-    console.log(name)

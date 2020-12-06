@@ -8,5 +8,8 @@ html
     include ../includes/header.css
     block style
  body
-  include ../components/header.pug
-  block content
+    if url === '/login' || url === '/registered'
+      block content
+    else
+      include ../components/header.pug
+      block content 

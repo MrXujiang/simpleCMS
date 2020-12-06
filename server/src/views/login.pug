@@ -1,0 +1,55 @@
+extends ./layouts/default
+
+block title
+  title SimpleCMS | 趣写
+
+block style
+  include ./includes/login.css
+
+block content
+  .container
+    .loginLogo
+      img(
+        src='/assets/logo.png'
+        class='logoPicture'
+      )
+      span #{logoText}
+    .imgBox
+      img(
+        src='/assets/banner.png'
+        class='loginBanner'
+      )
+    .loginBox 
+      h2 #{title}
+      span #{description}
+      span(class='goReg') #{href}
+      .inputBox
+        .infoInput
+          span #{firstInput}
+          br  
+          input(
+            class='inputStyle'
+          )
+          br  
+          span #{twoInput}
+          br 
+          input(
+            class='inputStyle'
+            type="password"
+          )
+          br  
+          if url === '/login'
+            span(class='forgetPwd') 忘记密码
+          if url === '/registered'
+            span #{threeInput}
+            br 
+            input(
+              class='inputStyle'
+            )
+            br
+        .btn #{btnText}
+      
+          
+        
+
+
