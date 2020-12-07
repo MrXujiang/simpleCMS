@@ -31,16 +31,16 @@ export const siderMenus: any[] = [
     path: '/advert',
   },
   {
-    key: 'payment',
-    icon: <PayCircleOutlined />,
-    text: <FormattedMsg id="Pay" />,
-    path: '/payment',
-  },
-  {
     key: 'setting',
     icon: <SettingOutlined />,
     text: <FormattedMsg id="Config page" />,
     path: '/setting',
+  },
+  {
+    key: 'payment',
+    icon: <PayCircleOutlined />,
+    text: <FormattedMsg id="Pay" />,
+    path: '/payment',
   },
 ]
 

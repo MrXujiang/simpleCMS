@@ -1,17 +1,19 @@
 import React, { FC, Fragment, useCallback, useState, useEffect, useContext, useRef, useMemo } from 'react'
-import { Form, Input, Button, Select, message, Spin, Tabs, Upload, Modal } from 'antd'
+import { Form, Input, Button, Select, message, Spin, Tabs, Upload } from 'antd'
 import { connect, Dispatch, history } from 'umi'
+import moment from 'moment'
 
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/index.css'
 import ForEditor from 'for-editor'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
+import PreviewModal from '@/components/modal/preview'
 import UploadBtn from '@/components/uploadBtn'
 import { IntlContext } from '@/utils/context/intl'
 import { ArticleType } from '@/models/article'
 import { ConnectState } from '@/models/connect'
-import { getBase64 } from '@/utils'
+import { getBase64, TIME_FORMAT } from '@/utils'
 
 import styles from './index.less'
 import { isEmpty } from 'lodash'
@@ -37,6 +39,7 @@ interface ReleaseArticleProps {
 
 const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDetail, draftDetail, isLoading }) => {
   const [form] = Form.useForm()
+  const formValues = useMemo(() => form.getFieldsValue(), [form.getFieldsValue()])
   const formatMsg = useContext<any>(IntlContext)
   const forEditor = useRef(null)
 
@@ -160,6 +163,16 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
 
   const handleChangeText = useCallback((value: string) => setMarkdown(value), [])
 
+  const handleCancel = useCallback(() => setVisible(false), [])
+
+  const time = useMemo(() => moment(
+    location.query.draft
+      ? draftDetail.ct
+      : location.query.id
+        ? articleDetail.ct
+        : undefined
+  ).format(TIME_FORMAT), [location, draftDetail, articleDetail])
+
   useEffect(() => {
     if (location.query.id) {
       dispatch({
@@ -182,8 +195,6 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
       })
     }
   }, [])
-
-  const handleCancel = useCallback(() => setVisible(false), [])
 
   return (
     <Fragment>
@@ -321,17 +332,16 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
           </Tabs>
         </Fragment>
       </Spin>
-      <Modal
-        centered
-        title={<FormattedMsg id="Preview" />}
+      <PreviewModal
         visible={visible}
+        formValues={formValues}
         onCancel={handleCancel}
-        footer={null}
-      >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal>
+        time={time}
+        curTab={curTab}
+        editorState={editorState}
+        markdown={markdown}
+        imageUrl={imageUrl}
+      />
     </Fragment>
   )
 }
