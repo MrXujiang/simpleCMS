@@ -15,10 +15,5 @@ interface LoginParams {
 }
 
 export async function login({ username, password }: LoginParams): Promise<any> {
-  return request.post('/user/login', { name: username, pwd: password }).catch(e => console.log(e))
-}
-
-export async function forget(): Promise<any> {
-  return new Promise((resolve) => setTimeout(() => resolve(), 1000))
-  // return request('/api/currentUser')
+  return request.post('/user/login', { name: username, pwd: password }).catch(e => console.error(e))
 }

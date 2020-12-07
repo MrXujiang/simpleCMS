@@ -3,7 +3,7 @@ import { Effect, Reducer } from 'umi'
 import { getWebsite, saveWebsite } from '@/services/setting'
 
 export interface WebsiteType {
-  logo?: any
+  logo: string
   title: string
   desc: string
   r_text: string
@@ -34,6 +34,7 @@ const SettingModel: SettingModelType = {
   state: {
     isLoading: false,
     website: {
+      logo: '',
       title: '',
       desc: '',
       r_text: '',

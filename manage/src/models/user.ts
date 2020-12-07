@@ -1,6 +1,6 @@
 import { Effect, Reducer } from 'umi'
 
-import { getUserInfo, login, forget, saveUserInfo } from '@/services/user'
+import { getUserInfo, login, saveUserInfo } from '@/services/user'
 
 export interface CurrentUser {
   tx: string
@@ -24,7 +24,6 @@ interface UserModelType {
   effects: {
     getUserInfo: Effect,
     login: Effect,
-    forget: Effect,
     saveUserInfo: Effect,
   }
   reducers: {
@@ -63,11 +62,6 @@ const UserModel: UserModelType = {
       const res = yield call(login, payload)
       yield put({ type: 'closeLoading' })
       return res || {}
-    },
-    *forget({ payload }, { call, put }) {
-      yield put({ type: 'startLoading' })
-      yield call(forget, payload)
-      yield put({ type: 'closeLoading' })
     },
     *saveUserInfo({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })

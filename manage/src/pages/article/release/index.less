@@ -8,12 +8,8 @@
 .releaseArticleForm {
   padding: 10px 30px;
 
-  :global(.ant-form-item-has-error) {
-    margin-bottom: 0;
-  }
-
-  :global(.ant-form-item:nth-last-child(2)) {
-    margin-right: 0;
+  :global(.ant-form-item) {
+    margin-bottom: 5px;
   }
 }
 
@@ -29,13 +25,5 @@
 
   .btn {
     margin-right: 10px;
-  }
-}
-
-.tabs {
-  height: calc(100vh - @header-height - 60px - 74px - 32px);
-
-  :global(.ant-tabs-content) {
-    height: 100%;
   }
 }

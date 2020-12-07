@@ -14,7 +14,10 @@ export default {
   'For all to see': '所有人可见',
   'Only visible to oneself': '仅自己可见',
   'Creation time': '创建时间',
+  'Update time': '更新时间',
   'Article content cannot be empty': '文章内容不能为空',
   'Text editor': '富文本编辑器',
   'Select up to three tags': '最多选择三个标签',
+  Cover: '封面图',
+  'Please upload your cover': '请上传您的封面图',
 }

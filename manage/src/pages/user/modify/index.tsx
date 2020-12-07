@@ -8,7 +8,7 @@ import { ConnectState } from '@/models/connect'
 import { CurrentUser } from '@/models/user'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
-import { getBase64 } from '@/utils'
+import { getBase64, phoneRE } from '@/utils'
 import avatar from '@/assets/avatar.svg'
 
 import styles from './index.less'
@@ -151,7 +151,7 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
                   required: true,
                   message: <FormattedMsg id="Please enter your mobile phone number" />,
                 }, {
-                  pattern: /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/,
+                  pattern: phoneRE,
                   message: <FormattedMsg id="Invalid cell phone number" />
                 }]}
               >

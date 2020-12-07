@@ -1,8 +1,8 @@
 import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { Form, Input, Button, Upload, message, Spin } from 'antd'
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { connect, Dispatch } from 'umi'
 
+import UploadBtn from '@/components/uploadBtn'
 import { ConnectState } from '@/models/connect'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
@@ -40,32 +40,21 @@ const Setting: FC<SettingProps> = ({ dispatch, isLoading, website }) => {
     }
     if (info.file.status === 'done') {
       getBase64(info.file.originFileObj, (imageUrl: string) => {
-        dispatch({ type: 'setting/saveWebsite', payload: Object.assign({}, website, {logo: imageUrl}) }).then(() => {
-          setLoading(false)
-          setImageUrl(imageUrl)
-          message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
-        })
+        setLoading(false)
+        setImageUrl(imageUrl)
+        message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
       })
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }
-  }, [formatMsg, website])
-
-  const uploadButton = useMemo(() =>(
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>
-        <FormattedMsg id="Upload" />
-      </div>
-    </div>
-  ), [loading])
+  }, [formatMsg])
 
   const onFinish: (values: WebsiteType) => void = useCallback(values => {
-    delete values.logo
-    dispatch({ type: 'setting/saveWebsite', payload: values }).then(() => {
+    const finalValues = Object.assign({}, values, {logo: imageUrl})
+    dispatch({ type: 'setting/saveWebsite', payload: finalValues }).then(() => {
       message.success(formatMsg('Update successful'))
     })
-  }, [formatMsg])
+  }, [formatMsg, imageUrl])
 
   useEffect(() => {
     dispatch({ type: 'setting/getWebsite' }).then((res: WebsiteType) => {
@@ -97,7 +86,7 @@ const Setting: FC<SettingProps> = ({ dispatch, isLoading, website }) => {
               onChange={onUpload}
               showUploadList={false}
             >
-              {imageUrl ? <img src={imageUrl} alt="websiteLogo" style={{ width: '100%' }} /> : uploadButton}
+              {imageUrl ? <img src={imageUrl} alt="websiteLogo" style={{ width: '100%' }} /> : <UploadBtn loading={loading} />}
             </Upload>
           </Form.Item>
           <Form.Item

@@ -19,9 +19,12 @@ export interface ArticleType {
   author: string
   label: []
   visible: number
-  content: any
+  face_img: string
+  content: string
+  html: string
   type: number
   ct: number
+  ut: number
 }
 
 export type ArticleList = ArticleType[]
@@ -30,6 +33,7 @@ export interface ArticleState {
   articleList: ArticleList
   draftList: ArticleList
   articleDetail: ArticleType
+  draftDetail: ArticleType
   isLoading: boolean
 }
 
@@ -54,6 +58,7 @@ interface ArticleModelType {
     saveAll: Reducer,
     saveAllDrafts: Reducer,
     saveArticleDetail: Reducer,
+    saveDraftDetail: Reducer,
   }
 }
 
@@ -68,9 +73,25 @@ const ArticleModel: ArticleModelType = {
       author: '',
       label: [],
       visible: 1,
+      face_img: '',
       content: '',
+      html: '',
       type: 0,
       ct: 0,
+      ut: 0,
+    },
+    draftDetail: {
+      fid: '',
+      title: '',
+      author: '',
+      label: [],
+      visible: 1,
+      face_img: '',
+      content: '',
+      html: '',
+      type: 0,
+      ct: 0,
+      ut: 0,
     },
     isLoading: false,
   },
@@ -109,6 +130,9 @@ const ArticleModel: ArticleModelType = {
     *getDraftDetail({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
       const res = yield call(getDraftDetail, payload)
+      if (res && res.fid) {
+        yield put({ type: 'saveDraftDetail', payload: res })
+      }
       yield put({ type: 'closeLoading' })
       return res || {}
     },
@@ -168,6 +192,9 @@ const ArticleModel: ArticleModelType = {
     },
     'saveArticleDetail'(state, { payload }) {
       return {...state, articleDetail: payload}
+    },
+    'saveDraftDetail'(state, { payload }) {
+      return {...state, draftDetail: payload}
     },
   },
 }
