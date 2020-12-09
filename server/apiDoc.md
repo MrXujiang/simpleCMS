@@ -33,6 +33,7 @@
 | 文章点赞  | /article/flover/save | post | {id} | {msg: '点赞成功'}
 | 获取文章数量 | /articles/num | get | null | {num: 20}
 | 获取评论点赞数据  | /article/comments | get | {id} | {views: 21, flover: 12, comments: []}
+| 文章统计数据  | /articles/anazly | get | null | {views: 21, flovers: 12, comments: 20}
 
 ### 4. 网站配置模块
 |  名称   | api地址  |  方法  |  参数  |  resopnse |

@@ -5,6 +5,7 @@ import { auth } from '../service'
 import config from '../config'
 import htr from '../lib/htr'
 import marked from 'marked'
+import glob from 'glob'
 
 
 /**
@@ -22,6 +23,7 @@ const articleRouter = (router, apiPath) => {
     del: apiPath + '/articles/del',
     all: apiPath + '/articles/all',
     getArticleNum: apiPath + '/articles/num',
+    getAnazly: apiPath + '/articles/anazly',
     comment: apiPath + '/article/comment/save',
     comments: apiPath + '/article/comments',
     addFlover: apiPath + '/article/flover/add',
@@ -191,6 +193,25 @@ const articleRouter = (router, apiPath) => {
       const articleIdxPath = `${config.publicPath}/db/article_index.json`
       const articleIdxs = RF(articleIdxPath)
       ctx.body = htr(200, {num: articleIdxs.length})
+    }
+  );
+
+  // 获取文章统计数据(访问量, 点赞数, 评论数)
+  router.get(api.getAnazly,
+    auth,
+    ctx => {
+      const result = {
+        flovers: 0,
+        comments: 0,
+        views: 0
+      };
+      glob.sync(`${config.publicPath}/db/comments/*.json`).forEach(item => {
+        const row = RF(item);
+        result.flovers += row.flover;
+        result.comments += row.comments.length;
+        result.views += row.views;
+      })
+      ctx.body = htr(200, result)
     }
   );
 
