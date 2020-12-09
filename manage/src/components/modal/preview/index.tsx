@@ -4,7 +4,8 @@ import ForEditor from 'for-editor'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { ArticleType } from '@/models/article'
-import avatar from '@/assets/articleAvatar.svg'
+import { CurrentUser } from '@/models/user'
+import avatar from '@/assets/avatar.svg'
 
 import styles from './index.less'
 
@@ -16,6 +17,7 @@ interface PreviewModalProps {
   curTab: string
   markdown: string
   editorState: any
+  currentUser: CurrentUser
   onCancel: () => void
 }
 
@@ -27,13 +29,14 @@ const PreviewModal: FC<PreviewModalProps> = ({
   curTab,
   markdown,
   editorState,
+  currentUser,
   onCancel,
 }) => {
   return (
     <Modal
       centered
+      wrapClassName={styles.wrapClassName}
       style={{ minWidth: 968 }}
-      title={<FormattedMsg id="Preview" />}
       visible={visible}
       onCancel={onCancel}
       footer={null}
@@ -42,7 +45,7 @@ const PreviewModal: FC<PreviewModalProps> = ({
       <h1 className={styles.title}>{formValues.title}</h1>
       <div className={styles.desc}>
         <div>
-          <Avatar size="small" className={styles.avatar} src={avatar} alt="avatar" />
+          <Avatar size="small" className={styles.avatar} src={currentUser.tx || avatar} alt="avatar" />
           <span className={styles.author}>{formValues.author}</span>
           <span>{time}</span>
         </div>

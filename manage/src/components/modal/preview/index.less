@@ -1,3 +1,5 @@
+@import '~less/variables';
+
 .desc {
   display: flex;
   justify-content: space-between;
@@ -13,5 +15,15 @@
   
   .author {
     margin-right: 24px;
+  }
+}
+
+.wrapClassName {
+  :global(.ant-modal-close) {
+    display: none;
+  }
+
+  :global(.ant-modal-header) {
+    display: none;
   }
 }

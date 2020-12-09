@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
 import { Form, Input, Button, Upload, message, Spin } from 'antd'
 import { connect, Dispatch } from 'umi'
 
@@ -7,7 +7,7 @@ import { ConnectState } from '@/models/connect'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
 import { WebsiteType } from '@/models/setting'
-import { getBase64 } from '@/utils'
+import { getBase64, SERVER_URL } from '@/utils'
 
 import styles from './index.less'
 
@@ -82,7 +82,7 @@ const Setting: FC<SettingProps> = ({ dispatch, isLoading, website }) => {
             <Upload
               name="file"
               listType="picture-card"
-              action="http://localhost:3000/api/v0/files/upload/free"
+              action={`http://${SERVER_URL}/api/v0/files/upload/free`}
               onChange={onUpload}
               showUploadList={false}
             >

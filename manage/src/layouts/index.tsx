@@ -26,7 +26,7 @@ interface BasicLayoutProps {
 const BasicLayout: FC<BasicLayoutProps> = ({ children, location, lang }) => {
   const [ collapsed, setCollapsed ] = useState<boolean>(false)
 
-  const toggle: () => void = useCallback(() => setCollapsed(!collapsed), [collapsed])
+  const toggle: () => void = useCallback(() => setCollapsed(prevCollapsed => !prevCollapsed), [])
 
   const getLocale: (lang: string, type: string) => any = useCallback((lang, type) => {
     let language = null

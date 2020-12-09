@@ -1,10 +1,12 @@
 import React, { FC, Fragment, useCallback, useState, useEffect, useContext, useRef, useMemo } from 'react'
 import { Form, Input, Button, Select, message, Spin, Tabs, Upload } from 'antd'
+import { PictureFilled } from '@ant-design/icons'
 import { connect, Dispatch, history } from 'umi'
 import moment from 'moment'
 
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/index.css'
+import { ContentUtils } from 'braft-utils'
 import ForEditor from 'for-editor'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
@@ -12,8 +14,9 @@ import PreviewModal from '@/components/modal/preview'
 import UploadBtn from '@/components/uploadBtn'
 import { IntlContext } from '@/utils/context/intl'
 import { ArticleType } from '@/models/article'
+import { CurrentUser } from '@/models/user'
 import { ConnectState } from '@/models/connect'
-import { getBase64, TIME_FORMAT } from '@/utils'
+import { getBase64, TIME_FORMAT, SERVER_URL } from '@/utils'
 
 import styles from './index.less'
 import { isEmpty } from 'lodash'
@@ -35,24 +38,23 @@ interface ReleaseArticleProps {
   articleDetail: ArticleType
   draftDetail: ArticleType
   isLoading: boolean
+  currentUser: CurrentUser
 }
 
-const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDetail, draftDetail, isLoading }) => {
+const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDetail, draftDetail, isLoading, currentUser }) => {
   const [form] = Form.useForm()
-  const formValues = useMemo(() => form.getFieldsValue(), [form.getFieldsValue()])
   const formatMsg = useContext<any>(IntlContext)
   const forEditor = useRef(null)
+  const formValues: ArticleType = useMemo(() => form.getFieldsValue(), [form.getFieldsValue()])
 
   const [markdown, setMarkdown] = useState<any>('')
-  const [editorState, setEditorState] = useState<any>(BraftEditor.createEditorState(''))
+  const [editorState, setEditorState] = useState<any>(BraftEditor.createEditorState(null))
   const [curTab, setCurTab] = useState<string>('edit')
   const [visible, setVisible] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [imageUrl, setImageUrl] = useState<string>('')
 
-  const handleEditorChange: (value: any) => void = useCallback(editorState => setEditorState(editorState), [])
-
-  const onUpload = useCallback((info: any) => {
+  const onUpload: (info: any) => void = useCallback(info => {
     if (info.file.status === 'uploading') {
       setLoading(true)
       return
@@ -134,7 +136,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
       location.query.draft, location.query.id, articleDetail, draftDetail
     ])
 
-  const handleAction: (action: string) => void = useCallback((action) => {
+  const handleAction: (action: string) => void = useCallback(action => {
     const values = form.getFieldsValue()
     if (!values.title) {
       message.error(formatMsg('Please input articles title'))
@@ -161,9 +163,45 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
 
   const toggleTabs = useCallback((key) => setCurTab(key), [])
 
-  const handleChangeText = useCallback((value: string) => setMarkdown(value), [])
+  const editorUploadHandler: (info: any) => void = useCallback((info) => {
+    if (info.file.status === 'done') {
+      getBase64(info.file.originFileObj, (imageUrl: string) => {
+        setEditorState(ContentUtils.insertMedias(editorState, [{
+          type: 'IMAGE',
+          url: imageUrl
+        }]))
+      })
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
+    }
+  }, [editorState])
 
-  const handleCancel = useCallback(() => setVisible(false), [])
+  const excludeControls: any[] = useMemo(() => ['media'], [])
+
+  const extendControls: any[] = useMemo(() => [
+    {
+      key: 'antd-uploader',
+      type: 'component',
+      component: (
+        <Upload
+          name="file"
+          action={`http://${SERVER_URL}/api/v0/files/upload/free`}
+          showUploadList={false}
+          onChange={editorUploadHandler}
+        >
+          <button type="button" className="control-item button upload-button" data-title="插入图片">
+            <PictureFilled />
+          </button>
+        </Upload>
+      )
+    }
+  ], [editorUploadHandler])
+
+  const handleEditorChange: (value: any) => void = useCallback(editorState => setEditorState(editorState), [])
+
+  const handleChangeText: (value: string) => void = useCallback(value => setMarkdown(value), [])
+
+  const handleCancel: () => void = useCallback(() => setVisible(false), [])
 
   const time = useMemo(() => moment(
     location.query.draft
@@ -171,7 +209,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
       : location.query.id
         ? articleDetail.ct
         : undefined
-  ).format(TIME_FORMAT), [location, draftDetail, articleDetail])
+  ).format(TIME_FORMAT), [location.query.draft, location.query.id, draftDetail, articleDetail])
 
   useEffect(() => {
     if (location.query.id) {
@@ -276,7 +314,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
               <Upload
                 name="file"
                 listType="picture-card"
-                action="http://localhost:3000/api/v0/files/upload/free"
+                action={`http://${SERVER_URL}/api/v0/files/upload/free`}
                 onChange={onUpload}
                 showUploadList={false}
               >
@@ -314,6 +352,8 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
             <Tabs.TabPane tab={<FormattedMsg id="Text editor" />} key="edit">
               <BraftEditor
                 value={editorState}
+                extendControls={extendControls}
+                excludeControls={excludeControls}
                 onChange={handleEditorChange}
               />
             </Tabs.TabPane>
@@ -341,13 +381,15 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
         editorState={editorState}
         markdown={markdown}
         imageUrl={imageUrl}
+        currentUser={currentUser}
       />
     </Fragment>
   )
 }
 
-export default connect(({ article }: ConnectState) => ({
+export default connect(({ article, user }: ConnectState) => ({
   isLoading: article.isLoading,
   articleDetail: article.articleDetail,
   draftDetail: article.draftDetail,
+  currentUser: user.currentUser,
 }))(ReleaseArticle)

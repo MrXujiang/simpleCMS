@@ -8,7 +8,7 @@ import { ConnectState } from '@/models/connect'
 import { CurrentUser } from '@/models/user'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
-import { getBase64, phoneRE } from '@/utils'
+import { getBase64, phoneRE, SERVER_URL } from '@/utils'
 import avatar from '@/assets/avatar.svg'
 
 import styles from './index.less'
@@ -180,7 +180,7 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
             </div>
             <Upload
               name="file"
-              action="http://localhost:3000/api/v0/files/upload/free"
+              action={`http://${SERVER_URL}/api/v0/files/upload/free`}
               onChange={onUpload}
               showUploadList={false}
             >

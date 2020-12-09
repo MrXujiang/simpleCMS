@@ -6,7 +6,7 @@ import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import UploadBtn from '@/components/uploadBtn'
 import { ConnectState } from '@/models/connect'
 import { IntlContext } from '@/utils/context/intl'
-import { getBase64 } from '@/utils'
+import { getBase64, SERVER_URL } from '@/utils'
 
 import styles from './index.less'
 
@@ -88,7 +88,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
   }, [])
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.advertWrapper}>
       <Spin spinning={isLoading}>
         <Form
           {...layout}
@@ -114,7 +114,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
             <Upload
               name="file"
               listType="picture-card"
-              action="http://localhost:3000/api/v0/files/upload/free"
+              action={`http://${SERVER_URL}/api/v0/files/upload/free`}
               onChange={onUpload.bind(this, 'top')}
               showUploadList={false}
             >
@@ -149,7 +149,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
             <Upload
               name="file"
               listType="picture-card"
-              action="http://localhost:3000/api/v0/files/upload/free"
+              action={`http://${SERVER_URL}/api/v0/files/upload/free`}
               onChange={onUpload.bind(this, 'side')}
               showUploadList={false}
             >
