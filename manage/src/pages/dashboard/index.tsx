@@ -6,16 +6,20 @@ import { Line, Column } from '@ant-design/charts'
 
 import { ConnectState } from '@/models/connect'
 import { ChartsData } from '@/models/dashboard'
+import { AnazlyType, ArticleList } from '@/models/article'
 
 import styles from './index.less'
+import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 
 interface DashboardProps {
-  statistics: any[]
+  isLoading: boolean
+  anazly: AnazlyType
+  articleList: ArticleList
   chartsData: ChartsData
   dispatch: Dispatch
 }
 
-const Dashboard: FC<DashboardProps> = ({ statistics, chartsData, dispatch }) => {
+const Dashboard: FC<DashboardProps> = ({ isLoading, anazly, articleList, chartsData, dispatch }) => {
   const articleVisits = useMemo(() => ({
     data: chartsData.articleVisits,
     xField: 'year',
@@ -44,21 +48,58 @@ const Dashboard: FC<DashboardProps> = ({ statistics, chartsData, dispatch }) => 
   }), [chartsData])
 
   useEffect(() => {
-    dispatch({ type: 'dashboard/getStatistics' })
+    dispatch({ type: 'article/anazly' })
+    dispatch({ type: 'article/getAll' })
     dispatch({ type: 'dashboard/getChartsData' })
   }, [])
 
   return (
     <div className={styles.dashboardWrapper}>
       <div className={styles.statistics}>
-        {isEmpty(statistics)
-          ? <Skeleton active />
-          : statistics.map((statistic: any) => (
-            <div className={styles.statistic} key={statistic.title}>
-              <div className={styles.title}>{statistic.title}</div>
-              <div className={styles.total}>{statistic.total}</div>
+        <Skeleton loading={isLoading}>
+          <div className={styles.statistic}>
+            <div className={styles.title}>
+              <FormattedMsg id="Articles" />
             </div>
-          ))}
+            <div className={styles.total}>
+              {Array.isArray(articleList) ? articleList.length : 0}
+            </div>
+          </div>
+        </Skeleton>
+        <Skeleton loading={isLoading}>
+          <div className={styles.statistic}>
+            <div className={styles.title}>
+              <FormattedMsg id="Total visits" />
+            </div>
+            <div className={styles.total}>{anazly.views || 0}</div>
+          </div>
+        </Skeleton>
+        <Skeleton loading={isLoading}>
+          <div className={styles.statistic}>
+            <div className={styles.title}>
+              <FormattedMsg id="Total comments" />
+            </div>
+            <div className={styles.total}>{anazly.comments || 0}</div>
+          </div>
+        </Skeleton>
+        <Skeleton loading={isLoading}>
+          <div className={styles.statistic}>
+            <div className={styles.title}>
+              <FormattedMsg id="Total lovers" />
+            </div>
+            <div className={styles.total}>{anazly.flovers || 0}</div>
+          </div>
+        </Skeleton>
+        <Skeleton loading={isLoading}>
+          <div className={styles.statistic}>
+            <div className={styles.title}>
+              <FormattedMsg id="Total AD clicks" />
+            </div>
+            <div className={styles.total}>
+              <FormattedMsg id="Temporarily not opened" />
+            </div>
+          </div>
+        </Skeleton>
       </div>
       <div className={styles.charts}>
         <div className={styles.chart}>
@@ -86,7 +127,9 @@ const Dashboard: FC<DashboardProps> = ({ statistics, chartsData, dispatch }) => 
   )
 }
 
-export default connect(({ dashboard }: ConnectState) => ({
-  statistics: dashboard.statistics,
+export default connect(({ dashboard, article }: ConnectState) => ({
+  anazly: article.anazly,
+  articleList: article.articleList,
+  isLoading: article.isLoading,
   chartsData: dashboard.chartsData,
 }))(Dashboard)

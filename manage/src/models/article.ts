@@ -11,6 +11,7 @@ import {
   mod,
   save,
   edit,
+  anazly,
 } from '@/services/article'
 
 export interface ArticleType {
@@ -29,12 +30,19 @@ export interface ArticleType {
 
 export type ArticleList = ArticleType[]
 
+export interface AnazlyType {
+  flovers: number
+  comments: number
+  views: number
+}
+
 export interface ArticleState {
+  isLoading: boolean
   articleList: ArticleList
   draftList: ArticleList
   articleDetail: ArticleType
   draftDetail: ArticleType
-  isLoading: boolean
+  anazly: AnazlyType
 }
 
 interface ArticleModelType {
@@ -51,6 +59,7 @@ interface ArticleModelType {
     mod: Effect,
     save: Effect,
     edit: Effect,
+    anazly: Effect,
   }
   reducers: {
     startLoading: Reducer,
@@ -59,6 +68,7 @@ interface ArticleModelType {
     saveAllDrafts: Reducer,
     saveArticleDetail: Reducer,
     saveDraftDetail: Reducer,
+    saveAnazly: Reducer,
   }
 }
 
@@ -92,6 +102,11 @@ const ArticleModel: ArticleModelType = {
       type: 0,
       ct: 0,
       ut: 0,
+    },
+    anazly: {
+      flovers: 0,
+      comments: 0,
+      views: 0,
     },
     isLoading: false,
   },
@@ -176,6 +191,14 @@ const ArticleModel: ArticleModelType = {
       yield put({ type: 'closeLoading' })
       return res || {}
     },
+    *anazly(_, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res = yield call(anazly)
+      if (res) {
+        yield put({ type: 'saveAnazly', payload: res })
+      }
+      yield put({ type: 'closeLoading' })
+    },
   },
   reducers: {
     'startLoading'(state) {
@@ -195,6 +218,9 @@ const ArticleModel: ArticleModelType = {
     },
     'saveDraftDetail'(state, { payload }) {
       return {...state, draftDetail: payload}
+    },
+    'saveAnazly'(state, { payload }) {
+      return {...state, anazly: payload}
     },
   },
 }

@@ -81,7 +81,7 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
       title: <FormattedMsg id="Update time" />,
       dataIndex: 'ut',
       key: 'Update time',
-      render: ut => moment(ut).format(TIME_FORMAT)
+      render: ut => ut ? moment(ut).format(TIME_FORMAT) : '-'
     },
     {
       title: <FormattedMsg id="Action" />,

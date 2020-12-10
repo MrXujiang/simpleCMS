@@ -1,31 +1,5 @@
 // import request from '@/utils/req'
 
-export async function getStatistics(): Promise<any> {
-  return new Promise((resolve) => setTimeout(() => resolve([
-    {
-      title: '文章数',
-      total: 22,
-    },
-    {
-      title: '总访问量',
-      total: 10000,
-    },
-    {
-      title: '日访问量',
-      total: 1000,
-    },
-    {
-      title: '总点赞数',
-      total: 8000,
-    },
-    {
-      title: '广告点击总数',
-      total: 100000,
-    }
-  ]), 1000))
-  // return request('/api/currentUser')
-}
-
 export async function getChartsData(): Promise<any> {
   return new Promise((resolve) => setTimeout(() => resolve({
     articleVisits: [
@@ -68,35 +42,35 @@ export async function getChartsData(): Promise<any> {
     ],
     articleLikes: [
       {
-        type: '家具家电',
+        type: '文章1',
         sales: 38,
       },
       {
-        type: '粮油副食',
+        type: '文章2',
         sales: 52,
       },
       {
-        type: '生鲜水果',
+        type: '文章3',
         sales: 61,
       },
       {
-        type: '美容洗护',
+        type: '文章4',
         sales: 145,
       },
       {
-        type: '母婴用品',
+        type: '文章5',
         sales: 48,
       },
       {
-        type: '进口食品',
+        type: '文章6',
         sales: 38,
       },
       {
-        type: '食品饮料',
+        type: '文章7',
         sales: 38,
       },
       {
-        type: '家庭清洁',
+        type: '文章8',
         sales: 38,
       },
     ],

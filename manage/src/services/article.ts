@@ -41,3 +41,7 @@ export async function save(data: ArticleType): Promise<any> {
 export async function edit(data: ArticleType): Promise<any> {
   return request.put('/articles/draft/edit', data)
 }
+
+export async function anazly(): Promise<any> {
+  return request.get('/articles/anazly')
+}
