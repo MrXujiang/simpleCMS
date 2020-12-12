@@ -31,9 +31,11 @@ const RightContent: FC<RightContentProps> = ({ currentUser, lang, dispatch }) =>
         history.push('/modifyUser')
         break
       case 'zh-cn':
+        localStorage.setItem('simpleCMSLang', 'zh-cn')
         dispatch({ type: 'user/changeLocale', payload: 'zh-cn' })
         break
       case 'en':
+        localStorage.setItem('simpleCMSLang', 'en')
         dispatch({ type: 'user/changeLocale', payload: 'en' })
         break
     }

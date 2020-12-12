@@ -37,7 +37,7 @@ interface UserModelType {
 const UserModel: UserModelType = {
   namespace: 'user',
   state: {
-    lang: 'zh-cn',
+    lang: localStorage.getItem('simpleCMSLang') || 'zh-cn',
     currentUser: {
       tx: '',
       username: '',

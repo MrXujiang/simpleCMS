@@ -45,7 +45,6 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children, location, lang }) => {
   const intl = useMemo(() => createIntl(
     {
       locale: lang,
-      defaultLocale: 'en',
       messages: getLocale(lang, 'react-intl'),
     },
     cache
@@ -59,7 +58,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children, location, lang }) => {
   ), [intl.locale])
 
   return (
-    <IntlProvider messages={getLocale(lang, 'react-intl')} locale={lang} defaultLocale="en">
+    <IntlProvider messages={getLocale(lang, 'react-intl')} locale={lang}>
       <ConfigProvider locale={getLocale(lang, 'antd')}>
         <IntlContext.Provider value={formatMsg}>
           {location.pathname.startsWith('/user') ? <Fragment>{children}</Fragment> : (
@@ -79,6 +78,6 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children, location, lang }) => {
   )
 }
 
-export default connect(({ user }: ConnectState) => ({
+export default connect(({user}: ConnectState) => ({
   lang: user.lang,
 }))(BasicLayout)

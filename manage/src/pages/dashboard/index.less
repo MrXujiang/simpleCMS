@@ -27,18 +27,14 @@
   }
   
   .charts {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    align-items: center;
-    height: calc(100vh - @header-height - 60px - 120px);
-  
     .chart {
-      flex: 1;
+      display: inline-block;
+      width: calc(50% - 20px);
+      height: (calc((100vh - @header-height - 220px) / 2));
       margin-bottom: 20px;
-  
-      .antdc {
-        width: calc((100vw - @sider-width - 100px) / 2)
+
+      &:nth-child(2n) {
+        float: right;
       }
     }
   }

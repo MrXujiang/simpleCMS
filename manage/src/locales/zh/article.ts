@@ -1,11 +1,11 @@
 export default {
   'Published': '发布',
-  'Draft box': '草稿箱',
+  'Drafts': '草稿箱',
   'Save drafts': '存草稿',
   Comments: '评论',
   Likes: '点赞',
-  Collection: '收藏',
-  View: '浏览',
+  Collections: '收藏',
+  Views: '浏览',
   Preview: '预览',
   'Publish articles': '发布文章',
   Title: '标题',
@@ -24,4 +24,5 @@ export default {
   'Select up to three tags': '最多选择三个标签',
   Cover: '封面图',
   'Please upload your cover': '请上传您的封面图',
+  'Start editing...': '开始编辑...',
 }

@@ -221,11 +221,11 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
         if (res.content) {
           if (!!res.type) {
             setCurTab('markdown')
+            setMarkdown(res.content)
           } else {
             setCurTab('edit')
+            setEditorState(BraftEditor.createEditorState(res.content))
           }
-          setMarkdown(res.content)
-          setEditorState(BraftEditor.createEditorState(res.content))
         }
         if (res.face_img) {
           setImageUrl(res.face_img)
@@ -367,6 +367,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
                 onChange={handleChangeText}
                 toolbar={{}}
                 ref={forEditor}
+                placeholder={formatMsg('Start editing...')}
               />
             </Tabs.TabPane>
           </Tabs>

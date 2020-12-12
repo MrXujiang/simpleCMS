@@ -1,5 +1,5 @@
 export default {
-  'Config page': '页面配置',
+  Config: '页面配置',
   'Website name': '网站名称',
   'Please input your website name': '请输入您的网站名称',
   'Website description': '网站描述',

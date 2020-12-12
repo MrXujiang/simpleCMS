@@ -41,8 +41,10 @@ const PreviewModal: FC<PreviewModalProps> = ({
       onCancel={onCancel}
       footer={null}
     >
-      <img src={imageUrl} alt="face_img" width={920} height={320} />
-      <h1 className={styles.title}>{formValues.title}</h1>
+      <div className={styles.image}>
+        <img src={imageUrl} alt="face_img" />
+      </div>
+      <h1>{formValues.title}</h1>
       <div className={styles.desc}>
         <div>
           <Avatar size="small" className={styles.avatar} src={currentUser.tx || avatar} alt="avatar" />
@@ -52,8 +54,8 @@ const PreviewModal: FC<PreviewModalProps> = ({
         <div>
           111<FormattedMsg id="Comments" />&nbsp;
           123<FormattedMsg id="Likes" />&nbsp;
-          333<FormattedMsg id="Collection" />&nbsp;
-          123<FormattedMsg id="View" />
+          333<FormattedMsg id="Collections" />&nbsp;
+          123<FormattedMsg id="Views" />
         </div>
       </div>
       {curTab === 'edit' ? <div dangerouslySetInnerHTML={{ __html: editorState.toHTML() }} /> : (

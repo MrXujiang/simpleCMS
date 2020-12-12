@@ -32,7 +32,7 @@ export default defineConfig({
     less: path.resolve(__dirname, 'src/less/'),
   },
   routes: [
-    { path: '/', redirect: '/dashboard' },
+    { path: '/', redirect: '/user/login' },
     {
       path: '/',
       component: '@/layouts/index',
@@ -49,6 +49,7 @@ export default defineConfig({
               path: '/user/forget',
               component: '@/pages/user/forget',
             },
+            { component: '@/pages/404' }
           ],
         },
         { path: '/dashboard', component: '@/pages/dashboard' },
@@ -59,9 +60,7 @@ export default defineConfig({
         { path: '/payment', component: '@/pages/payment' },
         { path: '/setting', component: '@/pages/setting' },
         { path: '/modifyUser', component: '@/pages/user/modify' },
-        {
-          component: '@/pages/404'
-        }
+        { component: '@/pages/404' }
       ],
     },
   ],

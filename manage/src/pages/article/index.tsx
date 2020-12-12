@@ -110,12 +110,12 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
     <>
       {isDraftPage ? (
         <header className={styles.header}>
-          <FormattedMsg id="Draft box" />
+          <FormattedMsg id="Drafts" />
         </header>
       ) : (
         <div className={styles.btns}>
           <Button danger style={{ marginRight: 5 }} onClick={go.bind(this, '/draft')}>
-            <FormattedMsg id="Draft box" />
+            <FormattedMsg id="Drafts" />
             &nbsp;
             ({draftList.length})
           </Button>
