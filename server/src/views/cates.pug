@@ -1,0 +1,65 @@
+extends ./layouts/default
+
+block title
+  title SimpleCMS | 趣写
+
+block style
+  include ./includes/home.css
+
+block content
+  .contentContainer
+    .carouselBox
+      .content
+        .title #{contentShow['title']}
+        .introduction #{contentShow['introduce']}
+        .foot 
+          .date #{contentShow['date']}
+          .author #{contentShow['author']}
+      img(
+        src='/assets/home.png'
+        class='homeImg'
+      )
+    .recommendBox
+      .title
+        span 最近更新
+        span 热门推荐
+      .childBox
+        .updataBox
+          each val in updataList
+            .childUpdata
+              img(
+                src= val.img
+                class='childUpdataImg'
+              )
+              .updataContent
+                .updataAuthor
+                  .updataAvatar
+                  .updataAuthorName #{val.avatarName}
+                .updatatitle #{val.title}
+                .updatatContent #{val.introduction}
+                .updataOther
+                  .date #{val.date}
+                  .icon 
+                    .like 
+                      img(
+                        src='/assets/like.png'
+                      )
+                      span 122
+                    .favorites
+                      img(
+                        src='/assets/favorites.png'
+                      )
+                      span 34
+        .columnBox
+          .title 专栏推荐
+          each val in colunmList
+            .list
+              img(
+                src='/assets/child.png'
+                class='listImg'
+              )
+              .content
+                .title #{val.title}
+                .introduction #{val.introduction}
+
+  include ./includes/scripts

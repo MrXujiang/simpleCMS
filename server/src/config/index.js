@@ -16,8 +16,8 @@ function getIPAdress() {
 }
 
 const IP = getIPAdress();
-const serverPort = isDev ? 3000 : 80;
-const staticPath = isDev ? `http://${IP}:${serverPort}` : `测试环境地址`;
+const serverPort = isDev ? 3000 : 3000;
+const staticPath = isDev ? `http://${IP}:${serverPort}` : `http://${IP}:${serverPort}`;
 const publicPath = resolve(__dirname, '../../public');
 const appStaticPath = resolve(__dirname, '../../static');
 const routerPath = resolve(__dirname, '../router');

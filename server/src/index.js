@@ -6,17 +6,20 @@ import glob from 'glob';
 import config from './config';
 import cors from 'koa2-cors';
 import Router from '@koa/router';
-import http from 'http';
+// import http from 'http';
 import compress from 'koa-compress';
 import views from 'koa-views';
+import logger from 'koa-logger';
 import { resolve } from 'path';
 
 const router = new Router()
 // 启动逻辑
 async function start() {
     const app = new koa();
-    const server = http.createServer(app.callback());
-    const io = require('socket.io')(server);
+    // const server = http.createServer(app.callback());
+    // const io = require('socket.io')(server);
+
+    app.use(logger());
     // 开启gzip
     const options = { threshold: 2048 };
     app.use(compress(options));
@@ -29,7 +32,9 @@ async function start() {
             const whiteList = [
                 'http://192.168.1.8:3000',
                 'http://192.168.3.15:8000',
-                'http://192.168.1.3:8000'
+                'http://192.168.1.3:8000',
+                'http://192.168.1.3:8001',
+                'http://localhost:3000'
               ]; //可跨域白名单
             if (whiteList.includes(ctx.request.header.origin) && ctx.url.indexOf(config.API_VERSION_PATH) > -1) {
                 return ctx.request.header.origin //注意，这里域名末尾不能带/，否则不成功，所以在之前我把/通过substr干掉了，允许来自指定域名请求, 如果设置为*，前端将获取不到错误的响应头
@@ -57,7 +62,7 @@ async function start() {
 
     // 挂载路由
     glob.sync(`${config.routerPath}/*.js`).forEach(item => {
-        require(item).default(router, config.API_VERSION_PATH, io)
+        require(item).default(router, config.API_VERSION_PATH)
     })
 
     //使用模版引擎
@@ -65,16 +70,16 @@ async function start() {
       
     app.use(router.routes()).use(router.allowedMethods())
 
-    // io
-    io.on('connection', (socket) => {
-        console.log('a user connected');
-        socket.on('doc load', (msg) => {
-          console.log('doc load', msg)
-          io.emit('getData', users)
-        })
-      });
+    // // io
+    // io.on('connection', (socket) => {
+    //     console.log('a user connected');
+    //     socket.on('doc load', (msg) => {
+    //       console.log('doc load', msg)
+    //       io.emit('getData', users)
+    //     })
+    //   });
 
-    server.listen(config.serverPort, () => {
+    app.listen(config.serverPort, () => {
         console.log(`服务器地址:${config.staticPath}`)
     });
 }
