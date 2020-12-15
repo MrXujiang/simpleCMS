@@ -22,6 +22,7 @@ const articleRouter = (router, apiPath) => {
     get: apiPath + '/articles/get',
     del: apiPath + '/articles/del',
     all: apiPath + '/articles/all',
+    topArticle: apiPath + '/article/top',
     getArticleNum: apiPath + '/articles/num',
     getAnazly: apiPath + '/articles/anazly',
     comment: apiPath + '/article/comment/save',
@@ -37,7 +38,7 @@ const articleRouter = (router, apiPath) => {
   router.post(api.add,
     auth,
     async ctx => {
-      let { title, author, label, face_img, visible, type, content } = ctx.request.body;
+      let { title, author, label, face_img, visible, type, desc, content } = ctx.request.body;
       if(title && label && content) {
         // 1. 写入文章数据
         const fid = uuid(6, 16);
@@ -57,7 +58,7 @@ const articleRouter = (router, apiPath) => {
         // 2. 将文章索引添加到索引文件中
         const indexFilePath = `${config.publicPath}/db/article_index.json`
         try{
-          WF(indexFilePath, { fid, title, author, label, face_img, visible, ct }, 1)
+          WF(indexFilePath, { fid, title, author, label, face_img, desc, visible, ct }, 1)
         }catch(err) {
           console.log('addArticle', err)
         }
@@ -72,7 +73,7 @@ const articleRouter = (router, apiPath) => {
   router.put(api.mod,
     auth,
     async ctx => {
-      let { fid, title, author, label, face_img, visible, type, content, ct } = ctx.request.body;
+      let { fid, title, author, label, face_img, visible, type, desc, content, ct } = ctx.request.body;
       if(fid && title && author && label && content) {
         // 1. 更新文件
         const filePath = `${config.publicPath}/db/articles/${fid}.json`
@@ -95,7 +96,7 @@ const articleRouter = (router, apiPath) => {
           articles = articles.map(item => {
             if(item.fid === fid) {
               return {
-                fid, title, author, label, face_img, visible, ct, ut
+                fid, title, author, label, face_img, desc, visible, ct, ut
               }
             }
             return item
@@ -180,9 +181,35 @@ const articleRouter = (router, apiPath) => {
       if(!q) {
         const articleIdxPath = `${config.publicPath}/db/article_index.json`
         const articleIdxs = RF(articleIdxPath)
-        ctx.body = htr(200, articleIdxs)
+        ctx.body = htr(200, articleIdxs.reverse())
       }else {
         ctx.body = htr(200, [])
+      } 
+    }
+  );
+
+  // 置顶文章
+  router.post(api.topArticle,
+    auth,
+    ctx => {
+      const { fid } = ctx.query
+      if(fid) {
+        const articleIdxPath = `${config.publicPath}/db/article_index.json`
+        let articleIdxs = RF(articleIdxPath)
+        articleIdxs = articleIdxs.map(item => {
+          return {
+            ...item,
+            top: item.fid === fid
+          }
+        })
+
+        WF(articleIdxPath, articleIdxs)
+
+        ctx.status = 200
+        ctx.body = htr(200, null, '已置顶')
+      }else {
+        ctx.status = 500
+        ctx.body = htr(500, null, '参数不能为空')
       } 
     }
   );
@@ -338,7 +365,7 @@ const articleRouter = (router, apiPath) => {
   router.post(api.saveDraft,
     auth,
     async ctx => {
-      let { title, author, label, face_img, visible, type, content } = ctx.request.body;
+      let { title, author, label, face_img, visible, desc, type, content } = ctx.request.body;
       if(title) {
         // 1. 写入文章数据
         const fid = uuid(6, 16);
@@ -358,7 +385,7 @@ const articleRouter = (router, apiPath) => {
         // 2. 将草稿文章索引添加到索引文件中
         const indexFilePath = `${config.publicPath}/db/draft_index.json`
         try{
-          WF(indexFilePath, { fid, title, author, label, face_img, visible, ct }, 1)
+          WF(indexFilePath, { fid, title, author, label, face_img, desc, visible, ct }, 1)
         }catch(err) {
           console.log('saveDraft', err)
         }
@@ -374,7 +401,7 @@ const articleRouter = (router, apiPath) => {
   router.put(api.editDraft,
     auth,
     async ctx => {
-      let { fid, title, author, label, face_img, visible, type, content, ct } = ctx.request.body;
+      let { fid, title, author, label, face_img, visible, type, desc, content, ct } = ctx.request.body;
       if(fid && title && author && label && content) {
         // 1. 更新文件
         const filePath = `${config.publicPath}/db/drafts/${fid}.json`
@@ -397,7 +424,7 @@ const articleRouter = (router, apiPath) => {
           articles = articles.map(item => {
             if(item.fid === fid) {
               return {
-                fid, title, author, label, face_img, visible, ct: item.ct, ut
+                fid, title, author, label, face_img, visible, desc, ct: item.ct, ut
               }
             }
             return item

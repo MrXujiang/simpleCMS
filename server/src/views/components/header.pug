@@ -1,6 +1,6 @@
 block header
  .headerContainer
-    .logo
+    a.logo(href='/')
       img(
         src='/assets/logo.png'
         class='logoImg'
@@ -8,10 +8,10 @@ block header
       span 趣写
     .category
       .box
-        each val in ['首页', '分类', '关于']
-          span #{val}
+        each val in [{cate: '首页', link: '/'}, {cate: '分类', link: '/cates'}, {cate: '关于', link: '/about'}]
+          a(href=val.link) #{val.cate}
     .other
-      .button 写文章
+      #writeBtn.button 写文章
       input(
         class='search'
         placeholder='Search'
@@ -19,3 +19,8 @@ block header
       .noticeBox 
         .notice 
         .avatar
+    
+    script.
+      $('#writeBtn').click(function(){
+        window.open('/admin');
+      })

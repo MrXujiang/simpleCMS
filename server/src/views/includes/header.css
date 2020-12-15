@@ -1,6 +1,12 @@
+/* 全局样式, 后期建议放到global.css中 */
 body {
   margin: 0;
   background-color: #E5E5E5;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
 }
 
 /* 头部样式 start */

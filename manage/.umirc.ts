@@ -14,9 +14,9 @@ export default defineConfig({
   antd: {},
   title: 'simpleCMS',
   exportStatic: {},
-  base: '/manage/',
-  publicPath: '/manage/',
-  outputPath: 'dist',
+  base: '/admin/',
+  publicPath: '/admin/',
+  outputPath: '../server/static/admin',
   theme: {
     'primary-color': '#51B266',
     'btn-primary-bg': "#51B266"
@@ -24,7 +24,7 @@ export default defineConfig({
   analytics: {
     ga: 'google analytics code',
   },
-  extraBabelPlugins: [['import', { libraryName: 'zarm', style: true }]],
+  // extraBabelPlugins: [['import', { libraryName: 'zarm', style: true }]],
   alias: {
     components: path.resolve(__dirname, 'src/components/'),
     utils: path.resolve(__dirname, 'src/utils/'),

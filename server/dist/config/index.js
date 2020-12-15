@@ -1,5 +1,12 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _path = require("path");
+
 const isDev = process.env.NODE_ENV === 'development'; //获取本机ip地址
 
 function getIPAdress() {
@@ -19,8 +26,19 @@ function getIPAdress() {
 }
 
 const IP = getIPAdress();
-const staticPath = isDev ? `http://${IP}:3000` : 'http://47.107.76.132:3000';
-module.exports = {
-  isDev,
-  staticPath
+const serverPort = isDev ? 3000 : 3000;
+const staticPath = isDev ? `http://${IP}:${serverPort}` : `http://${IP}:${serverPort}`;
+const publicPath = (0, _path.resolve)(__dirname, '../../public');
+const appStaticPath = (0, _path.resolve)(__dirname, '../../static');
+const routerPath = (0, _path.resolve)(__dirname, '../router');
+var _default = {
+  protocol: 'http:',
+  host: 'localhost',
+  serverPort,
+  staticPath,
+  appStaticPath,
+  publicPath,
+  API_VERSION_PATH: '/api/v0',
+  routerPath
 };
+exports.default = _default;

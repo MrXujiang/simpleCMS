@@ -1,0 +1,115 @@
+body {
+  margin: 0;
+  background-color: #E5E5E5;
+}
+
+/* 头部样式 start */
+.headerContainer {
+  width: calc(100vw - 200px);
+  height: 60px;
+  background-color: #fff;
+  display: flex;
+  padding: 0 100px;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 1180px;
+}
+
+/* 头部logo */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo .logoImg {
+  width: 32px;
+  height: 32px;
+  margin-right: 5px;
+}
+
+.logo>span {
+  font-family: PingFang HK;
+  font-weight: 500;
+  font-size: 18px;
+  color: #333333;
+}
+
+/* 头部分类列表 */
+.category {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category .box {
+  width: 252px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 头部其他 */
+.other {
+  width: 479px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.other .button {
+  height: 40px;
+  width: 96px;
+  border-radius: 2px;
+  background-color: #51B266;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.other .search {
+  flex: 1;
+  margin: 0 45px;
+  height: 28px;
+  outline: none;
+  padding: 0;
+  background: url(assets/search.png) no-repeat;
+  background-position: 3px;
+  padding-left: 26px;
+  background-size: 20px;
+  border: 1px solid transparent;
+  transition: border-color 0.5s ease-in-out;
+  border-radius: 2px;
+}
+
+.other .search:hover {
+  border-bottom: 1px solid #000;
+}
+
+.other .search:focus {
+  border-bottom: 1px solid #000;
+}
+
+.noticeBox {
+  width: 76px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.noticeBox .notice {
+  width: 24px;
+  height: 24px;
+  background: url(assets/notice.png) no-repeat;
+  background-size: 24px;
+}
+
+.noticeBox .avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 14px;
+  background: url(assets/avatar.png) no-repeat;
+  background-size: 24px;
+}
+
+/* 头部样式 end */
