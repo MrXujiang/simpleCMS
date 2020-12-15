@@ -6,7 +6,7 @@ import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import UploadBtn from '@/components/uploadBtn'
 import { ConnectState } from '@/models/connect'
 import { IntlContext } from '@/utils/context/intl'
-import { getBase64, SERVER_URL } from '@/utils'
+import { getImageUrl, SERVER_URL } from '@/utils'
 
 import styles from './index.less'
 
@@ -35,11 +35,10 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
       return
     }
     if (info.file.status === 'done') {
-      getBase64(info.file.originFileObj, (imageUrl: string) => {
-        type === 'top' ? setTopLoading(false) : setSideLoading(false)
-        type === 'top' ? setTopImageUrl(imageUrl) : setSideImageUrl(imageUrl)
-        message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
-      })
+      const imageUrl = getImageUrl(info)
+      type === 'top' ? setTopLoading(false) : setSideLoading(false)
+      type === 'top' ? setTopImageUrl(imageUrl) : setSideImageUrl(imageUrl)
+      message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }

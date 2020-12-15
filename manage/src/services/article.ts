@@ -45,3 +45,11 @@ export async function edit(data: ArticleType): Promise<any> {
 export async function anazly(): Promise<any> {
   return request.get('/articles/anazly')
 }
+
+export async function top(data: ArticleType): Promise<any> {
+  return request.post('/article/top', data)
+}
+
+export async function upload(file: any): Promise<any> {
+  return request.post('/files/upload/free', file)
+}

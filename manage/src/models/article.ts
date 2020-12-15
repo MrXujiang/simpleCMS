@@ -12,6 +12,8 @@ import {
   save,
   edit,
   anazly,
+  top,
+  upload,
 } from '@/services/article'
 
 export interface ArticleType {
@@ -26,6 +28,7 @@ export interface ArticleType {
   type: number
   ct: number
   ut: number
+  top: boolean
 }
 
 export type ArticleList = ArticleType[]
@@ -60,6 +63,8 @@ interface ArticleModelType {
     save: Effect,
     edit: Effect,
     anazly: Effect,
+    top: Effect,
+    upload: Effect,
   }
   reducers: {
     startLoading: Reducer,
@@ -89,6 +94,7 @@ const ArticleModel: ArticleModelType = {
       type: 0,
       ct: 0,
       ut: 0,
+      top: false,
     },
     draftDetail: {
       fid: '',
@@ -102,6 +108,7 @@ const ArticleModel: ArticleModelType = {
       type: 0,
       ct: 0,
       ut: 0,
+      top: false,
     },
     anazly: {
       flovers: 0,
@@ -198,6 +205,16 @@ const ArticleModel: ArticleModelType = {
         yield put({ type: 'saveAnazly', payload: res })
       }
       yield put({ type: 'closeLoading' })
+    },
+    *top({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      yield call(top, payload)
+      yield call(getAll)
+      yield put({ type: 'closeLoading' })
+    },
+    *upload({ payload }, { call }) {
+      const res = yield call(upload, payload)
+      return res || {}
     },
   },
   reducers: {

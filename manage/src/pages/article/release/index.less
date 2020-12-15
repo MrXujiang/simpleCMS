@@ -6,10 +6,16 @@
 }
 
 .releaseArticleForm {
-  padding: 10px 30px;
+  padding: 10px 30px 0;
 
-  :global(.ant-form-item) {
-    margin-bottom: 5px;
+  :global(.ant-form-item:not(:nth-last-child(2))) {
+    margin-bottom: 18px;
+  }
+
+  .face_img {
+    :global(.ant-upload) {
+      margin-bottom: 0;
+    }
   }
 }
 

@@ -66,7 +66,7 @@ const ForgetForm: FC<ForgetFormProps> = ({ dispatch, isLoading }) => {
             message: <FormattedMsg id="Please confirm your password" />,
           },
           ({ getFieldValue }) => ({
-            validator(rule, value) {
+            validator(_, value) {
               if (!value || getFieldValue('password') === value) {
                 return Promise.resolve()
               }

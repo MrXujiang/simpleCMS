@@ -8,7 +8,7 @@ import { ConnectState } from '@/models/connect'
 import { CurrentUser } from '@/models/user'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
-import { getBase64, phoneRE, SERVER_URL } from '@/utils'
+import { getImageUrl, phoneRE, SERVER_URL } from '@/utils'
 import avatar from '@/assets/avatar.svg'
 
 import styles from './index.less'
@@ -56,17 +56,16 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
 
   const onUpload: (info: any) => void = useCallback(info => {
     if (info.file.status === 'done') {
-      getBase64(info.file.originFileObj, (imageUrl: string) => {
-        dispatch({
-          type: 'user/saveUserInfo',
-          payload: Object.assign(
-            {},
-            currentUser,
-            {tx: imageUrl},
-          )
-        }).then(() => {
-          dispatch({ type: 'user/getUserInfo' })
-        })
+      const imageUrl = getImageUrl(info)
+      dispatch({
+        type: 'user/saveUserInfo',
+        payload: Object.assign(
+          {},
+          currentUser,
+          {tx: imageUrl},
+        )
+      }).then(() => {
+        dispatch({ type: 'user/getUserInfo' })
       })
       message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {

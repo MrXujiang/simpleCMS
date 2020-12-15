@@ -21,6 +21,10 @@ interface ArticleProps {
 const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading }) => {
   const isDraftPage = useMemo(() => location.pathname.includes('draft'), [location.pathname])
 
+  const handleTop: (data: ArticleType) => void = useCallback(({ fid }) => {
+    dispatch({ type: 'article/top', payload: {fid} })
+  }, [])
+
   const handleDelete: (data: ArticleType) => void = useCallback(({fid}) => {
     dispatch({ type: isDraftPage ? 'article/delDraft' : 'article/del', payload: fid })
   }, [isDraftPage])
@@ -31,9 +35,7 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
       query: isDraftPage ? {
         id: fid,
         draft: true,
-      } : {
-        id: fid,
-      },
+      } : { id: fid },
     })
   }, [isDraftPage])
 
@@ -88,6 +90,16 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
+          {!isDraftPage && record.top && (
+            <a onClick={handleTop.bind(this, record)}>
+              <FormattedMsg id="Cancel top" />
+            </a>
+          )}
+          {!isDraftPage && !record.top && (
+            <a onClick={handleTop.bind(this, record)}>
+              <FormattedMsg id="Set top" />
+            </a>
+          )}
           <a onClick={handleEdit.bind(this, record)}>
             <FormattedMsg id="Edit" />
           </a>
@@ -131,7 +143,7 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
         columns={columns}
         dataSource={isDraftPage ? draftList : articleList}
         rowKey="fid"
-        scroll={{ y: 'calc(100vh - 260px)' }}
+        pagination={false}
       />
     </>
   )

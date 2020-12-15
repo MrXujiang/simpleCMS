@@ -16,7 +16,7 @@ import { IntlContext } from '@/utils/context/intl'
 import { ArticleType } from '@/models/article'
 import { CurrentUser } from '@/models/user'
 import { ConnectState } from '@/models/connect'
-import { getBase64, TIME_FORMAT, SERVER_URL } from '@/utils'
+import { getImageUrl, getFormdata, TIME_FORMAT, SERVER_URL } from '@/utils'
 
 import styles from './index.less'
 import { isEmpty } from 'lodash'
@@ -60,11 +60,10 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
       return
     }
     if (info.file.status === 'done') {
-      getBase64(info.file.originFileObj, (imageUrl: string) => {
-        setLoading(false)
-        setImageUrl(imageUrl)
-        message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
-      })
+      const imageUrl = getImageUrl(info)
+      setLoading(false)
+      setImageUrl(imageUrl)
+      message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }
@@ -92,10 +91,14 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
       const args = Object.assign(
         {},
         values,
-        {
+        imageUrl ? {
           content,
           type,
           face_img: imageUrl,
+          fid: location.query.id ? location.query.id : '',
+        } : {
+          content,
+          type,
           fid: location.query.id ? location.query.id : '',
         }
       )
@@ -144,11 +147,8 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
     } else if (!values.label || isEmpty(values.label)) {
       message.error(formatMsg('Please select articles label'))
       return
-    } else if (!values.author) {
-      message.error(formatMsg('Please input author'))
-      return
-    } else if (!values.face_img) {
-      message.error(formatMsg('Please upload your cover'))
+    } else if (values.desc && values.desc.length > 20) {
+      message.error(formatMsg('The description should not exceed 20 words'))
       return
     }
     onFinish(values, action)
@@ -165,12 +165,11 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
 
   const editorUploadHandler: (info: any) => void = useCallback((info) => {
     if (info.file.status === 'done') {
-      getBase64(info.file.originFileObj, (imageUrl: string) => {
-        setEditorState(ContentUtils.insertMedias(editorState, [{
-          type: 'IMAGE',
-          url: imageUrl
-        }]))
-      })
+      const imageUrl = getImageUrl(info)
+      setEditorState(ContentUtils.insertMedias(editorState, [{
+        type: 'IMAGE',
+        url: imageUrl
+      }]))
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }
@@ -189,7 +188,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
           showUploadList={false}
           onChange={editorUploadHandler}
         >
-          <button type="button" className="control-item button upload-button" data-title="插入图片">
+          <button type="button" className="control-item button upload-button" data-title={formatMsg('Insert the picture')}>
             <PictureFilled />
           </button>
         </Upload>
@@ -200,6 +199,13 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
   const handleEditorChange: (value: any) => void = useCallback(editorState => setEditorState(editorState), [])
 
   const handleChangeText: (value: string) => void = useCallback(value => setMarkdown(value), [])
+
+  const addImg: (info: any) => void = useCallback((info) => {
+    const formdata = getFormdata(info)
+    dispatch({ type: 'article/upload', payload: formdata }).then((res: any) => {
+      forEditor.current.$img2Url(res.filename, res.url)
+    })
+  }, [forEditor])
 
   const handleCancel: () => void = useCallback(() => setVisible(false), [])
 
@@ -286,10 +292,6 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
             <Form.Item
               label={<FormattedMsg id="Author" />}
               name="author"
-              rules={[{
-                required: true,
-                message: <FormattedMsg id="Please input author" />
-              }]}
             >
               <Input style={{ width: 150 }} placeholder={formatMsg('Please input author')} />
             </Form.Item>
@@ -309,9 +311,9 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
             <Form.Item
               label={<FormattedMsg id="Cover" />}
               name="face_img"
-              rules={[{ required: true, message: <FormattedMsg id="Please upload your cover" /> }]}
             >
               <Upload
+                className={styles.face_img}
                 name="file"
                 listType="picture-card"
                 action={`http://${SERVER_URL}/api/v0/files/upload/free`}
@@ -320,6 +322,18 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
               >
                 {imageUrl ? <img src={imageUrl} alt="websiteLogo" style={{ width: 102, height: 102 }} /> : <UploadBtn loading={loading} />}
               </Upload>
+            </Form.Item>
+            <Form.Item
+              label={<FormattedMsg id="Description" />}
+              name="desc"
+              rules={[{
+                type: 'string',
+                min: 0,
+                max: 20,
+                message: <FormattedMsg id="The description should not exceed 20 words" />
+              }]}
+            >
+              <Input placeholder={formatMsg('Please enter description')} />
             </Form.Item>
             <Form.Item className={styles.btns}>
               <Button type="primary" htmlType="submit" className={styles.btn}>
@@ -359,15 +373,28 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
             </Tabs.TabPane>
             <Tabs.TabPane tab="Markdown" key="markdown">
               <ForEditor
+                ref={forEditor}
                 preview
                 subfield
+                height="480px"
                 value={markdown}
-                height="100%"
-                style={{ borderRadius: 0 }}
                 onChange={handleChangeText}
-                toolbar={{}}
-                ref={forEditor}
+                addImg={addImg}
                 placeholder={formatMsg('Start editing...')}
+                toolbar={{
+                  h1: true,
+                  h2: true,
+                  h3: true,
+                  h4: true,
+                  img: true,
+                  link: true,
+                  code: true,
+                  preview: true,
+                  expand: true,
+                  undo: true,
+                  redo: true,
+                  subfield: true,
+                }}
               />
             </Tabs.TabPane>
           </Tabs>

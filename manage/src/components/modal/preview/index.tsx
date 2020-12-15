@@ -41,9 +41,11 @@ const PreviewModal: FC<PreviewModalProps> = ({
       onCancel={onCancel}
       footer={null}
     >
-      <div className={styles.image}>
-        <img src={imageUrl} alt="face_img" />
-      </div>
+      {imageUrl && (
+        <div className={styles.image}>
+          <img src={imageUrl} alt="face_img" />
+        </div>
+      )}
       <h1>{formValues.title}</h1>
       <div className={styles.desc}>
         <div>

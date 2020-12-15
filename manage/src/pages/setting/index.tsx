@@ -7,7 +7,7 @@ import { ConnectState } from '@/models/connect'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
 import { WebsiteType } from '@/models/setting'
-import { getBase64, SERVER_URL } from '@/utils'
+import { getImageUrl, SERVER_URL } from '@/utils'
 
 import styles from './index.less'
 
@@ -39,11 +39,10 @@ const Setting: FC<SettingProps> = ({ dispatch, isLoading, website }) => {
       return
     }
     if (info.file.status === 'done') {
-      getBase64(info.file.originFileObj, (imageUrl: string) => {
-        setLoading(false)
-        setImageUrl(imageUrl)
-        message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
-      })
+      const imageUrl = getImageUrl(info)
+      setLoading(false)
+      setImageUrl(imageUrl)
+      message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }
