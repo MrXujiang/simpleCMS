@@ -26,7 +26,7 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
   }, [])
 
   const cancelTop: (fid: string) => void = useCallback((fid) => {
-    dispatch({ type: 'article/cancelTop', payload: fid })
+    dispatch({ type: 'article/untop', payload: fid })
   }, [])
 
   const handleDelete: (data: ArticleType) => void = useCallback(({fid}) => {
@@ -95,12 +95,12 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
       render: (_, record) => (
         <Space size="middle">
           {!isDraftPage && record.top && (
-            <a onClick={handleTop.bind(this, record.fid)}>
+            <a onClick={cancelTop.bind(this, record.fid)}>
               <FormattedMsg id="Cancel top" />
             </a>
           )}
           {!isDraftPage && !record.top && (
-            <a onClick={cancelTop.bind(this, record.fid)}>
+            <a onClick={handleTop.bind(this, record.fid)}>
               <FormattedMsg id="Set top" />
             </a>
           )}

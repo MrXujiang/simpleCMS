@@ -50,6 +50,10 @@ export async function top(fid: string): Promise<any> {
   return request.post(`/article/top?fid=${fid}`)
 }
 
+export async function untop(fid: string): Promise<any> {
+  return request.post(`/article/untop?fid=${fid}`)
+}
+
 export async function upload(file: any): Promise<any> {
   return request.post('/files/upload/free', file)
 }

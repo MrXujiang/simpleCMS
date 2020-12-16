@@ -13,6 +13,7 @@ import {
   edit,
   anazly,
   top,
+  untop,
   upload,
 } from '@/services/article'
 
@@ -64,6 +65,7 @@ interface ArticleModelType {
     edit: Effect,
     anazly: Effect,
     top: Effect,
+    untop: Effect,
     upload: Effect,
   }
   reducers: {
@@ -209,6 +211,12 @@ const ArticleModel: ArticleModelType = {
     *top({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
       yield call(top, payload)
+      yield put({ type: 'getAll' })
+      yield put({ type: 'closeLoading' })
+    },
+    *untop({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      yield call(untop, payload)
       yield put({ type: 'getAll' })
       yield put({ type: 'closeLoading' })
     },
