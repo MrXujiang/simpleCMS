@@ -21,8 +21,12 @@ interface ArticleProps {
 const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading }) => {
   const isDraftPage = useMemo(() => location.pathname.includes('draft'), [location.pathname])
 
-  const handleTop: (data: ArticleType) => void = useCallback(({ fid }) => {
-    dispatch({ type: 'article/top', payload: {fid} })
+  const handleTop: (fid: string) => void = useCallback((fid) => {
+    dispatch({ type: 'article/top', payload: fid })
+  }, [])
+
+  const cancelTop: (fid: string) => void = useCallback((fid) => {
+    dispatch({ type: 'article/cancelTop', payload: fid })
   }, [])
 
   const handleDelete: (data: ArticleType) => void = useCallback(({fid}) => {
@@ -91,12 +95,12 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
       render: (_, record) => (
         <Space size="middle">
           {!isDraftPage && record.top && (
-            <a onClick={handleTop.bind(this, record)}>
+            <a onClick={handleTop.bind(this, record.fid)}>
               <FormattedMsg id="Cancel top" />
             </a>
           )}
           {!isDraftPage && !record.top && (
-            <a onClick={handleTop.bind(this, record)}>
+            <a onClick={cancelTop.bind(this, record.fid)}>
               <FormattedMsg id="Set top" />
             </a>
           )}

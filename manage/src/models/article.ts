@@ -209,7 +209,7 @@ const ArticleModel: ArticleModelType = {
     *top({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
       yield call(top, payload)
-      yield call(getAll)
+      yield put({ type: 'getAll' })
       yield put({ type: 'closeLoading' })
     },
     *upload({ payload }, { call }) {

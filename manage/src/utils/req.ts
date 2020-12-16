@@ -4,7 +4,7 @@ import { message } from 'antd'
 const isDev = process.env.NODE_ENV === 'development'
 
 const instance = axios.create({
-    baseURL: isDev ? 'http://192.168.1.3:3000/api/v0' : 'http://49.234.61.19:3000/api/v0',
+    baseURL: isDev ? 'http://192.168.56.1:3000/api/v0' : 'http://49.234.61.19:3000/api/v0',
     timeout: 10000,
     withCredentials: true
 });
@@ -36,7 +36,7 @@ instance.interceptors.response.use(function (response) {
         message.error('请求资源未发现');
     }else if(response.status === 403) {
         message.error(response.data.msg, () => {
-            // window.location.href = '/admin/user/login'
+            window.location.href = '/admin/user/login'
             localStorage.clear()
         });
     }else {
