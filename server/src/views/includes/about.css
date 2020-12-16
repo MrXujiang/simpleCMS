@@ -1,0 +1,79 @@
+.aboutContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 1180px;
+  height: calc(100vh - 60px);
+}
+
+.aboutus {
+  width: 500px;
+  height: 100px;
+  border: 1px solid black;
+  margin: 20px 0px;
+  text-align: center;
+  line-height: 100px;
+}
+
+.aboutDesc {
+  margin-bottom: 20px;
+}
+
+.teamsDesc {
+  width: 200px;
+  height: 100px;
+  border: 1px solid black;
+  text-align: center;
+  line-height: 100px;
+  margin-bottom: 20px;
+}
+
+.teams {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.team {
+  width: 200px;
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.teams .team:last-child {
+  margin-right: 0;
+}
+
+.tx {
+  width: 100px;
+  height: 100px;
+  margin: 20px auto 20px;
+  border-radius: 100px;
+  border: 1px solid black;
+  line-height: 100px;
+}
+
+.name {
+  margin-bottom: 20px;
+}
+
+.job {
+  margin-bottom: 20px;
+}
+
+.teamDesc {
+  margin-bottom: 50px;
+}
+
+.github {
+  margin-bottom: 20px;
+}
+
+.copyright {
+  margin-bottom: 50px;
+  text-align: center;
+}

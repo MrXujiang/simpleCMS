@@ -4,37 +4,21 @@ block title
   title SimpleCMS | 关于我们
 
 block style
-  include ./includes/view.css
+  include ./includes/about.css
 
 block content
-  .viewContainer
-    .imgBox
-      img(
-        src='assets/home.png'
-        class='viewImg'
-      )
-    .viewTitle #{viewTitle}
-    .authorBox
-      .avatar
-      .name #{authorInfo.name}
-      .date #{authorInfo.date}
-    .descriptionBox 
-      each val in descriptionBox
-        p #{val}
-    .commentBox
-      .title 评论
-      each val in commentInfoList
-        .commentInof 
-          .commentPersonal
-            .avatar
-            .name #{val.name}
-            .date #{val.date}
-          .commentContent #{val.content}
-          .commentReply 
-      .commentTextarea 
-        .avatar
-        textarea(
-          placeholderNew="评论.."
-          rows="10" 
-          cols="30"
-        )
+  .aboutContainer
+    .aboutus #{aboutus}
+    .aboutDesc #{aboutDesc}
+    .teamsDesc #{teamDesc}
+    .teams 
+      each team in teams
+        .team
+          .tx
+            span #{team.tx}
+          .name #{team.name}
+          .job #{team.job}
+          .teamDesc #{team.desc}
+          .github #{team.github}
+
+    .copyright #{copyright}
