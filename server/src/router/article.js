@@ -23,6 +23,7 @@ const articleRouter = (router, apiPath) => {
     del: apiPath + '/articles/del',
     all: apiPath + '/articles/all',
     topArticle: apiPath + '/article/top',
+    cancelTopArticle: apiPath + '/article/untop',
     getArticleNum: apiPath + '/articles/num',
     getAnazly: apiPath + '/articles/anazly',
     comment: apiPath + '/article/comment/save',
@@ -46,7 +47,7 @@ const articleRouter = (router, apiPath) => {
         const filename = `${config.publicPath}/db/articles/${fid}.json`;
         try {
           // type  0 富文本  1 markdown
-          const res = WF(filename, { fid, title, author, face_img, label, ct, type, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filename, { fid, title, author, face_img, label, ct, type, desc, visible, content, html: type ? marked(content) : '' })
           if(res) {
             ctx.body = htr(200, {fid}, '文章发布成功')
           }
@@ -79,7 +80,7 @@ const articleRouter = (router, apiPath) => {
         const filePath = `${config.publicPath}/db/articles/${fid}.json`
         const ut = Date.now()
         try {
-          const res = WF(filePath, { fid, title, author, face_img, label, ct, ut, type, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filePath, { fid, title, author, face_img, label, ct, ut, type, desc, visible, content, html: type ? marked(content) : '' })
           if(res) {
             ctx.body = htr(200, { fid }, '文章修改成功')
           }
@@ -207,6 +208,32 @@ const articleRouter = (router, apiPath) => {
 
         ctx.status = 200
         ctx.body = htr(200, null, '已置顶')
+      }else {
+        ctx.status = 500
+        ctx.body = htr(500, null, '参数不能为空')
+      } 
+    }
+  );
+
+  // 取消置顶文章
+  router.post(api.cancelTopArticle,
+    auth,
+    ctx => {
+      const { fid } = ctx.query
+      if(fid) {
+        const articleIdxPath = `${config.publicPath}/db/article_index.json`
+        let articleIdxs = RF(articleIdxPath)
+        articleIdxs = articleIdxs.map(item => {
+          return {
+            ...item,
+            top: item.fid === fid ? false : !!item.top
+          }
+        })
+
+        WF(articleIdxPath, articleIdxs)
+
+        ctx.status = 200
+        ctx.body = htr(200, null, '已取消置顶')
       }else {
         ctx.status = 500
         ctx.body = htr(500, null, '参数不能为空')
@@ -373,7 +400,7 @@ const articleRouter = (router, apiPath) => {
         const ct = Date.now();
         try {
           // type  0 富文本  1 markdown
-          const res = WF(filename, { fid, title, author, face_img, label, ct, type, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filename, { fid, title, author, face_img, label, ct, type, desc, visible, content, html: type ? marked(content) : '' })
           if(res) {
             ctx.body = htr(200, {fid}, '草稿保存成功')
           }
@@ -407,7 +434,7 @@ const articleRouter = (router, apiPath) => {
         const filePath = `${config.publicPath}/db/drafts/${fid}.json`
         const ut = Date.now()
         try {
-          const res = WF(filePath, { fid, title, author, face_img, label, ct, ut, type, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filePath, { fid, title, author, face_img, label, ct, ut, type, desc, visible, content, html: type ? marked(content) : '' })
           if(res) {
             ctx.body = htr(200, { fid }, '草稿修改成功')
           }

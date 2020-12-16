@@ -25,6 +25,7 @@
 | 查看文章  | /articles/get | get | id(文章id) | { title, author, label, ct, face_img, content, html }
 | 查看所有文章  | /articles/all | get | query(可选) | [{title, author, label, ct, ut, face_img, content}]
 | 置顶文章  | /article/top | post | fid | {msg: '已置顶'}
+| 取消置顶文章  | /article/untop | post | fid | {msg: '已取消置顶'}
 | 删除文章  | /articles/del | delete | id | 删除的文章id
 | 保存草稿  | /articles/drafts/save | post | 同添加文章 | 同添加文章
 | 获取草稿列表  | /articles/drafts | get | 同查看所有文章 | 同查看所有文章
