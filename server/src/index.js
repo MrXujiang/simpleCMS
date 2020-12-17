@@ -11,6 +11,8 @@ import compress from 'koa-compress';
 import views from 'koa-views';
 import logger from 'koa-logger';
 import { resolve } from 'path';
+import schedule from 'node-schedule';
+import { WF, RF } from './lib/upload';
 
 const router = new Router()
 // 启动逻辑
@@ -79,6 +81,61 @@ async function start() {
     //       io.emit('getData', users)
     //     })
     //   });
+
+    // 定时任务
+    const anazlyDaily = schedule.scheduleJob('59 59 23 * * *', function(){
+        const weekLog = `${config.publicPath}/db/weekLog.json`;
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const dayH = date.getDate();
+        const weekTpl = {
+            2020: {
+                flovers: {
+                    0: [] // 数组中每个值代表指定日期的访问数据, 其他的类似
+                },
+                comments: {},
+                views: {}
+            }
+        }
+        const weekData = RF(weekLog) || weekTpl;
+
+        const result = {
+            flovers: 0,
+            comments: 0,
+            views: 0
+        };
+        glob.sync(`${config.publicPath}/db/comments/*.json`).forEach(item => {
+            const row = RF(item);
+            result.flovers += row.flover;
+            result.comments += row.comments.length;
+            result.views += row.views;
+        });
+
+        // 设置年份
+        weekData[year] = weekData[year] || {};
+
+        // 设置基础数据
+        weekData[year]['flovers'] = weekData[year]['flovers'] || {};
+        weekData[year]['comments'] = weekData[year]['comments'] || {};
+        weekData[year]['views'] = weekData[year]['views'] || {};
+
+        //  点赞统计
+        weekData[year]['flovers'][month] = weekData[year]['flovers'][month] || [];
+        weekData[year]['flovers'][month][dayH] = result.flovers;
+
+        //  评论统计
+        weekData[year]['comments'][month] = weekData[year]['comments'][month] || [];
+        weekData[year]['comments'][month][dayH] = result.comments;
+
+        // 访问量统计
+        weekData[year]['views'][month] = weekData[year]['views'][month] || [];
+        weekData[year]['views'][month][dayH] = result.views;
+        
+        WF(weekLog, weekData);
+    });
+
+
 
     app.listen(config.serverPort, () => {
         console.log(`服务器地址:${config.staticPath}`)

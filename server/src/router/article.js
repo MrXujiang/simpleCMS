@@ -7,7 +7,6 @@ import htr from '../lib/htr'
 import marked from 'marked'
 import glob from 'glob'
 
-
 /**
  * 文章路由
  * @param {*} router 
@@ -26,6 +25,7 @@ const articleRouter = (router, apiPath) => {
     cancelTopArticle: apiPath + '/article/untop',
     getArticleNum: apiPath + '/articles/num',
     getAnazly: apiPath + '/articles/anazly',
+    getWeekLog: apiPath + 'articles/weeklog',
     comment: apiPath + '/article/comment/save',
     comments: apiPath + '/article/comments',
     addFlover: apiPath + '/article/flover/add',
@@ -265,6 +265,16 @@ const articleRouter = (router, apiPath) => {
         result.comments += row.comments.length;
         result.views += row.views;
       })
+      ctx.body = htr(200, result)
+    }
+  );
+  
+  // 获取文章周统计数据(访问量, 点赞数, 评论数)
+  router.get(api.getWeekLog,
+    auth,
+    ctx => {
+      const weekLog = `${config.publicPath}/db/weekLog.json`;
+      const result = RF(weekLog);
       ctx.body = htr(200, result)
     }
   );
