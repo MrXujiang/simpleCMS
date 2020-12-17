@@ -11,7 +11,7 @@ block content
   .viewContainer
     .imgBox
       img(
-        src='assets/home.png'
+        src=topImg
         class='viewImg'
       )
     .viewTitle #{viewTitle}
@@ -19,9 +19,23 @@ block content
       .avatar
       .name #{authorInfo.name}
       .date #{authorInfo.date}
-    .descriptionBox 
-      each val in descriptionBox
-        p #{val}
+    .descriptionBox
+      != descriptionBox
+    .exceptional
+      .text 给作者打赏，鼓励TA抓紧创作！
+      .icon 
+      .number 100人已打赏
+      .reward 
+        .like 
+          img(
+            src='/assets/like.png'
+          )
+          span #{views}
+        .collection
+          img(
+            src='/assets/favorites.png'
+          )
+          span #{flover}
     .commentBox
       .title 评论
       each val in commentInfoList
@@ -34,8 +48,12 @@ block content
           .commentReply 
       .commentTextarea 
         .avatar
-        textarea(
-          placeholderNew="评论.."
-          rows="10" 
-          cols="30"
-        )
+        .review
+          textarea(
+            placeholderNew="评论.."
+            class='inputBox'
+          )
+          .operation
+            .operationArea
+            .commentButton 评论
+

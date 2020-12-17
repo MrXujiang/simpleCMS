@@ -8,58 +8,49 @@ block style
 
 block content
   .contentContainer
-    .carouselBox
+    a.carouselBox(href=ads.topAd['link'], target='_blank')
       .content
-        .title #{contentShow['title']}
-        .introduction #{contentShow['introduce']}
-        .foot 
-          .date #{contentShow['date']}
-          .author #{contentShow['author']}
-      img(
-        src='/assets/home.png'
-        class='homeImg'
-      )
+        .title #{ads.topAd['text']}
+      .adImg
+        img(
+          src=ads.topAd['imageUrl']
+        )
     .recommendBox
       .title
         span 最近更新
-        span 热门推荐
       .childBox
         .updataBox
-          each val in updataList
-            .childUpdata
+          each val in list
+            a.childUpdata(href=`/detail?fid=${val.fid}`, target='_blank')
               img(
-                src= val.img
+                src= val.face_img
                 class='childUpdataImg'
               )
               .updataContent
-                .updataAuthor
-                  .updataAvatar
-                  .updataAuthorName #{val.avatarName}
                 .updatatitle #{val.title}
-                .updatatContent #{val.introduction}
+                .updatatContent #{val.desc}
                 .updataOther
-                  .date #{val.date}
-                  .icon 
-                    .like 
-                      img(
-                        src='/assets/like.png'
-                      )
-                      span 122
-                    .favorites
-                      img(
-                        src='/assets/favorites.png'
-                      )
-                      span 34
+                  .author #{val.author}
+                  .date #{val.ct}
+                  //- .icon 
+                  //-   .like 
+                  //-     img(
+                  //-       src='/assets/like.png'
+                  //-     )
+                  //-     span 122
+                  //-   .favorites
+                  //-     img(
+                  //-       src='/assets/favorites.png'
+                  //-     )
+                  //-     span 34
         .columnBox
-          .title 专栏推荐
-          each val in colunmList
-            .list
+          .title 编辑推荐
+          each val in tops
+            a.item(href=`/detail?fid=${val.fid}`, target='_blank')
               img(
-                src='/assets/child.png'
+                src=val.face_img
                 class='listImg'
               )
               .content
                 .title #{val.title}
-                .introduction #{val.introduction}
-
-  include ./includes/scripts
+                .introduction #{val.author}  #{val.ct}
