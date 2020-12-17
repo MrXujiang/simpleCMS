@@ -25,7 +25,7 @@ const articleRouter = (router, apiPath) => {
     cancelTopArticle: apiPath + '/article/untop',
     getArticleNum: apiPath + '/articles/num',
     getAnazly: apiPath + '/articles/anazly',
-    getWeekLog: apiPath + 'articles/weeklog',
+    getWeekLog: apiPath + '/articles/weeklog',
     comment: apiPath + '/article/comment/save',
     comments: apiPath + '/article/comments',
     addFlover: apiPath + '/article/flover/add',
@@ -200,7 +200,7 @@ const articleRouter = (router, apiPath) => {
         articleIdxs = articleIdxs.map(item => {
           return {
             ...item,
-            top: item.fid === fid
+            top: item.fid === fid ? true : !!item.top
           }
         })
 

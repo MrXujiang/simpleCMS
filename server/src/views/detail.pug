@@ -11,7 +11,7 @@ block content
   .viewContainer
     .imgBox
       img(
-        src='assets/home.png'
+        src=topImg
         class='viewImg'
       )
     .viewTitle #{viewTitle}
@@ -19,9 +19,8 @@ block content
       .avatar
       .name #{authorInfo.name}
       .date #{authorInfo.date}
-    .descriptionBox 
-      each val in descriptionBox
-        p #{val}
+    .descriptionBox
+      != descriptionBox
     .commentBox
       .title 评论
       each val in commentInfoList

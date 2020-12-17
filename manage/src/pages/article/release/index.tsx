@@ -203,7 +203,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
   const addImg: (info: any) => void = useCallback((info) => {
     const formdata = getFormdata(info)
     dispatch({ type: 'article/upload', payload: formdata }).then((res: any) => {
-      forEditor.current.$img2Url(res.filename, res.url)
+      (forEditor.current as any).$img2Url(res.filename, res.url)
     })
   }, [forEditor])
 
@@ -333,7 +333,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
                 message: <FormattedMsg id="The description should not exceed 20 words" />
               }]}
             >
-              <Input placeholder={formatMsg('Please enter description')} />
+              <Input.TextArea placeholder={formatMsg('Please enter description')} rows={4} />
             </Form.Item>
             <Form.Item className={styles.btns}>
               <Button type="primary" htmlType="submit" className={styles.btn}>
