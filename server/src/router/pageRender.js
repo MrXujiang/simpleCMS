@@ -87,7 +87,7 @@ const pageRenderRouter = (router) => {
   router.get(api.detail, async (ctx) => {
     const id = ctx.query.fid;
     const articlePath = `${config.publicPath}/db/articles/${id}.json`;
-    const commentPath = `${config.publicPath}/db/comments/${id}.json`
+    const commentPath = `${config.publicPath}/db/comments/${id}.json`;
     const article = RF(articlePath) || {};
     const comments = RF(commentPath) || {};
     comments.views = comments.views + 1;
@@ -99,7 +99,7 @@ const pageRenderRouter = (router) => {
       descriptionBox: article.html,
       commentInfoList: comments.comments || [],
       flover: comments.flover,
-      views: comments.views
+      views: comments.views,
     });
     WF(commentPath, comments)
   });

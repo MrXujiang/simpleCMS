@@ -63,6 +63,46 @@
   margin: 0;
 }
 /* 正文 end */
+/* 打赏 start */
+.viewContainer .exceptional {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.viewContainer .exceptional .text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 26px;
+  color: #666;
+}
+.viewContainer .exceptional .icon {
+  height: 50px;
+}
+.viewContainer .exceptional .number {
+  font-size: 14px;
+  line-height: 26px;
+  color: #666;
+}
+.viewContainer .exceptional .reward {
+  margin-top: 26px;
+  display: flex;
+  justify-content: center;
+}
+.viewContainer .exceptional .reward img{
+  width: 16px;
+  height: 16px;
+}
+.viewContainer .exceptional .reward span {
+  font-size: 14px;
+  line-height: 20px;
+  color: #666;
+}
+
+/* 打赏 end */
 /* 评论 start */
 .viewContainer .commentBox {
   margin-top: 18px;
@@ -127,6 +167,40 @@
   background: url(assets/avatar.png) no-repeat;
   background-size: 32px;
   margin-right: 8px;
+}
+.viewContainer .commentBox .commentTextarea .review {
+  position: relative;
+  width: 100%;
+  height: 200px;
+}
+.viewContainer .commentBox .commentTextarea .review .inputBox {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background-color: transparent;
+  outline: none;
+  resize:none;
+}
+.viewContainer .commentBox .commentTextarea .review .operation {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.viewContainer .commentBox .commentTextarea .review .operation .operationArea {
+  flex: 1;
+}
+.viewContainer .commentBox .commentTextarea .review .operation .commentButton {
+  width: 70px;
+  height: 32px;
+  text-align: center;
+  line-height: 32px;
+  background-color: #51B266;
+  color: #fff;
+  cursor: pointer;
 }
 
 .markdown-body {
