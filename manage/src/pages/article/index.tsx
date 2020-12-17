@@ -60,8 +60,8 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
       dataIndex: 'label',
       render: labels => (
         <>
-          {labels.map((l: string) => {
-            let color = l.length > 3 ? 'volcano' : '#51B266'
+          {labels.map((l: string, i: number) => {
+            let color = i % 2 === 1 ? 'volcano' : '#51B266'
             return (
               <Tag color={color} key={l}>
                 {l.toUpperCase()}

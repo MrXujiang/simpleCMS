@@ -1,20 +1,9 @@
 import { Effect, Reducer } from 'umi'
 
 import {
-  getAll,
-  getAllDrafts,
-  getArticleDetail,
-  getDraftDetail,
-  del,
-  delDraft,
-  add,
-  mod,
-  save,
-  edit,
-  anazly,
-  top,
-  untop,
-  upload,
+  getAll, getAllDrafts, getArticleDetail, getDraftDetail,
+  del, delDraft, add, mod, save, edit, anazly, top, untop,
+  upload, weeklog,
 } from '@/services/article'
 
 export interface ArticleType {
@@ -42,11 +31,13 @@ export interface AnazlyType {
 
 export interface ArticleState {
   isLoading: boolean
+  isWeekLogLoading: boolean
   articleList: ArticleList
   draftList: ArticleList
   articleDetail: ArticleType
   draftDetail: ArticleType
   anazly: AnazlyType
+  weekLog: any
 }
 
 interface ArticleModelType {
@@ -67,15 +58,19 @@ interface ArticleModelType {
     top: Effect,
     untop: Effect,
     upload: Effect,
+    weeklog: Effect,
   }
   reducers: {
     startLoading: Reducer,
     closeLoading: Reducer,
+    startWeekLogLoading: Reducer,
+    closeWeekLogLoading: Reducer,
     saveAll: Reducer,
     saveAllDrafts: Reducer,
     saveArticleDetail: Reducer,
     saveDraftDetail: Reducer,
     saveAnazly: Reducer,
+    saveWeeklog: Reducer,
   }
 }
 
@@ -117,7 +112,9 @@ const ArticleModel: ArticleModelType = {
       comments: 0,
       views: 0,
     },
+    weekLog: {},
     isLoading: false,
+    isWeekLogLoading: false,
   },
   effects: {
     *getAll(_, { call, put }) {
@@ -224,6 +221,17 @@ const ArticleModel: ArticleModelType = {
       const res = yield call(upload, payload)
       return res || {}
     },
+    *weeklog(_, { call, put }) {
+      yield put({ type: 'startLoading' })
+      const res = yield call(weeklog)
+      if (res) {
+        yield put({
+          type: 'saveWeeklog',
+          payload: res,
+        })
+      }
+      yield put({ type: 'closeLoading' })
+    },
   },
   reducers: {
     'startLoading'(state) {
@@ -231,6 +239,12 @@ const ArticleModel: ArticleModelType = {
     },
     'closeLoading'(state) {
       return {...state, isLoading: false}
+    },
+    'startWeekLogLoading'(state) {
+      return {...state, isWeekLogLoading: true}
+    },
+    'closeWeekLogLoading'(state) {
+      return {...state, isWeekLogLoading: false}
     },
     'saveAll'(state, { payload }) {
       return {...state, articleList: payload}
@@ -246,6 +260,9 @@ const ArticleModel: ArticleModelType = {
     },
     'saveAnazly'(state, { payload }) {
       return {...state, anazly: payload}
+    },
+    'saveWeeklog'(state, { payload }) {
+      return {...state, weekLog: payload}
     },
   },
 }

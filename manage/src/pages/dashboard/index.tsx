@@ -1,56 +1,88 @@
-import React, { FC, useEffect, useMemo } from 'react'
+import React, { FC, useEffect, useMemo, useContext } from 'react'
 import { Skeleton } from 'antd'
-import { isEmpty } from 'lodash'
 import { connect, Dispatch } from 'umi'
 import { Line, Column } from '@ant-design/charts'
+import moment from 'moment'
 
 import { ConnectState } from '@/models/connect'
-import { ChartsData } from '@/models/dashboard'
 import { AnazlyType, ArticleList } from '@/models/article'
+import { IntlContext } from '@/utils/context/intl'
 
 import styles from './index.less'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 
 interface DashboardProps {
   isLoading: boolean
+  isWeekLogLoading: boolean
   anazly: AnazlyType
   articleList: ArticleList
-  chartsData: ChartsData
   dispatch: Dispatch
+  weekLog: any
 }
 
-const Dashboard: FC<DashboardProps> = ({ isLoading, anazly, articleList, chartsData, dispatch }) => {
-  const articleVisits = useMemo(() => ({
-    data: chartsData.articleVisits,
-    xField: 'year',
-    yField: 'value',
-    label: {},
-    point: {
-      size: 5,
-      shape: 'diamond',
-      style: {
-        fill: 'white',
-        stroke: '#2593fc',
-        lineWidth: 2,
-      },
-    },
-  }), [chartsData])
+const Dashboard: FC<DashboardProps> = ({
+  dispatch, isLoading, isWeekLogLoading,
+  anazly, articleList, weekLog,
+}) => {
+  const formatMsg = useContext<any>(IntlContext)
 
-  const articleLikes = useMemo(() => ({
-    data: chartsData.articleLikes,
-    xField: 'type',
-    yField: 'sales',
-    columnWidthRatio: 0.8,
-    meta: {
-      type: { alias: '类别' },
-      sales: { alias: '销售额' },
-    },
-  }), [chartsData])
+  const YD = useMemo(() => moment().format('YYYY-MM '), [])
+
+  const components = useMemo(() => {
+    const chartsData: any = Object.values(weekLog)[0] || {}
+    const charts: any[] = []
+
+    Object.keys(chartsData).forEach((key: string) => {
+      if (chartsData[key]) {
+        const chartData: any = Object.values(chartsData[key])[0] || []
+
+        const data: any[] = []
+        for (let i = 1, l = chartData.length; i < l; i++) {
+          data.push({day: String(i), value: chartData[i]})
+        }
+
+        const baseProps = {
+          data,
+          xField: 'day',
+          yField: 'value',
+          loading: isWeekLogLoading,
+          meta: {
+            day: {
+              formatter: (day: string) => moment().format('YYYY-MM-') + day,
+            },
+            value: { alias: formatMsg(key) },
+          },
+        }
+        
+        const props = key === 'flovers' ? {
+          ...baseProps,
+          columnStyle: {
+            cursor: 'pointer'
+          }
+        } : {
+          ...baseProps,
+          point: {
+            size: 5,
+            shape: 'diamond',
+          },
+        }
+        
+        charts.push(<div className={styles.chart}>
+          <div className={styles.text}>
+            {YD}
+            {formatMsg(key)}
+          </div>
+          {key === 'flovers' ? <Column {...props} /> : <Line {...props} />}
+        </div>)
+      }
+    })
+    return charts
+  }, [weekLog, YD, isWeekLogLoading, formatMsg])
 
   useEffect(() => {
     dispatch({ type: 'article/anazly' })
     dispatch({ type: 'article/getAll' })
-    dispatch({ type: 'dashboard/getChartsData' })
+    dispatch({ type: 'article/weeklog' })
   }, [])
 
   return (
@@ -102,26 +134,7 @@ const Dashboard: FC<DashboardProps> = ({ isLoading, anazly, articleList, chartsD
         </Skeleton>
       </div>
       <div className={styles.charts}>
-        <Skeleton loading={isEmpty(articleVisits.data)}>
-          <div className={styles.chart}>
-            <Line {...articleVisits} />
-          </div>
-        </Skeleton>
-        <Skeleton loading={isEmpty(articleLikes.data)}>
-          <div className={styles.chart}>
-            <Column {...articleLikes} />
-          </div>
-        </Skeleton>
-        <Skeleton loading={isEmpty(articleVisits.data)}>
-          <div className={styles.chart}>
-            <Line {...articleVisits} />
-          </div>
-        </Skeleton>
-        <Skeleton loading={isEmpty(articleLikes.data)}>
-          <div className={styles.chart}>
-            <Column {...articleLikes} />
-          </div>
-        </Skeleton>
+        {components}
       </div>
     </div>
   )
@@ -131,5 +144,6 @@ export default connect(({ dashboard, article }: ConnectState) => ({
   anazly: article.anazly,
   articleList: article.articleList,
   isLoading: article.isLoading,
-  chartsData: dashboard.chartsData,
+  isWeekLogLoading: article.isWeekLogLoading,
+  weekLog: article.weekLog,
 }))(Dashboard)

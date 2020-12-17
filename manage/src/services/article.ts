@@ -57,3 +57,7 @@ export async function untop(fid: string): Promise<any> {
 export async function upload(file: any): Promise<any> {
   return request.post('/files/upload/free', file)
 }
+
+export async function weeklog(): Promise<any> {
+  return request.get('/articles/weeklog')
+}
