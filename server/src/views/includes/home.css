@@ -1,7 +1,12 @@
 
 /* 内容样式 start*/
 .contentContainer{
-  margin: 32px 180px 0;
+  margin: 32px auto;
+  display: flex;
+  justify-content: center;
+}
+.homeWidth {
+  width: 1024px;
 }
 .contentContainer .carouselBox{
   min-width: 920px;
@@ -105,6 +110,9 @@
   color: #333333;
   margin-bottom: 8px;
 }
+.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle:hover {
+  color: #51B266;
+}
 .contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatContent {
   font-family: Inter;
   font-style: normal;
@@ -190,6 +198,9 @@
   line-height: 20px;
   color: #000;
   margin-bottom: 4px;
+}
+.childBox .columnBox .content > .title:hover {
+  color: #51B266;
 }
 .contentContainer .recommendBox .childBox .columnBox .content .introduction {
   font-family: PingFang HK;

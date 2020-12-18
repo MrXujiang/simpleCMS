@@ -5,13 +5,13 @@ import { auth } from "../service";
 import config from "../config";
 import htr from "../lib/htr";
 
-const formatTime = (timeStemp, flag = '/') => {
+const formatTime = (timeStemp, flag = "/") => {
   let date = new Date(timeStemp);
   let y = date.getFullYear();
   let m = date.getMonth() + 1;
   let d = date.getDate();
-  return `${y}${flag}${m}${flag}${d}`
-}
+  return `${y}${flag}${m}${flag}${d}`;
+};
 /**
  * 文章路由
  * @param {*} router
@@ -26,7 +26,7 @@ const pageRenderRouter = (router) => {
     home: "/",
     detail: "/detail",
     cates: "/cates",
-    about: "/about"
+    about: "/about",
   };
 
   // 登录
@@ -61,25 +61,25 @@ const pageRenderRouter = (router) => {
   // 渲染首页
   router.get(api.home, async (ctx) => {
     const filePath = `${config.publicPath}/db/ads.json`;
-    const articleIdxPath = `${config.publicPath}/db/article_index.json`
+    const articleIdxPath = `${config.publicPath}/db/article_index.json`;
     const ads = RF(filePath);
     let articleIdxs = RF(articleIdxPath);
-    articleIdxs = articleIdxs.map(item => {
+    articleIdxs = articleIdxs.map((item) => {
       return {
         ...item,
-        ct: formatTime(item.ct)
-      }
-    })
-    const topArticles = articleIdxs.filter(item => !!item.top);
+        ct: formatTime(item.ct),
+      };
+    });
+    const topArticles = articleIdxs.filter((item) => !!item.top);
     console.log({
       ads,
       tops: topArticles,
-      list: articleIdxs
-    })
+      list: articleIdxs,
+    });
     await ctx.render("index", {
       ads,
       tops: topArticles,
-      list: articleIdxs
+      list: articleIdxs,
     });
   });
 
@@ -90,86 +90,96 @@ const pageRenderRouter = (router) => {
     const commentPath = `${config.publicPath}/db/comments/${id}.json`;
     const article = RF(articlePath) || {};
     const comments = RF(commentPath) || {};
+    console.log(comments);
+    // const comments = {
+    //   flover: 10,
+    //   views: 10,
+    //   comments: [
+    //     "所以敏捷的“快”不是快，而是在于精准的需求管理与控制能力。 ",
+    //     "所以敏捷的“快”不是快，而是在于精准的需求管理与控制能力。 ",
+    //     "所以敏捷的“快”不是快，而是在于精准的需求管理与控制能力。 ",
+    //   ],
+    // };
     comments.views = comments.views + 1;
     await ctx.render("detail", {
       viewTitle: article.title,
       topImg: article.face_img,
-      authorInfo: { name: article.author, date: formatTime(article.ct, '-') },
+      authorInfo: { name: article.author, date: formatTime(article.ct, "-") },
       label: article.label,
       descriptionBox: article.html,
       commentInfoList: comments.comments || [],
       flover: comments.flover,
       views: comments.views,
     });
-    WF(commentPath, comments)
+    WF(commentPath, comments);
   });
 
   // 渲染关于我们页
   router.get(api.about, async (ctx) => {
     await ctx.render("about", {
-      aboutus: '关于我们',
-      aboutDesc: 'simpleCMS 简介',
-      teamDesc: '团队介绍',
+      aboutus: "关于我们",
+      aboutDesc: "simpleCMS 简介",
+      teamDesc: "团队介绍",
       teams: [
         {
-          tx: '头像',
-          name: '徐小夕',
-          job: '前端工程师',
-          desc: '简短介绍',
-          github: 'github.com/xuxiaoxi',
+          tx: "头像",
+          name: "徐小夕",
+          job: "前端工程师",
+          desc: "简短介绍",
+          github: "github.com/xuxiaoxi",
         },
         {
-          tx: '头像',
-          name: '陈伟',
-          job: '前端工程师',
-          desc: '简短介绍',
-          github: 'github.com/chenwei',
+          tx: "头像",
+          name: "陈伟",
+          job: "前端工程师",
+          desc: "简短介绍",
+          github: "github.com/chenwei",
         },
         {
-          tx: '头像',
-          name: '苗晨浩',
-          job: 'UI设计师',
-          desc: '简短介绍',
-          github: 'github.com/mch',
+          tx: "头像",
+          name: "苗晨浩",
+          job: "UI设计师",
+          desc: "简短介绍",
+          github: "github.com/mch",
         },
         {
-          tx: '头像',
-          name: '胡国江',
-          job: '前端工程师',
-          desc: '简短介绍',
-          github: 'github.com/hgj',
+          tx: "头像",
+          name: "胡小磊",
+          job: "前端工程师",
+          desc: "简短介绍",
+          github: "github.com/hgj",
         },
       ],
-      copyright: '版权所有 @SimpleCMS 研发团队',
+      copyright: "版权所有 @SimpleCMS 研发团队",
     });
   });
 
   // 渲染分类页
   router.get(api.cates, async (ctx) => {
     const filePath = `${config.publicPath}/db/ads.json`;
-    const articleIdxPath = `${config.publicPath}/db/article_index.json`
+    const articleIdxPath = `${config.publicPath}/db/article_index.json`;
     const ads = RF(filePath);
     let articleIdxs = RF(articleIdxPath);
-    articleIdxs = articleIdxs.map(item => {
+    articleIdxs = articleIdxs.map((item) => {
       let date = new Date(item.ct);
       let y = date.getFullYear();
       let m = date.getMonth() + 1;
       let d = date.getDate();
       return {
         ...item,
-        ct: `${y}/${m}/${d}`
-      }
-    })
-    const topArticles = articleIdxs.filter(item => !!item.top);
+        ct: `${y}/${m}/${d}`,
+      };
+    });
+    const topArticles = articleIdxs.filter((item) => !!item.top);
     console.log({
       ads,
       tops: topArticles,
-      list: articleIdxs
-    })
+      list: articleIdxs,
+    });
     await ctx.render("index", {
       ads,
       tops: topArticles,
-      list: articleIdxs
+      list: articleIdxs,
     });
   });
 };

@@ -9,51 +9,98 @@ block style
 
 block content
   .viewContainer
-    .imgBox
-      img(
-        src=topImg
-        class='viewImg'
-      )
-    .viewTitle #{viewTitle}
-    .authorBox
-      .avatar
-      .name #{authorInfo.name}
-      .date #{authorInfo.date}
-    .descriptionBox
-      != descriptionBox
-    .exceptional
-      .text 给作者打赏，鼓励TA抓紧创作！
-      .icon 
-      .number 100人已打赏
-      .reward 
-        .like 
-          img(
-            src='/assets/like.png'
-          )
-          span #{views}
-        .collection
-          img(
-            src='/assets/favorites.png'
-          )
-          span #{flover}
-    .commentBox
-      .title 评论
-      each val in commentInfoList
-        .commentInof 
-          .commentPersonal
-            .avatar
-            .name #{val.name}
-            .date #{val.date}
-          .commentContent #{val.content}
-          .commentReply 
-      .commentTextarea 
+    .containerWidth
+      .imgBox
+        img(
+          src=topImg
+          class='viewImg'
+        )
+      .viewTitle #{viewTitle}
+      .authorBox
         .avatar
-        .review
-          textarea(
-            placeholderNew="评论.."
-            class='inputBox'
+        .name #{authorInfo.name}
+        .date #{authorInfo.date}
+      .descriptionBox
+        != descriptionBox
+      .exceptional
+        .text 给作者打赏，鼓励TA抓紧创作！
+        #reward.icon 
+          img(
+            src='/assets/group.png'
           )
-          .operation
-            .operationArea
-            .commentButton 评论
+        .reward 
+          #like.like 
+            img(
+              src='/assets/emptyLike.png'
+              id='img_like'
+            )
+            span #{views}
+          #collection.collection
+            img(
+              src='/assets/emptyFavotites.png'
+              id='img_favorites'
+            )
+            span #{flover}
+      .commentBox
+        .title 评论
+        each val in commentInfoList
+          .commentInof 
+            .commentPersonal
+              .avatar
+              .name 游客
+              .date 2020-12-18
+            .commentContent #{val}
+            .commentReply 
+              img(
+                src='/assets/vector.png'
+              )
+        .commentTextarea 
+          .avatar 
+            .avatarName 游客
+          .review
+            textarea(
+              placeholderNew="评论.."
+              class='inputBox'
+              id='js-textarea'
+            )
+            .operation
+              .operationArea
+              #commentButton.commentButton 评论
 
+  script.
+    const id = window.location.search.split('=')[1]
+    ${'#reward'}.click(function(){
+      //- 替换二维码
+    })
+    $('#collection').click(function(){
+      $("#img_favorites").attr("src",'/assets/favorites.png');})
+    $('#like').click(function(){
+      $("#img_like").attr("src",'/assets/like.png');
+        fetch('/api/v0/article/flover/add',{
+          body: JSON.stringify({id: id}),
+          method: 'POST',
+          credentials: 'include',
+          cache: 'no-cache',
+          headers: {
+            'user-agent': 'Mozilla/4.0 MDN Example',
+            'content-type': 'application/json'
+          },
+           mode: 'cors'
+        })
+      })
+    $('#commentButton').click(function(){
+        let textArea = $('#js-textarea').val()
+        fetch('/api/v0/article/comment/save',{
+          body: JSON.stringify({id: id , comment: textArea}),
+          method: 'POST',
+          credentials: 'include',
+          cache: 'no-cache',
+          headers: {
+            'user-agent': 'Mozilla/4.0 MDN Example',
+            'content-type': 'application/json'
+          },
+           mode: 'cors'
+        }).then((res) => {
+          window.location.reload()
+        })
+      })
