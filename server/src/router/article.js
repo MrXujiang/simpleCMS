@@ -262,7 +262,7 @@ const articleRouter = (router, apiPath) => {
       glob.sync(`${config.publicPath}/db/comments/*.json`).forEach(item => {
         const row = RF(item);
         result.flovers += row.flover;
-        result.comments += row.comments.length;
+        result.comments += row.comments && row.comments.length || 0
         result.views += row.views;
       })
       ctx.body = htr(200, result)
