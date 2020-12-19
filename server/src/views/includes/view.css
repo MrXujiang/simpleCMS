@@ -6,7 +6,22 @@
 
 .viewContainer .containerWidth {
   width: 1024px;
+  position: relative;
 }
+
+.viewContainer .contentWidth {
+  width: 774px;
+}
+
+.viewContainer .advertisingWidth {
+  width: 240px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100px;
+  background-color: #fff;
+}
+
 /* 图片 start */
 .viewContainer .imgBox .viewImg {
   width: 100%;

@@ -9,68 +9,70 @@ block style
 
 block content
   .viewContainer
-    .containerWidth
-      .imgBox
-        img(
-          src=topImg
-          class='viewImg'
-        )
-      .viewTitle #{viewTitle}
-      .authorBox
-        .avatar
-        .name #{authorInfo.name}
-        .date #{authorInfo.date}
-      .descriptionBox
-        != descriptionBox
-      .exceptional
-        .text 给作者打赏，鼓励TA抓紧创作！
-        #reward.icon 
+    .containerWidth 
+      .advertisingWidth 广告位
+      .contentWidth
+        .imgBox
           img(
-            src='/assets/group.png'
-            id='img-reward'
+            src=topImg
+            class='viewImg'
           )
-          img(
-            src='/assets/rectangle.png', 
-            id='img-payCode'
-          )
-        .reward 
-          #like.like 
+        .viewTitle #{viewTitle}
+        .authorBox
+          .avatar
+          .name #{authorInfo.name}
+          .date #{authorInfo.date}
+        .descriptionBox
+          != descriptionBox
+        .exceptional
+          .text 给作者打赏，鼓励TA抓紧创作！
+          #reward.icon 
             img(
-              src='/assets/emptyLike.png'
-              id='img_like'
+              src='/assets/group.png'
+              id='img-reward'
             )
-            span #{views}
-          #collection.collection
             img(
-              src='/assets/emptyFavotites.png'
-              id='img_favorites'
+              src='/assets/rectangle.png', 
+              id='img-payCode'
             )
-            span #{flover}
-      .commentBox
-        .title 评论
-        each val in commentInfoList
-          .commentInof 
-            .commentPersonal
-              .avatar
-              .name 游客
-              .date 2020-12-18
-            .commentContent #{val}
-            .commentReply 
+          .reward 
+            #like.like 
               img(
-                src='/assets/vector.png'
+                src='/assets/emptyLike.png'
+                id='img_like'
               )
-        .commentTextarea 
-          .avatar 
-            .avatarName 游客
-          .review
-            textarea(
-              placeholderNew="评论.."
-              class='inputBox'
-              id='js-textarea'
-            )
-            .operation
-              .operationArea
-              #commentButton.commentButton 评论
+              span #{views}
+            #collection.collection
+              img(
+                src='/assets/emptyFavotites.png'
+                id='img_favorites'
+              )
+              span #{flover}
+        .commentBox
+          .title 评论
+          each val in commentInfoList
+            .commentInof 
+              .commentPersonal
+                .avatar
+                .name 游客
+                .date 2020-12-18
+              .commentContent #{val}
+              .commentReply 
+                img(
+                  src='/assets/vector.png'
+                )
+          .commentTextarea 
+            .avatar 
+              .avatarName 游客
+            .review
+              textarea(
+                placeholderNew="评论.."
+                class='inputBox'
+                id='js-textarea'
+              )
+              .operation
+                .operationArea
+                #commentButton.commentButton 评论
 
   script.
     const id = window.location.search.split('=')[1]
