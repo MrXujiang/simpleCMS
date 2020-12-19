@@ -86,7 +86,13 @@
   color: #666;
 }
 .viewContainer .exceptional .icon {
-  height: 50px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.viewContainer .exceptional .icon #img-payCode {
+  display: none;
 }
 .viewContainer .exceptional .reward {
   margin-top: 26px;

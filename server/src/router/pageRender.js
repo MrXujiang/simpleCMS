@@ -61,16 +61,16 @@ const pageRenderRouter = (router) => {
   // 渲染首页
   router.get(api.home, async (ctx) => {
     const filePath = `${config.publicPath}/db/ads.json`;
-    const articleIdxPath = `${config.publicPath}/db/article_index.json`
+    const articleIdxPath = `${config.publicPath}/db/article_index.json`;
     const ads = RF(filePath) || {};
     let articleIdxs = RF(articleIdxPath) || [];
-    articleIdxs = articleIdxs.map(item => {
+    articleIdxs = articleIdxs.map((item) => {
       return {
         ...item,
-        ct: formatTime(item.ct)
-      }
-    })
-    const topArticles = articleIdxs.filter(item => !!item.top);
+        ct: formatTime(item.ct),
+      };
+    });
+    const topArticles = articleIdxs.filter((item) => !!item.top);
     await ctx.render("index", {
       ads,
       tops: topArticles,
@@ -86,22 +86,14 @@ const pageRenderRouter = (router) => {
     const article = RF(articlePath) || {};
     const comments = RF(commentPath) || {};
     console.log(comments, article);
-    // const comments = {
-    //   flover: 10,
-    //   views: 10,
-    //   comments: [
-    //     "所以敏捷的“快”不是快，而是在于精准的需求管理与控制能力。 ",
-    //     "所以敏捷的“快”不是快，而是在于精准的需求管理与控制能力。 ",
-    //     "所以敏捷的“快”不是快，而是在于精准的需求管理与控制能力。 ",
-    //   ],
-    // };
-    comments.views = comments.views + 1;
+    // comments.views = comments.views + 1;
     await ctx.render("detail", {
       viewTitle: article.title,
       topImg: article.face_img,
       authorInfo: { name: article.author, date: formatTime(article.ct, "-") },
       label: article.label,
       descriptionBox: article.html,
+      payCode: article.payCode,
       commentInfoList: comments.comments || [],
       flover: comments.flover,
       views: comments.views,

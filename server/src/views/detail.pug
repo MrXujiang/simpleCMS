@@ -27,6 +27,11 @@ block content
         #reward.icon 
           img(
             src='/assets/group.png'
+            id='img-reward'
+          )
+          img(
+            src='/assets/rectangle.png', 
+            id='img-payCode'
           )
         .reward 
           #like.like 
@@ -69,13 +74,17 @@ block content
 
   script.
     const id = window.location.search.split('=')[1]
-    ${'#reward'}.click(function(){
-      //- 替换二维码
+    $('#reward').click(function(){
+      $('#img-reward').hide();
+      $('#img-payCode').show();
     })
+    
     $('#collection').click(function(){
-      $("#img_favorites").attr("src",'/assets/favorites.png');})
+      $('#img_favorites').attr('src','/assets/favorites.png');
+    })
+
     $('#like').click(function(){
-      $("#img_like").attr("src",'/assets/like.png');
+      $('#img_like').attr('src','/assets/like.png');
         fetch('/api/v0/article/flover/add',{
           body: JSON.stringify({id: id}),
           method: 'POST',
@@ -88,6 +97,7 @@ block content
            mode: 'cors'
         })
       })
+
     $('#commentButton').click(function(){
         let textArea = $('#js-textarea').val()
         fetch('/api/v0/article/comment/save',{
