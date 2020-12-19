@@ -61,21 +61,16 @@ const pageRenderRouter = (router) => {
   // 渲染首页
   router.get(api.home, async (ctx) => {
     const filePath = `${config.publicPath}/db/ads.json`;
-    const articleIdxPath = `${config.publicPath}/db/article_index.json`;
-    const ads = RF(filePath);
-    let articleIdxs = RF(articleIdxPath);
-    articleIdxs = articleIdxs.map((item) => {
+    const articleIdxPath = `${config.publicPath}/db/article_index.json`
+    const ads = RF(filePath) || {};
+    let articleIdxs = RF(articleIdxPath) || [];
+    articleIdxs = articleIdxs.map(item => {
       return {
         ...item,
-        ct: formatTime(item.ct),
-      };
-    });
-    const topArticles = articleIdxs.filter((item) => !!item.top);
-    console.log({
-      ads,
-      tops: topArticles,
-      list: articleIdxs,
-    });
+        ct: formatTime(item.ct)
+      }
+    })
+    const topArticles = articleIdxs.filter(item => !!item.top);
     await ctx.render("index", {
       ads,
       tops: topArticles,
@@ -90,7 +85,7 @@ const pageRenderRouter = (router) => {
     const commentPath = `${config.publicPath}/db/comments/${id}.json`;
     const article = RF(articlePath) || {};
     const comments = RF(commentPath) || {};
-    console.log(comments);
+    console.log(comments, article);
     // const comments = {
     //   flover: 10,
     //   views: 10,

@@ -12,6 +12,7 @@ import styles from './index.less'
 interface PreviewModalProps {
   visible: boolean
   imageUrl: string
+  payCode: string
   formValues: ArticleType
   time: any
   curTab: string

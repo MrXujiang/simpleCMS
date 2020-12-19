@@ -39,7 +39,7 @@ const articleRouter = (router, apiPath) => {
   router.post(api.add,
     auth,
     async ctx => {
-      let { title, author, label, face_img, visible, type, desc, content } = ctx.request.body;
+      let { title, author, label, face_img, visible, type, desc, payCode, content } = ctx.request.body;
       if(title && label && content) {
         // 1. 写入文章数据
         const fid = uuid(6, 16);
@@ -47,7 +47,7 @@ const articleRouter = (router, apiPath) => {
         const filename = `${config.publicPath}/db/articles/${fid}.json`;
         try {
           // type  0 富文本  1 markdown
-          const res = WF(filename, { fid, title, author, face_img, label, ct, type, desc, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filename, { fid, title, author, face_img, label, ct, type, desc, payCode, visible, content, html: type ? marked(content) : '' })
           if(res) {
             ctx.body = htr(200, {fid}, '文章发布成功')
           }
@@ -74,13 +74,13 @@ const articleRouter = (router, apiPath) => {
   router.put(api.mod,
     auth,
     async ctx => {
-      let { fid, title, author, label, face_img, visible, type, desc, content, ct } = ctx.request.body;
+      let { fid, title, author, label, face_img, visible, type, desc, payCode, content, ct } = ctx.request.body;
       if(fid && title && author && label && content) {
         // 1. 更新文件
         const filePath = `${config.publicPath}/db/articles/${fid}.json`
         const ut = Date.now()
         try {
-          const res = WF(filePath, { fid, title, author, face_img, label, ct, ut, type, desc, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filePath, { fid, title, author, face_img, payCode, label, ct, ut, type, desc, visible, content, html: type ? marked(content) : '' })
           if(res) {
             ctx.body = htr(200, { fid }, '文章修改成功')
           }
@@ -402,7 +402,7 @@ const articleRouter = (router, apiPath) => {
   router.post(api.saveDraft,
     auth,
     async ctx => {
-      let { title, author, label, face_img, visible, desc, type, content } = ctx.request.body;
+      let { title, author, label, face_img, visible, desc, payCode, type, content } = ctx.request.body;
       if(title) {
         // 1. 写入文章数据
         const fid = uuid(6, 16);
@@ -410,7 +410,7 @@ const articleRouter = (router, apiPath) => {
         const ct = Date.now();
         try {
           // type  0 富文本  1 markdown
-          const res = WF(filename, { fid, title, author, face_img, label, ct, type, desc, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filename, { fid, title, author, face_img, payCode, label, ct, type, desc, visible, content, html: type ? marked(content) : '' })
           if(res) {
             ctx.body = htr(200, {fid}, '草稿保存成功')
           }
@@ -438,13 +438,13 @@ const articleRouter = (router, apiPath) => {
   router.put(api.editDraft,
     auth,
     async ctx => {
-      let { fid, title, author, label, face_img, visible, type, desc, content, ct } = ctx.request.body;
+      let { fid, title, author, label, face_img, payCode, visible, type, desc, content, ct } = ctx.request.body;
       if(fid && title && author && label && content) {
         // 1. 更新文件
         const filePath = `${config.publicPath}/db/drafts/${fid}.json`
         const ut = Date.now()
         try {
-          const res = WF(filePath, { fid, title, author, face_img, label, ct, ut, type, desc, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filePath, { fid, title, author, face_img, payCode, label, ct, ut, type, desc, visible, content, html: type ? marked(content) : '' })
           if(res) {
             ctx.body = htr(200, { fid }, '草稿修改成功')
           }

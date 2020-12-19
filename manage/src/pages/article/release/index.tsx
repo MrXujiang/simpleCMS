@@ -53,6 +53,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
   const [visible, setVisible] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [imageUrl, setImageUrl] = useState<string>('')
+  const [payCode, setPayCode] = useState<string>('')
 
   const onUpload: (info: any) => void = useCallback(info => {
     if (info.file.status === 'uploading') {
@@ -63,6 +64,21 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
       const imageUrl = getImageUrl(info)
       setLoading(false)
       setImageUrl(imageUrl)
+      message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
+    }
+  }, [formatMsg])
+
+  const onPayUpload: (info: any) => void = useCallback(info => {
+    if (info.file.status === 'uploading') {
+      setLoading(true)
+      return
+    }
+    if (info.file.status === 'done') {
+      const imageUrl = getImageUrl(info)
+      setLoading(false)
+      setPayCode(imageUrl)
       message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
@@ -95,6 +111,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
           content,
           type,
           face_img: imageUrl,
+          payCode,
           fid: location.query.id ? location.query.id : '',
         } : {
           content,
@@ -236,6 +253,9 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
         if (res.face_img) {
           setImageUrl(res.face_img)
         }
+        if (res.payCode) {
+          setImageUrl(res.payCode)
+        }
       })
     }
   }, [])
@@ -335,6 +355,21 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
             >
               <Input.TextArea placeholder={formatMsg('Please enter description')} rows={4} />
             </Form.Item>
+            <Form.Item
+              label={<FormattedMsg id="PayCode" />}
+              name="payCode"
+            >
+              <Upload
+                className={styles.face_img}
+                name="file"
+                listType="picture-card"
+                action={`http://${SERVER_URL}/api/v0/files/upload/free`}
+                onChange={onPayUpload}
+                showUploadList={false}
+              >
+                {payCode ? <img src={payCode} alt="websiteLogo" style={{ width: 102, height: 102 }} /> : <UploadBtn loading={loading} />}
+              </Upload>
+            </Form.Item>
             <Form.Item className={styles.btns}>
               <Button type="primary" htmlType="submit" className={styles.btn}>
                 <FormattedMsg id="Published" />
@@ -409,6 +444,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
         editorState={editorState}
         markdown={markdown}
         imageUrl={imageUrl}
+        payCode={payCode}
         currentUser={currentUser}
       />
     </Fragment>

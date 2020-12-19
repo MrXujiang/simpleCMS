@@ -29,5 +29,6 @@ export default {
   'Text editor': '富文本编辑器',
   'Select up to three tags': '最多选择三个标签',
   Cover: '封面图',
+  PayCode: '赞赏二维码',
   'Start editing...': '开始编辑...',
 }
