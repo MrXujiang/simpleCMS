@@ -103,38 +103,38 @@ const pageRenderRouter = (router) => {
 
   // 渲染关于我们页
   router.get(api.about, async (ctx) => {
+    // 头像
     await ctx.render("about", {
-      aboutus: "关于我们",
-      aboutDesc: "simpleCMS 简介",
-      teamDesc: "团队介绍",
+      introductionInfo:
+        "simpleCMS是一款开源cms系统, 主要为个人/团队快速开发博客或者知识共享平台, 类似于hexo, worldpress, 但是他们往往需要复杂的搭建过程, 我们将复杂度降到最低, 并且有详细的部署教程, 你只需要有一台服务器, 就能轻松拥有一个属于你的博客平台.",
       teams: [
         {
-          tx: "头像",
+          avatarUrl: "xujiang",
           name: "徐小夕",
-          job: "前端工程师",
-          desc: "简短介绍",
-          github: "github.com/xuxiaoxi",
+          job: "FRONT-END ENGINEER",
+          desc: "专注于前端工程化, 可视化方向的研究~",
+          github: "https://github.com/MrXujiang",
         },
         {
-          tx: "头像",
-          name: "陈伟",
-          job: "前端工程师",
-          desc: "简短介绍",
-          github: "github.com/chenwei",
-        },
-        {
-          tx: "头像",
-          name: "苗晨浩",
-          job: "UI设计师",
-          desc: "简短介绍",
-          github: "github.com/mch",
-        },
-        {
-          tx: "头像",
+          avatarUrl: "huguojiang",
           name: "胡小磊",
-          job: "前端工程师",
-          desc: "简短介绍",
-          github: "github.com/hgj",
+          job: "FRONT-END ENGINEER",
+          desc: "不好好写代码就要回家继承家产了, 好烦~",
+          github: "https://github.com/huguojiang",
+        },
+        {
+          avatarUrl: "chenwei",
+          name: "陈伟",
+          job: "FRONT-END ENGINEER",
+          desc: "越努力, 越幸运~",
+          github: "https://github.com/cw514102209",
+        },
+        {
+          avatarUrl: "miaochenhao",
+          name: "Duang",
+          job: "ENGINEER",
+          desc: "回老家养猪的设计师~",
+          github: "github.com/mch",
         },
       ],
       copyright: "版权所有 @SimpleCMS 研发团队",
