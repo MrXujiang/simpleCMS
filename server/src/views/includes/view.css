@@ -99,6 +99,7 @@
   font-size: 18px;
   line-height: 26px;
   color: #666;
+  margin-bottom: 8px;
 }
 .viewContainer .exceptional .icon {
   height: 150px;
@@ -142,6 +143,7 @@
   font-size: 16px;
   line-height: 26px;
   color: #333333;
+  margin-bottom: 16px;
 }
 .viewContainer .commentBox .commentInof {
   margin-bottom: 30px;

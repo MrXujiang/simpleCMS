@@ -19,7 +19,7 @@
   align-items: center;
 }
 .contentContainer .carouselBox .content{
-  width: 100%;
+  width: calc(100% - 600px);
   padding: 40px;
 }
 .contentContainer .carouselBox .content .title {
@@ -41,12 +41,16 @@
   color: #718096;
 }
 .contentContainer .carouselBox .adImg{
-  max-width: 600px;
-  text-align: right;
-  overflow: hidden;
+  width: 600px;
+  height: 250px;
+  display: table-cell;
+  vertical-align: middle;
 }
 .contentContainer .adImg > img{
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  display: block;
 }
 
 .contentContainer .recommendBox {
