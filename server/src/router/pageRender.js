@@ -83,9 +83,10 @@ const pageRenderRouter = (router) => {
     const id = ctx.query.fid;
     const articlePath = `${config.publicPath}/db/articles/${id}.json`;
     const commentPath = `${config.publicPath}/db/comments/${id}.json`;
+    const adsPath = `${config.publicPath}/db/ads.json`;
     const article = RF(articlePath) || {};
     const comments = RF(commentPath) || {};
-    console.log(comments, article);
+    const ads = RF(adsPath) || {};
     // comments.views = comments.views + 1;
     await ctx.render("detail", {
       viewTitle: article.title,
@@ -97,6 +98,7 @@ const pageRenderRouter = (router) => {
       commentInfoList: comments.comments || [],
       flover: comments.flover,
       views: comments.views,
+      ads: ads.sideAd || {}
     });
     WF(commentPath, comments);
   });
