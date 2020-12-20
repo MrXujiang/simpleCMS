@@ -1,12 +1,15 @@
 
 /* 内容样式 start*/
 .contentContainer{
-  margin: 32px auto;
+  margin: auto;
+  margin-top: 32px;
   display: flex;
   justify-content: center;
+  min-width: 1024px;
+  padding-bottom: 50px;
 }
 .homeWidth {
-  width: 1024px;
+  width: 960px;
 }
 .contentContainer .carouselBox{
   min-width: 920px;
@@ -84,7 +87,7 @@
   margin-bottom: 20px;
   width: 220px;
   background-color: #fff;
-  margin-right: 30px;
+  margin-right: 20px;
 }
 .recommendBox .childBox .updataBox .childUpdata .imgWrap {
   display: block;
@@ -215,3 +218,53 @@
   color: #000;
 }
 /* 内容样式 end */
+
+@media (max-width: 414px) {
+  .contentContainer {
+    width: calc(100% - 32px);
+    min-width: 0;
+    margin: 0;
+    padding: 16px;
+    padding-bottom: 80px;
+  }
+  .contentContainer .homeWidth {
+    width: 100%;
+  }
+  .contentContainer .homeWidth .carouselBox {
+    display: none;
+  }
+  .contentContainer .homeWidth .recommendBox .title {
+    display: none;
+  }
+  .contentContainer .homeWidth .recommendBox {
+    width: 100%;
+    min-width: 0;
+    margin-top: 0;
+  }
+  .contentContainer .homeWidth .recommendBox .childBox .updataBox {
+    display: flex;
+    flex-direction: column;
+  }
+  .recommendBox .childBox .updataBox .childUpdata {
+    width: 100%;
+    height: 300px;
+    margin-right: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: wrap;
+  }
+  .recommendBox .childBox .updataBox .childUpdata .imgWrap {
+    display: table-cell;
+    vertical-align: middle;
+    height: 180px;
+  }
+  .recommendBox .childBox .updataBox .childUpdata .imgWrap img {
+    max-width: 100%;
+    margin: auto;
+    display: block;
+  }
+
+  .contentContainer .homeWidth .columnBox {
+    display: none;
+  }
+}

@@ -10,7 +10,6 @@ block style
 block content
   .viewContainer
     .containerWidth 
-      .advertisingWidth 广告位
       .contentWidth
         .imgBox
           img(
@@ -42,12 +41,20 @@ block content
                 id='img_like'
               )
               span #{views}
-            #collection.collection
-              img(
-                src='/assets/emptyFavotites.png'
-                id='img_favorites'
-              )
-              span #{flover}
+            //- #collection.collection
+            //-   img(
+            //-     src='/assets/emptyFavotites.png'
+            //-     id='img_favorites'
+            //-   )
+            //-   span #{flover}
+        a.advertisingWidth(
+          herf=ads.link
+        ) 
+          .imgBox 
+            img(
+              src=ads.imageUrl
+            )
+          .adText #{ads.text}
         .commentBox
           .title 评论
           each val in commentInfoList

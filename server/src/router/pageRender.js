@@ -75,6 +75,7 @@ const pageRenderRouter = (router) => {
       ads,
       tops: topArticles,
       list: articleIdxs,
+      copyright: "版权所有 @SimpleCMS 研发团队",
     });
   });
 
@@ -87,6 +88,7 @@ const pageRenderRouter = (router) => {
     const article = RF(articlePath) || {};
     const comments = RF(commentPath) || {};
     const ads = RF(adsPath) || {};
+    console.log(ads);
     // comments.views = comments.views + 1;
     await ctx.render("detail", {
       viewTitle: article.title,
@@ -98,7 +100,8 @@ const pageRenderRouter = (router) => {
       commentInfoList: comments.comments || [],
       flover: comments.flover,
       views: comments.views,
-      ads: ads.sideAd || {}
+      ads: ads.sideAd || {},
+      copyright: "版权所有 @SimpleCMS 研发团队",
     });
     WF(commentPath, comments);
   });
@@ -169,6 +172,7 @@ const pageRenderRouter = (router) => {
       ads,
       tops: topArticles,
       list: articleIdxs,
+      copyright: "版权所有 @SimpleCMS 研发团队",
     });
   });
 };
