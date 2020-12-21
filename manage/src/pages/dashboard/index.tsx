@@ -67,7 +67,7 @@ const Dashboard: FC<DashboardProps> = ({
           },
         }
         
-        charts.push(<div className={styles.chart}>
+        charts.push(<div className={styles.chart} key={key}>
           <div className={styles.text}>
             {YD}
             {formatMsg(key)}
