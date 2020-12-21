@@ -1,7 +1,15 @@
 
 /* 内容样式 start*/
 .contentContainer{
-  margin: 32px 180px 0;
+  margin: auto;
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  min-width: 1024px;
+  padding-bottom: 50px;
+}
+.homeWidth {
+  width: 960px;
 }
 .contentContainer .carouselBox{
   min-width: 920px;
@@ -14,7 +22,7 @@
   align-items: center;
 }
 .contentContainer .carouselBox .content{
-  width: 100%;
+  width: calc(100% - 600px);
   padding: 40px;
 }
 .contentContainer .carouselBox .content .title {
@@ -36,12 +44,16 @@
   color: #718096;
 }
 .contentContainer .carouselBox .adImg{
-  max-width: 600px;
-  text-align: right;
-  overflow: hidden;
+  width: 600px;
+  height: 250px;
+  display: table-cell;
+  vertical-align: middle;
 }
 .contentContainer .adImg > img{
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  display: block;
 }
 
 .contentContainer .recommendBox {
@@ -75,7 +87,7 @@
   margin-bottom: 20px;
   width: 220px;
   background-color: #fff;
-  margin-right: 30px;
+  margin-right: 20px;
 }
 .recommendBox .childBox .updataBox .childUpdata .imgWrap {
   display: block;
@@ -104,6 +116,9 @@
   line-height: 22px;
   color: #333333;
   margin-bottom: 8px;
+}
+.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle:hover {
+  color: #51B266;
 }
 .contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatContent {
   font-family: Inter;
@@ -191,6 +206,9 @@
   color: #000;
   margin-bottom: 4px;
 }
+.childBox .columnBox .content > .title:hover {
+  color: #51B266;
+}
 .contentContainer .recommendBox .childBox .columnBox .content .introduction {
   font-family: PingFang HK;
   font-style: normal;
@@ -200,3 +218,53 @@
   color: #000;
 }
 /* 内容样式 end */
+
+@media (max-width: 414px) {
+  .contentContainer {
+    width: calc(100% - 32px);
+    min-width: 0;
+    margin: 0;
+    padding: 16px;
+    padding-bottom: 80px;
+  }
+  .contentContainer .homeWidth {
+    width: 100%;
+  }
+  .contentContainer .homeWidth .carouselBox {
+    display: none;
+  }
+  .contentContainer .homeWidth .recommendBox .title {
+    display: none;
+  }
+  .contentContainer .homeWidth .recommendBox {
+    width: 100%;
+    min-width: 0;
+    margin-top: 0;
+  }
+  .contentContainer .homeWidth .recommendBox .childBox .updataBox {
+    display: flex;
+    flex-direction: column;
+  }
+  .recommendBox .childBox .updataBox .childUpdata {
+    width: 100%;
+    height: 300px;
+    margin-right: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: wrap;
+  }
+  .recommendBox .childBox .updataBox .childUpdata .imgWrap {
+    display: table-cell;
+    vertical-align: middle;
+    height: 180px;
+  }
+  .recommendBox .childBox .updataBox .childUpdata .imgWrap img {
+    max-width: 100%;
+    margin: auto;
+    display: block;
+  }
+
+  .contentContainer .homeWidth .columnBox {
+    display: none;
+  }
+}

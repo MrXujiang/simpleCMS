@@ -2,11 +2,22 @@
 body {
   margin: 0;
   background-color: #f8f8f8;
+  position: relative;
 }
+
+.copyright {
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 32px;
+}
+
 
 a {
   text-decoration: none;
-  color: #333;
+  color: #999;
 }
 
 /* 头部样式 start */
@@ -119,3 +130,28 @@ a {
 }
 
 /* 头部样式 end */
+
+@media (max-width: 414px) {
+  .headerContainer{
+    width: calc(100% - 40px) ;
+    height: 60px;
+    padding: 0 20px;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+  .headerContainer .logo {
+    width: 125px;
+  }
+  .headerContainer .category {
+    flex: 1;
+  }
+  .headerContainer .category .box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .headerContainer .other {
+    display: none;
+  }
+}

@@ -8,49 +8,51 @@ block style
 
 block content
   .contentContainer
-    a.carouselBox(href=ads.topAd['link'], target='_blank')
-      .content
-        .title #{ads.topAd['text']}
-      .adImg
-        img(
-          src=ads.topAd['imageUrl']
-        )
-    .recommendBox
-      .title
-        span 最近更新
-      .childBox
-        .updataBox
-          each val in list
-            a.childUpdata(href=`/detail?fid=${val.fid}`, target='_blank')
-              span.imgWrap
+   .homeWidth
+      a.carouselBox(href=ads.topAd['link'], target='_blank')
+        .content
+          .title #{ads.topAd['text']}
+        .adImg
+          img(
+            src=ads.topAd['imageUrl']
+          )
+      .recommendBox
+        .title
+          span 最近更新
+        .childBox
+          .updataBox
+            each val in list
+              a.childUpdata(href=`/detail?fid=${val.fid}`, target='_blank')
+                span.imgWrap
+                  img(
+                    src= val.face_img
+                    object-fit='contain'
+                  )
+                .updataContent
+                  .updatatitle #{val.title}
+                  .updatatContent #{val.desc}
+                  .updataOther
+                    .author #{val.author}
+                    .date #{val.ct}
+                    //- .icon 
+                    //-   .like 
+                    //-     img(
+                    //-       src='/assets/like.png'
+                    //-     )
+                    //-     span 122
+                    //-   .favorites
+                    //-     img(
+                    //-       src='/assets/favorites.png'
+                    //-     )
+                    //-     span 34
+          .columnBox
+            .title 编辑推荐
+            each val in tops
+              a.item(href=`/detail?fid=${val.fid}`, target='_blank')
                 img(
-                  src= val.face_img
+                  src=val.face_img
+                  class='listImg'
                 )
-              .updataContent
-                .updatatitle #{val.title}
-                .updatatContent #{val.desc}
-                .updataOther
-                  .author #{val.author}
-                  .date #{val.ct}
-                  //- .icon 
-                  //-   .like 
-                  //-     img(
-                  //-       src='/assets/like.png'
-                  //-     )
-                  //-     span 122
-                  //-   .favorites
-                  //-     img(
-                  //-       src='/assets/favorites.png'
-                  //-     )
-                  //-     span 34
-        .columnBox
-          .title 编辑推荐
-          each val in tops
-            a.item(href=`/detail?fid=${val.fid}`, target='_blank')
-              img(
-                src=val.face_img
-                class='listImg'
-              )
-              .content
-                .title #{val.title}
-                .introduction #{val.author}  #{val.ct}
+                .content
+                  .title #{val.title}
+                  .introduction #{val.author}  #{val.ct}

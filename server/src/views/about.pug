@@ -8,17 +8,28 @@ block style
 
 block content
   .aboutContainer
-    .aboutus #{aboutus}
-    .aboutDesc #{aboutDesc}
-    .teamsDesc #{teamDesc}
-    .teams 
-      each team in teams
-        .team
-          .tx
-            span #{team.tx}
-          .name #{team.name}
-          .job #{team.job}
-          .teamDesc #{team.desc}
-          .github #{team.github}
-
-    .copyright #{copyright}
+    .aboutWidth
+      .aboutus 
+        .imgBox
+          img(
+            src='/assets/about.png'
+          )
+        .introduction #{introductionInfo}
+      .teamName 团队介绍
+      .teams 
+        each team in teams
+          .teamBox
+            .avatar
+              img(
+                src=`assets/about-${team.avatarUrl}.png`
+                class='authorAvatar'
+              )
+              .jobTitle #{team.job}
+              a.maskBackground(
+                href=team.github
+              ) 
+                img(
+                  src='assets/gitIcon.png'
+                )
+            .name #{team.name}
+            .teamDesc #{team.desc}

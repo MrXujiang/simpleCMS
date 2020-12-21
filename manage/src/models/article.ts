@@ -13,6 +13,7 @@ export interface ArticleType {
   label: []
   visible: number
   face_img: string
+  payCode: string
   content: string
   html: string
   type: number

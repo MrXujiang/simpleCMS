@@ -8,8 +8,11 @@ block header
       span 趣写
     .category
       .box
-        each val in [{cate: '首页', link: '/'}, {cate: '分类', link: '/cates'}, {cate: '关于', link: '/about'}]
-          a(href=val.link) #{val.cate}
+        each val in [{id: 'home',cate: '首页', link: '/'}, {id: 'cates',cate: '分类', link: '/cates'}, {id:'about', cate: '关于', link: '/about'}]
+          a(
+            href=val.link
+            id=val.id
+          ) #{val.cate}
     .other
       #writeBtn.button 写文章
       input(
@@ -21,6 +24,12 @@ block header
         .avatar
     
     script.
+      const pathname = window.location.pathname.split('/')[1]
+      if(pathname){
+        $(`#${pathname}`).css('color', '#333')
+      }else {
+        $(`#home`).css('color', '#333')
+      }
       $('#writeBtn').click(function(){
         window.open('/admin');
       })

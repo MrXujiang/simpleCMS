@@ -3,30 +3,48 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  min-width: 1180px;
-  height: calc(100vh - 60px);
+  min-width: 1024px;
+  min-height: calc(100vh - 60px);
+}
+
+.aboutWidth {
+  width: 960px;
 }
 
 .aboutus {
-  width: 500px;
-  height: 100px;
-  border: 1px solid black;
-  margin: 20px 0px;
-  text-align: center;
-  line-height: 100px;
+  width: 100%;
+  margin: 26px 0px;
+  display: flex;
+  align-items: flex-end;
+  height: 208px;
+  margin-bottom: 64px;
+} 
+
+.aboutus .imgBox {
+  width: 300px;
+  height: 200px;
 }
 
-.aboutDesc {
-  margin-bottom: 20px;
+.aboutus .imgBox img {
+  width: 300px;
+  height: 200px;
 }
 
-.teamsDesc {
-  width: 200px;
-  height: 100px;
-  border: 1px solid black;
+.aboutus .introduction {
+  font-size: 16px;
+  line-height: 180%;
+  text-align: justify;
+  letter-spacing: 0.1em;
+  color: #333;
+}
+
+.teamName {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 34px;
+  color: #000;
   text-align: center;
-  line-height: 100px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .teams {
@@ -36,44 +54,125 @@
   margin-bottom: 20px;
 }
 
-.team {
+.teamBox {
   width: 200px;
-  margin-right: 10px;
-  padding: 5px 10px;
-  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  flex-flow: wrap;
+}
+.teamBox .avatar {
+  width: 142px;
+  height: 142px;
+  border-radius: 193px;
+  position: relative;
   text-align: center;
+  margin-bottom: 29px;
+}
+.teamBox .avatar:hover .maskBackground {
+  visibility: visible;
+}
+.teamBox .avatar .authorAvatar {
+  width: 142px;
+  height: 142px;
+  border-radius: 193px;
+}
+.teamBox .avatar .jobTitle {
+  width: 132px;
+  height: 44px;
+  position: absolute;
+  bottom: 0;
+  right: -66px;
+  text-align: center;
+  background-color: #64D37C;
+  color: #fff;
+  border-radius: 22px 22px 22px 0%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.teamBox .avatar .maskBackground {
+  visibility: hidden;
+  width: 100%;
+  height: 100%;
+  background-color: #51B266;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 193px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.teamBox .avatar .maskBackground img{
+  width: 25px;
+  height: 25px;
 }
 
-.teams .team:last-child {
-  margin-right: 0;
+.teamBox .name {
+  width: 142px;
+  color: #666;
+  font-size: 18px;
+  line-height: 18px;
 }
 
-.tx {
-  width: 100px;
-  height: 100px;
-  margin: 20px auto 20px;
-  border-radius: 100px;
-  border: 1px solid black;
-  line-height: 100px;
+.teamBox .teamDesc { 
+  width: 142px;
+  font-size: 14px;
+  line-height: 24px;
+  color: #666666;
 }
+
+
 
 .name {
   margin-bottom: 20px;
 }
 
-.job {
-  margin-bottom: 20px;
-}
-
-.teamDesc {
-  margin-bottom: 50px;
-}
-
-.github {
-  margin-bottom: 20px;
-}
-
-.copyright {
-  margin-bottom: 50px;
-  text-align: center;
+@media (max-width: 414px) {
+  .aboutContainer {
+    width: calc(100% - 32px);
+    min-width: 0;
+    padding: 0 16px;
+    padding-bottom: 80px;
+  }
+  .aboutContainer .aboutWidth {
+    width: 100%;
+  }
+  .aboutContainer .aboutWidth .aboutus {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: unset;
+  }
+  .aboutContainer .aboutWidth .teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+  }
+  .aboutContainer .aboutWidth .teams .teamBox {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: wrap;
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 8px;
+  }
+  .aboutContainer .aboutWidth .teams .teamBox > div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .aboutContainer .aboutWidth .teams .teamBox .avatar {
+    width: 100%;
+  }
+  .teamBox .avatar .jobTitle {
+    right: calc(50% - 132px);
+  }
 }
