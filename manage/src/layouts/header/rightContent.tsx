@@ -28,7 +28,7 @@ const RightContent: FC<RightContentProps> = ({ currentUser, lang, dispatch }) =>
         history.replace('/user/login')
         break
       case 'settings':
-        history.push('/modifyUser')
+        history.push('/modify')
         break
       case 'zh-cn':
         localStorage.setItem('simpleCMSLang', 'zh-cn')

@@ -59,7 +59,7 @@ export default defineConfig({
         { path: '/advert', component: '@/pages/advert' },
         { path: '/payment', component: '@/pages/payment' },
         { path: '/setting', component: '@/pages/setting' },
-        { path: '/modifyUser', component: '@/pages/user/modify' },
+        { path: '/modify', component: '@/pages/user/modify' },
         { component: '@/pages/404' }
       ],
     },

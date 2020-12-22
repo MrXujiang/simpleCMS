@@ -51,19 +51,20 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
   const [editorState, setEditorState] = useState<any>(BraftEditor.createEditorState(null))
   const [curTab, setCurTab] = useState<string>('edit')
   const [visible, setVisible] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [imageUrl, setImageUrl] = useState<string>('')
+  const [faceImgLoading, setFaceImgLoading] = useState<boolean>(false)
+  const [faceImg, setFaceImg] = useState<string>('')
+  const [payCodeLoading, setPayCodeLoading] = useState<boolean>(false)
   const [payCode, setPayCode] = useState<string>('')
 
-  const onUpload: (info: any) => void = useCallback(info => {
+  const onFaceImageUpload: (info: any) => void = useCallback(info => {
     if (info.file.status === 'uploading') {
-      setLoading(true)
+      setFaceImgLoading(true)
       return
     }
     if (info.file.status === 'done') {
-      const imageUrl = getImageUrl(info)
-      setLoading(false)
-      setImageUrl(imageUrl)
+      const faceImg = getImageUrl(info)
+      setFaceImgLoading(false)
+      setFaceImg(faceImg)
       message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
@@ -72,13 +73,13 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
 
   const onPayUpload: (info: any) => void = useCallback(info => {
     if (info.file.status === 'uploading') {
-      setLoading(true)
+      setPayCodeLoading(true)
       return
     }
     if (info.file.status === 'done') {
-      const imageUrl = getImageUrl(info)
-      setLoading(false)
-      setPayCode(imageUrl)
+      const payCode = getImageUrl(info)
+      setPayCodeLoading(false)
+      setPayCode(payCode)
       message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
@@ -104,21 +105,19 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
           type = 1
           break
       }
-      const args = Object.assign(
-        {},
-        values,
-        imageUrl ? {
-          content,
-          type,
-          face_img: imageUrl,
-          payCode,
-          fid: location.query.id ? location.query.id : '',
-        } : {
-          content,
-          type,
-          fid: location.query.id ? location.query.id : '',
-        }
-      )
+      
+      let args = {
+        ...values,
+        content,
+        type,
+        fid: location.query.id ? location.query.id : '',
+      }
+      if (faceImg) {
+        args.face_img = faceImg
+      }
+      if (payCode) {
+        args.payCode = payCode
+      }
 
       switch (action) {
         case 'save':
@@ -152,7 +151,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
         break
       }
     }, [
-      curTab, editorState, markdown, formatMsg, imageUrl,
+      curTab, editorState, markdown, formatMsg, faceImg, payCode,
       location.query.draft, location.query.id, articleDetail, draftDetail
     ])
 
@@ -251,10 +250,10 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
           }
         }
         if (res.face_img) {
-          setImageUrl(res.face_img)
+          setFaceImg(res.face_img)
         }
         if (res.payCode) {
-          setImageUrl(res.payCode)
+          setPayCode(res.payCode)
         }
       })
     }
@@ -333,14 +332,16 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
               name="face_img"
             >
               <Upload
-                className={styles.face_img}
+                className={styles.img}
                 name="file"
                 listType="picture-card"
                 action={`http://${SERVER_URL}/api/v0/files/upload/free`}
-                onChange={onUpload}
+                onChange={onFaceImageUpload}
                 showUploadList={false}
               >
-                {imageUrl ? <img src={imageUrl} alt="websiteLogo" style={{ width: 102, height: 102 }} /> : <UploadBtn loading={loading} />}
+                {faceImg
+                  ? <img src={faceImg} alt="Cover" style={{ width: 102, height: 102 }} />
+                  : <UploadBtn loading={faceImgLoading} />}
               </Upload>
             </Form.Item>
             <Form.Item
@@ -360,14 +361,16 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
               name="payCode"
             >
               <Upload
-                className={styles.face_img}
+                className={styles.img}
                 name="file"
                 listType="picture-card"
                 action={`http://${SERVER_URL}/api/v0/files/upload/free`}
                 onChange={onPayUpload}
                 showUploadList={false}
               >
-                {payCode ? <img src={payCode} alt="websiteLogo" style={{ width: 102, height: 102 }} /> : <UploadBtn loading={loading} />}
+                {payCode
+                  ? <img src={payCode} alt="PayCode" style={{ width: 102, height: 102 }} />
+                  : <UploadBtn loading={payCodeLoading} />}
               </Upload>
             </Form.Item>
             <Form.Item className={styles.btns}>
@@ -400,6 +403,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
           >
             <Tabs.TabPane tab={<FormattedMsg id="Text editor" />} key="edit">
               <BraftEditor
+                style={{ height: 480 }}
                 value={editorState}
                 extendControls={extendControls}
                 excludeControls={excludeControls}
@@ -443,7 +447,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
         curTab={curTab}
         editorState={editorState}
         markdown={markdown}
-        imageUrl={imageUrl}
+        imageUrl={faceImg}
         payCode={payCode}
         currentUser={currentUser}
       />

@@ -1,5 +1,7 @@
 import { get } from 'lodash'
 
+export const isDev = process.env.NODE_ENV === 'development'
+
 export const title: string = 'simpleCMS'
 
 export const TIME_FORMAT: string = 'YYYY-MM-DD HH:mm'
@@ -15,6 +17,6 @@ export const getFormdata: (info: any) => void = info => {
   return formdata
 }
 
-export const phoneRE = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/
+export const phoneRE = /^1[0-9]{10}$/
 
-export const SERVER_URL = process.env.NODE_ENV === 'development' ? 'localhost:3000' : '49.234.61.19:3000'
+export const SERVER_URL = isDev ? 'localhost:3000' : '49.234.61.19:3000'

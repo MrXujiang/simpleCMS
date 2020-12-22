@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { message } from 'antd'
-
-const isDev = process.env.NODE_ENV === 'development'
+import { isDev } from '@/utils'
 
 const instance = axios.create({
     baseURL: isDev ? 'http://192.168.56.1:3000/api/v0' : 'http://49.234.61.19:3000/api/v0',

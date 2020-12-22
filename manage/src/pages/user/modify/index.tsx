@@ -92,7 +92,7 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
               name="modifyForm"
               form={form}
               onFinish={onFinish}
-              initialValues={{ prefix: '86' }}
+              initialValues={{ prefix: '86', country: 'china' }}
               scrollToFirstError
             >
               <Form.Item
