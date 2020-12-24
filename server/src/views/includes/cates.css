@@ -1,0 +1,17 @@
+.labelBox {
+    width: 960px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.labelBox .label {
+    margin-right: 10px;
+    display: inline-block;
+    padding: 4px 14px;
+    color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 8px rgba(0,0,0,.1);
+}
+.labelBox .label i {
+    font-style: none;
+}

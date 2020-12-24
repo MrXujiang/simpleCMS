@@ -16,7 +16,7 @@ block header
     .other
       #writeBtn.button 写文章
       input(
-        class='search'
+        class='search js_search'
         placeholder='Search'
       )
       .noticeBox 
@@ -33,3 +33,12 @@ block header
       $('#writeBtn').click(function(){
         window.open('/admin');
       })
+      //- $('.js_search').blur(function(e){
+      //-   window.location.href = window.location.pathname + '?keyword=' + e.target.value;
+      //- })
+      $(document).keyup(function(event){
+        if(event.keyCode ==13){
+          val = $(".js_search").val();
+          window.location.href = window.location.pathname + '?keyword=' + event.target.value;
+        }
+      });

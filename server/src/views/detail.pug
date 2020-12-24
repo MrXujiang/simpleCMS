@@ -21,6 +21,7 @@ block content
           .avatar
           .name #{authorInfo.name}
           .date #{authorInfo.date}
+          .views #{views}人围观
         .descriptionBox
           != descriptionBox
         .exceptional
@@ -40,7 +41,7 @@ block content
                 src='/assets/emptyLike.png'
                 id='img_like'
               )
-              span #{views}
+              span #{flover}
             //- #collection.collection
             //-   img(
             //-     src='/assets/emptyFavotites.png'
@@ -104,6 +105,8 @@ block content
             'content-type': 'application/json'
           },
            mode: 'cors'
+        }).then((res) => {
+          window.location.reload()
         })
       })
 

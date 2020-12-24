@@ -131,7 +131,7 @@ async function start() {
         // 访问量统计
         weekData[year]['views'][month] = weekData[year]['views'][month] || [];
         weekData[year]['views'][month][dayH] = result.views;
-        
+
         WF(weekLog, weekData);
     });
 
