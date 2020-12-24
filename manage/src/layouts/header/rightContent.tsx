@@ -1,4 +1,4 @@
-import React, { FC, Key, useMemo, useCallback, useEffect } from 'react'
+import React, { useMemo, useCallback, useEffect } from 'react'
 import { Dropdown, Menu, Avatar, Spin } from 'antd'
 import { history } from 'umi'
 import {
@@ -21,8 +21,8 @@ interface RightContentProps {
   dispatch: Dispatch
 }
 
-const RightContent: FC<RightContentProps> = ({ currentUser, lang, dispatch }) => {
-  const onMenuClick: (params: { key: Key }) => void = useCallback(({ key }) => {
+const RightContent: React.FC<RightContentProps> = ({ currentUser, lang, dispatch }) => {
+  const onMenuClick: (params: { key: React.Key }) => void = useCallback(({ key }) => {
     switch (key) {
       case 'logout':
         history.replace('/user/login')

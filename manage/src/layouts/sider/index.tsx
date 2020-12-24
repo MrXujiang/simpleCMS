@@ -1,4 +1,4 @@
-import React, { FC, Key, useState, useCallback, useMemo, useEffect } from 'react'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import { Link } from 'umi'
 import { Layout, Menu } from 'antd'
 
@@ -16,7 +16,7 @@ interface SiderProps {
   }
 }
 
-const SiderLayput: FC<SiderProps> = ({ collapsed, location: { pathname } }) => {
+const SiderLayput: React.FC<SiderProps> = ({ collapsed, location: { pathname } }) => {
   const curKey = useMemo(() => {
     return pathname.lastIndexOf('/') !== 0
       ? pathname.slice(1, pathname.lastIndexOf('/'))
@@ -25,7 +25,7 @@ const SiderLayput: FC<SiderProps> = ({ collapsed, location: { pathname } }) => {
   
   const [ selectedKey, setSelectedKey ] = useState<any>(curKey)
   
-  const onMenuClick = useCallback(({ key }: { key: Key }) => setSelectedKey(key), [])
+  const onMenuClick = useCallback(({ key }: { key: React.Key }) => setSelectedKey(key), [])
 
   useEffect(() => setSelectedKey(curKey), [pathname])
 
@@ -35,7 +35,7 @@ const SiderLayput: FC<SiderProps> = ({ collapsed, location: { pathname } }) => {
         <Link to="/">
           <img src={logo} alt="logo" width={30} height={30} />
         </Link>
-        <span className={collapsed ? styles.hideTitle : styles.showTitle}>
+        <span className={collapsed ? styles.hide : styles.show}>
           <FormattedMsg id={title} />
         </span>
       </div>

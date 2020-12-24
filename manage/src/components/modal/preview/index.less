@@ -1,6 +1,19 @@
 @import '~less/variables';
 
-.image {
+.preview {
+  :global(.ant-modal-close) {
+    display: none;
+  }
+
+  :global(.ant-modal-header) {
+    display: none;
+  }
+}
+
+.img {
+  width: 920px;
+  height: 450px;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -10,24 +23,79 @@
   align-items: center;
   margin-bottom: 24px;
   color: #999999;
-  
-  .avatar {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-  }
-  
-  .author {
+}
+
+.avatar {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.author {
+  margin-right: 24px;
+}
+
+.labels {
+  margin-top: 20px;
+
+  .label {
+    display: inline-block;
+    height: 30px;
     margin-right: 24px;
+    padding: 0 10px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #eeeeee;
+    border-radius: 20px;
+    color: #666666;
+    font-size: 14px;
+
+    & img {
+      margin-right: 5px;
+    }
+  }
+
+  &:last-child {
+    margin-right: 0;
   }
 }
 
-.wrapClassName {
-  :global(.ant-modal-close) {
-    display: none;
-  }
+.exceptional {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 53px;
+}
 
-  :global(.ant-modal-header) {
-    display: none;
+.rewardImg {
+  margin-bottom: 25px;
+  cursor: pointer;
+  transition: all 0.5s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.text {
+  margin-bottom: 10px;
+  font-size: 18px;
+  line-height: 26px;
+  color: #666666;
+}
+
+.already {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  color: #666666;
+
+  & img {
+    cursor: pointer;
   }
 }

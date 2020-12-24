@@ -25,7 +25,6 @@ interface SettingModelType {
   reducers: {
     startLoading: Reducer,
     closeLoading: Reducer,
-    setWebsite: Reducer,
   }
 }
 
@@ -45,9 +44,6 @@ const SettingModel: SettingModelType = {
     *getWebsite(_, { call, put }) {
       yield put({ type: 'startLoading' })
       const res = yield call(getWebsite)
-      if (res) {
-        yield put({ type: 'setWebsite', payload: res })
-      }
       yield put({ type: 'closeLoading' })
       return res || {}
     },
@@ -63,9 +59,6 @@ const SettingModel: SettingModelType = {
     },
     'closeLoading'(state) {
       return {...state, isLoading: false}
-    },
-    'setWebsite'(state, { payload }) {
-      return {...state, website: payload}
     },
   },
 }

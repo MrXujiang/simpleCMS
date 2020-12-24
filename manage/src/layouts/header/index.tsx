@@ -1,4 +1,4 @@
-import React, { FC, createElement } from 'react'
+import React from 'react'
 import { Layout } from 'antd'
 import {
   MenuUnfoldOutlined,
@@ -16,10 +16,10 @@ interface HeaderProps {
 
 const { Header } = Layout
 
-const HeaderLayput: FC<HeaderProps> = ({ collapsed, toggle }) => {
+const HeaderLayput: React.FC<HeaderProps> = ({ collapsed, toggle }) => {
   return (
     <Header className={styles.header}>
-      {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+      {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
         className: styles.trigger,
         onClick: toggle,
       })}

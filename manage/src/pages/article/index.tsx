@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { connect, Dispatch, history } from 'umi'
 import { Button, Table, Space, Tag } from 'antd'
 import { ColumnsType } from 'antd/es/table'
@@ -18,7 +18,7 @@ interface ArticleProps {
   isLoading: boolean
 }
 
-const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading }) => {
+const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading }) => {
   const isDraftPage = useMemo(() => location.pathname.includes('draft'), [location.pathname])
 
   const handleTop: (fid: string) => void = useCallback((fid) => {
@@ -123,23 +123,21 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
   }, [])
 
   return (
-    <>
-      {isDraftPage ? (
-        <header className={styles.header}>
-          <FormattedMsg id="Drafts" />
-        </header>
-      ) : (
-        <div className={styles.btns}>
-          <Button danger style={{ marginRight: 5 }} onClick={go.bind(this, '/draft')}>
-            <FormattedMsg id="Drafts" />
-            &nbsp;
-            ({draftList.length})
-          </Button>
-          <Button type="primary" onClick={go.bind(this, '/release')}>
-            <FormattedMsg id="Publish articles" />
-          </Button>
-        </div>
-      )}
+    <React.Fragment>
+      <header className={isDraftPage ? styles.header : styles.btns}>
+        {isDraftPage ? <FormattedMsg id="Drafts" /> : (
+          <React.Fragment>
+            <Button danger style={{ marginRight: 5 }} onClick={go.bind(this, '/draft')}>
+              <FormattedMsg id="Drafts" />
+              &nbsp;
+              ({draftList.length})
+            </Button>
+            <Button type="primary" onClick={go.bind(this, '/release')}>
+              <FormattedMsg id="Publish articles" />
+            </Button>
+          </React.Fragment>
+        )}
+      </header>
       <Table
         className={styles.table}
         size="small"
@@ -149,7 +147,7 @@ const Article: FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading
         rowKey="fid"
         pagination={false}
       />
-    </>
+    </React.Fragment>
   )
 }
 

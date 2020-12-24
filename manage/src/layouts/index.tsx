@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useMemo, useCallback, useState } from 'react'
+import React, { useMemo, useCallback, useState } from 'react'
 import { connect } from 'umi'
 import { ConfigProvider, Layout } from 'antd'
 import enUS from 'antd/lib/locale/en_US'
@@ -23,7 +23,7 @@ interface BasicLayoutProps {
   lang: string
 }
 
-const BasicLayout: FC<BasicLayoutProps> = ({ children, location, lang }) => {
+const BasicLayout: React.FC<BasicLayoutProps> = ({ children, location, lang }) => {
   const [ collapsed, setCollapsed ] = useState<boolean>(false)
 
   const toggle: () => void = useCallback(() => setCollapsed(prevCollapsed => !prevCollapsed), [])
@@ -61,7 +61,11 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children, location, lang }) => {
     <IntlProvider messages={getLocale(lang, 'react-intl')} locale={lang}>
       <ConfigProvider locale={getLocale(lang, 'antd')}>
         <IntlContext.Provider value={formatMsg}>
-          {location.pathname.startsWith('/user') ? <Fragment>{children}</Fragment> : (
+          {location.pathname.startsWith('/user') ? (
+            <React.Fragment>
+              {children}
+            </React.Fragment>
+          ) : (
             <Layout className={styles.basicLayout}>
               <Sider collapsed={collapsed} location={location} />
               <Layout>

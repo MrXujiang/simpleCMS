@@ -1,44 +1,42 @@
 @import '~less/variables';
 
-.dashboardWrapper {
-  .statistics {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100px;
-    margin-bottom: 20px;
-  
-    .statistic {
-      width: 20%;
-      height: 100px;
-      margin-right: 20px;
-      text-align: center;
-      border: 1px solid @border-color;
-  
-      &:last-child {
-        margin-right: 0;
-      }
-  
-      .title {
-        margin-top: 25px;
-        font-weight: @font-bold;
-      }
-    }
-  }
-  
-  .charts {
-    text-align: center;
+.statistics {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  margin-bottom: 20px;
+  font-weight: @font-bold;
+}
 
-    .chart {
-      display: inline-block;
-      width: calc(50% - 20px);
-      height: (calc((100vh - @header-height - 260px) / 2));
-      margin-bottom: 40px;
+.statistic {
+  width: 20%;
+  height: 100px;
+  margin-right: 20px;
+  text-align: center;
+  border: 1px solid @border-color;
 
-      .text {
-        text-align: center;
-        font-weight: @font-bold;
-      }
-    }
+  &:last-child {
+    margin-right: 0;
   }
+}
+
+.title {
+  margin-top: 25px;
+}
+
+.charts {
+  text-align: center;
+}
+
+.chart {
+  display: inline-block;
+  width: calc(50% - 20px);
+  height: (calc((100vh - @header-height - 260px) / 2));
+  margin-bottom: 40px;
+}
+
+.text {
+  text-align: center;
+  font-weight: @font-bold;
 }

@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useCallback, useState, useEffect, useContext, useRef, useMemo } from 'react'
+import React, { useCallback, useState, useEffect, useContext, useRef, useMemo } from 'react'
 import { Form, Input, Button, Select, message, Spin, Tabs, Upload } from 'antd'
 import { PictureFilled } from '@ant-design/icons'
 import { connect, Dispatch, history } from 'umi'
@@ -41,7 +41,7 @@ interface ReleaseArticleProps {
   currentUser: CurrentUser
 }
 
-const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDetail, draftDetail, isLoading, currentUser }) => {
+const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, articleDetail, draftDetail, isLoading, currentUser }) => {
   const [form] = Form.useForm()
   const formatMsg = useContext<any>(IntlContext)
   const forEditor = useRef(null)
@@ -260,16 +260,16 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
   }, [])
 
   return (
-    <Fragment>
+    <React.Fragment>
       <header className={styles.header}>
         <FormattedMsg id="Publish articles" />
       </header>
       <Spin spinning={isLoading}>
-        <Fragment>
+        <React.Fragment>
           <Form
             layout="inline"
             form={form}
-            className={styles.releaseArticleForm}
+            className={styles.releaseForm}
             name="releaseArticleForm"
             onFinish={onFinish}
             initialValues={{
@@ -277,6 +277,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
             }}
           >
             <Form.Item
+              className={styles.item}
               label={<FormattedMsg id="Title" />}
               name="title"
               rules={[{
@@ -287,6 +288,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
               <Input style={{ width: 180 }} placeholder={formatMsg('Please input articles title')} />
             </Form.Item>
             <Form.Item
+              className={styles.item}
               label={<FormattedMsg id="Label" />}
               name="label"
               rules={[{
@@ -309,12 +311,14 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
               </Select>
             </Form.Item>
             <Form.Item
+              className={styles.item}
               label={<FormattedMsg id="Author" />}
               name="author"
             >
               <Input style={{ width: 150 }} placeholder={formatMsg('Please input author')} />
             </Form.Item>
             <Form.Item
+              className={styles.item}
               label={<FormattedMsg id="Visible" />}
               name="visible"
             >
@@ -332,7 +336,6 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
               name="face_img"
             >
               <Upload
-                className={styles.img}
                 name="file"
                 listType="picture-card"
                 action={`http://${SERVER_URL}/api/v0/files/upload/free`}
@@ -340,7 +343,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
                 showUploadList={false}
               >
                 {faceImg
-                  ? <img src={faceImg} alt="Cover" style={{ width: 102, height: 102 }} />
+                  ? <img src={faceImg} alt="face_img" style={{ width: 102, height: 102 }} />
                   : <UploadBtn loading={faceImgLoading} />}
               </Upload>
             </Form.Item>
@@ -361,7 +364,6 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
               name="payCode"
             >
               <Upload
-                className={styles.img}
                 name="file"
                 listType="picture-card"
                 action={`http://${SERVER_URL}/api/v0/files/upload/free`}
@@ -403,7 +405,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
           >
             <Tabs.TabPane tab={<FormattedMsg id="Text editor" />} key="edit">
               <BraftEditor
-                style={{ height: 480 }}
+                style={{ height: 580 }}
                 value={editorState}
                 extendControls={extendControls}
                 excludeControls={excludeControls}
@@ -420,6 +422,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
                 onChange={handleChangeText}
                 addImg={addImg}
                 placeholder={formatMsg('Start editing...')}
+                lineNum={0}
                 toolbar={{
                   h1: true,
                   h2: true,
@@ -437,7 +440,7 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
               />
             </Tabs.TabPane>
           </Tabs>
-        </Fragment>
+        </React.Fragment>
       </Spin>
       <PreviewModal
         visible={visible}
@@ -447,11 +450,11 @@ const ReleaseArticle: FC<ReleaseArticleProps> = ({ dispatch, location, articleDe
         curTab={curTab}
         editorState={editorState}
         markdown={markdown}
-        imageUrl={faceImg}
+        faceImg={faceImg}
         payCode={payCode}
         currentUser={currentUser}
       />
-    </Fragment>
+    </React.Fragment>
   )
 }
 

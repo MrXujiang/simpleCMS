@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Form, Input, Button, Upload, message, Spin } from 'antd'
 import { connect, Dispatch } from 'umi'
 
@@ -13,9 +13,7 @@ import styles from './index.less'
 
 interface SettingProps {
   dispatch: Dispatch
-  isLoading: boolean
-  website: WebsiteType
-}
+  isLoading: boolean}
 
 const layout = {
   labelCol: { span: 7 },
@@ -26,7 +24,7 @@ const tailLayout = {
   wrapperCol: { offset: 7, span: 17 },
 }
 
-const Setting: FC<SettingProps> = ({ dispatch, isLoading, website }) => {
+const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
   const formatMsg = useContext<any>(IntlContext)
   const [form] = Form.useForm()
 
@@ -132,5 +130,4 @@ const Setting: FC<SettingProps> = ({ dispatch, isLoading, website }) => {
 
 export default connect(({ setting }: ConnectState) => ({
   isLoading: setting.isLoading,
-  website: setting.website,
 }))(Setting)

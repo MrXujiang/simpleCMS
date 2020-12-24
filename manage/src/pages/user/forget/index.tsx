@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { history, connect, Dispatch } from 'umi'
 import { Form, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
@@ -21,7 +21,7 @@ interface ForgetFormValues {
   email: string
 }
 
-const ForgetForm: FC<ForgetFormProps> = ({ dispatch, isLoading }) => {
+const ForgetForm: React.FC<ForgetFormProps> = ({ dispatch, isLoading }) => {
   const formatMsg = useContext<any>(IntlContext)
 
   const onFinish: (data: ForgetFormValues) => void = useCallback(values => {

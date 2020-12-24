@@ -1,4 +1,4 @@
-import React, { FC, Key, useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Dropdown, Menu } from 'antd'
 import { CopyrightOutlined, GlobalOutlined } from '@ant-design/icons'
 import { connect, Dispatch } from 'umi'
@@ -16,8 +16,8 @@ interface UserLayoutProps {
   dispatch: Dispatch
 }
 
-const UserLayout: FC<UserLayoutProps> = ({ children, lang, dispatch }) => {
-  const handleChangeLanguage: (key: { key: Key }) => void = useCallback(({ key }) => {
+const UserLayout: React.FC<UserLayoutProps> = ({ children, lang, dispatch }) => {
+  const handleChangeLanguage: (key: { key: React.Key }) => void = useCallback(({ key }) => {
     dispatch({ type: 'user/changeLocale', payload: key })
   }, [])
 

@@ -1,17 +1,39 @@
-import React, { FC } from 'react'
-import { Modal, Avatar } from 'antd'
-import ForEditor from 'for-editor'
+import React, { useMemo } from 'react'
+import { Modal, Avatar, Popover } from 'antd'
+import classnames from 'classnames'
+import marked from 'marked'
+// import ForEditor from 'for-editor'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { ArticleType } from '@/models/article'
 import { CurrentUser } from '@/models/user'
 import avatar from '@/assets/avatar.svg'
+import reward from '@/assets/reward.png'
+import heart from '@/assets/heart.svg'
+import star from '@/assets/star.svg'
+import tag from '@/assets/tag.svg'
 
 import styles from './index.less'
 
+// marked.setOptions({
+//   renderer: new marked.Renderer(),
+//   highlight: function(code, language) {
+//     const hljs = require('highlight.js');
+//     const validLanguage = hljs.getLanguage(language) ? language : 'plaintext';
+//     return hljs.highlight(validLanguage, code).value;
+//   },
+//   pedantic: false,
+//   gfm: true,
+//   breaks: false,
+//   sanitize: false,
+//   smartLists: true,
+//   smartypants: false,
+//   xhtml: false
+// })
+
 interface PreviewModalProps {
   visible: boolean
-  imageUrl: string
+  faceImg: string
   payCode: string
   formValues: ArticleType
   time: any
@@ -22,9 +44,10 @@ interface PreviewModalProps {
   onCancel: () => void
 }
 
-const PreviewModal: FC<PreviewModalProps> = ({
+const PreviewModal: React.FC<PreviewModalProps> = ({
   visible,
-  imageUrl,
+  faceImg,
+  payCode,
   formValues,
   time,
   curTab,
@@ -33,18 +56,20 @@ const PreviewModal: FC<PreviewModalProps> = ({
   currentUser,
   onCancel,
 }) => {
+  const payCodeImg = useMemo(() => <img src={payCode} alt="payCode" width={152} height={152} />, [payCode])
+
   return (
     <Modal
       centered
-      wrapClassName={styles.wrapClassName}
+      wrapClassName={styles.preview}
       style={{ minWidth: 968 }}
       visible={visible}
       onCancel={onCancel}
       footer={null}
     >
-      {imageUrl && (
-        <div className={styles.image}>
-          <img src={imageUrl} alt="face_img" />
+      {faceImg && (
+        <div className={styles.img}>
+          <img src={faceImg} alt="face_img" width="100%" height="100%" />
         </div>
       )}
       <h1>{formValues.title}</h1>
@@ -61,7 +86,8 @@ const PreviewModal: FC<PreviewModalProps> = ({
           123<FormattedMsg id="Views" />
         </div>
       </div>
-      {curTab === 'edit' ? <div dangerouslySetInnerHTML={{ __html: editorState.toHTML() }} /> : (
+      <div dangerouslySetInnerHTML={{ __html: curTab === 'edit' ? editorState.toHTML() : marked(markdown) }} />
+      {/* {curTab === 'edit' ? <div dangerouslySetInnerHTML={{ __html: editorState.toHTML() }} /> : (
         <ForEditor
           preview
           value={markdown}
@@ -69,7 +95,33 @@ const PreviewModal: FC<PreviewModalProps> = ({
           style={{ border: 'none', boxShadow: 'none' }}
           toolbar={{}}
         />
-      )}
+      )} */}
+      <div className={styles.labels}>
+        {formValues.label && formValues.label.map(l => (
+          <span key={l} className={styles.label}>
+            <img src={tag} alt="tag_img" />
+            {l}
+          </span>
+        ))}
+      </div>
+      <div className={styles.exceptional}>
+        <div className={styles.text}>
+          <FormattedMsg id="Reward authors and encourage them to work harder!" />
+        </div>
+        {payCode ? (
+          <Popover content={payCodeImg} trigger="click">
+            <img className={styles.rewardImg} src={reward} alt="reward_img" />
+          </Popover>
+        ) : <img className={styles.rewardImg} src={reward} alt="reward_img" />}
+        <div className={classnames(styles.text, styles.already)}>
+          <FormattedMsg id="Has exceptional" values={{ count: 99 }} />
+        </div>
+        <div className={styles.actions}>
+          <img src={heart} width={20} height={20} alt="heart" />&nbsp;102
+          &nbsp;&nbsp;
+          <img src={star} width={20} height={20} alt="star" />&nbsp;132
+        </div>
+      </div>
     </Modal>
   )
 }

@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 
@@ -6,7 +6,7 @@ interface UploadBtnProps {
   loading: boolean
 }
 
-const UploadBtn: FC<UploadBtnProps> = ({loading}) => {
+const UploadBtn: React.FC<UploadBtnProps> = ({loading}) => {
   return useMemo(() =>(
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}

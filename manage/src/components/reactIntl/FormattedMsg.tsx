@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
 interface FormattedMsgProps {
@@ -8,7 +8,7 @@ interface FormattedMsgProps {
   values?: any
 }
 
-const FormattedMsg: FC<FormattedMsgProps> = ({ id, defaultMsg, description, values }) => {
+const FormattedMsg: React.FC<FormattedMsgProps> = ({ id, defaultMsg, description, values }) => {
   return (
     <FormattedMessage
       id={id}

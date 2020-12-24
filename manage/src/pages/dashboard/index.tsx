@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useContext } from 'react'
+import React, { useEffect, useMemo, useContext } from 'react'
 import { Skeleton } from 'antd'
 import { connect, Dispatch } from 'umi'
 import { Line, Column } from '@ant-design/charts'
@@ -20,7 +20,7 @@ interface DashboardProps {
   weekLog: any
 }
 
-const Dashboard: FC<DashboardProps> = ({
+const Dashboard: React.FC<DashboardProps> = ({
   dispatch, isLoading, isWeekLogLoading,
   anazly, articleList, weekLog,
 }) => {
@@ -86,16 +86,14 @@ const Dashboard: FC<DashboardProps> = ({
   }, [])
 
   return (
-    <div className={styles.dashboardWrapper}>
+    <React.Fragment>
       <div className={styles.statistics}>
         <Skeleton loading={isLoading}>
           <div className={styles.statistic}>
             <div className={styles.title}>
               <FormattedMsg id="Articles" />
             </div>
-            <div className={styles.total}>
-              {Array.isArray(articleList) ? articleList.length : 0}
-            </div>
+            {Array.isArray(articleList) ? articleList.length : 0}
           </div>
         </Skeleton>
         <Skeleton loading={isLoading}>
@@ -103,7 +101,7 @@ const Dashboard: FC<DashboardProps> = ({
             <div className={styles.title}>
               <FormattedMsg id="Total visits" />
             </div>
-            <div className={styles.total}>{anazly.views || 0}</div>
+            {anazly.views || 0}
           </div>
         </Skeleton>
         <Skeleton loading={isLoading}>
@@ -111,7 +109,7 @@ const Dashboard: FC<DashboardProps> = ({
             <div className={styles.title}>
               <FormattedMsg id="Total comments" />
             </div>
-            <div className={styles.total}>{anazly.comments || 0}</div>
+            {anazly.comments || 0}
           </div>
         </Skeleton>
         <Skeleton loading={isLoading}>
@@ -119,7 +117,7 @@ const Dashboard: FC<DashboardProps> = ({
             <div className={styles.title}>
               <FormattedMsg id="Total lovers" />
             </div>
-            <div className={styles.total}>{anazly.flovers || 0}</div>
+            {anazly.flovers || 0}
           </div>
         </Skeleton>
         <Skeleton loading={isLoading}>
@@ -127,20 +125,18 @@ const Dashboard: FC<DashboardProps> = ({
             <div className={styles.title}>
               <FormattedMsg id="Total AD clicks" />
             </div>
-            <div className={styles.total}>
-              <FormattedMsg id="Temporarily not opened" />
-            </div>
+            <FormattedMsg id="Temporarily not opened" />
           </div>
         </Skeleton>
       </div>
       <div className={styles.charts}>
         {components}
       </div>
-    </div>
+    </React.Fragment>
   )
 }
 
-export default connect(({ dashboard, article }: ConnectState) => ({
+export default connect(({ article }: ConnectState) => ({
   anazly: article.anazly,
   articleList: article.articleList,
   isLoading: article.isLoading,

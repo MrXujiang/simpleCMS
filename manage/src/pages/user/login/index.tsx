@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { history, connect, Dispatch } from 'umi'
 import { Form, Input, Button } from 'antd'
 import {
@@ -23,7 +23,7 @@ interface LoginFormValues {
   password: string
 }
 
-const Login: FC<LoginProps> = ({ dispatch, isLoading }) => {
+const Login: React.FC<LoginProps> = ({ dispatch, isLoading }) => {
   const formatMsg = useContext<any>(IntlContext)
   
   const onFinish: (data: LoginFormValues) => void = useCallback(values => {
@@ -52,8 +52,7 @@ const Login: FC<LoginProps> = ({ dispatch, isLoading }) => {
         rules={[{ required: true, message: <FormattedMsg id="Please enter your username" /> }]}
       >
         <Input
-          className={styles.input}
-          prefix={<UserOutlined className={styles.icon} />}
+          prefix={<UserOutlined />}
           placeholder={formatMsg('Please enter your username')}
         />
       </Form.Item>
@@ -62,8 +61,7 @@ const Login: FC<LoginProps> = ({ dispatch, isLoading }) => {
         rules={[{ required: true, message: <FormattedMsg id="Please enter your password" /> }]}
       >
         <Input
-          className={styles.input}
-          prefix={<LockOutlined className={styles.icon} />}
+          prefix={<LockOutlined />}
           type="password"
           placeholder={formatMsg('Please enter your password')}
         />

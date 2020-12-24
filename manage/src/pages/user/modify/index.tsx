@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useCallback, useMemo, useContext, useEffect } from 'react'
+import React, { useCallback, useMemo, useContext, useEffect } from 'react'
 import { Form, Input, Select, Button, Upload, message, Spin, Avatar } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { connect, Dispatch } from 'umi'
@@ -28,7 +28,7 @@ interface modifyFormValues {
   phone: string
 }
 
-const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
+const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
   const [form] = Form.useForm()
   const formatMsg = useContext<any>(IntlContext)
 
@@ -80,13 +80,13 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
   }, [currentUser])
   
   return (
-    <Fragment>
+    <React.Fragment>
       <header className={styles.header}>
         <FormattedMsg id="Basic Setting" />
       </header>
       <Spin spinning={isLoading}>
         <section className={styles.basicView}>
-          <div className={styles.basicViewLeft}>
+          <div className={styles.left}>
             <Form
               layout="vertical"
               name="modifyForm"
@@ -166,7 +166,7 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
               </Form.Item>
             </Form>
           </div>
-          <div className={styles.basicViewRight}>
+          <div className={styles.right}>
             <div className={styles.avatar}>
               {currentUser.tx ? <Avatar src={currentUser.tx} style={{ width: 144, height: 144 }} /> : (
                 <img
@@ -190,7 +190,7 @@ const Modify: FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
           </div>
         </section>
       </Spin>
-    </Fragment>
+    </React.Fragment>
   )
 }
 

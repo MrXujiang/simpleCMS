@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { history } from 'umi'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
-import notFound from '@/assets/404.svg'
+import notFoundImg from '@/assets/404.svg'
 
 import styles from './index.less'
 
@@ -26,9 +26,9 @@ const NotFound = () => {
   }, [])
 
   return (
-    <div className={styles.notFound}>
-      <img className={styles.image} src={notFound} alt="404" />
-      <div className={styles.text}>
+    <div className={styles.notFoundWrapper}>
+      <img className={styles.img} src={notFoundImg} alt="404" />
+      <div className={styles.notFound}>
         <div className={styles.title}>
           <FormattedMsg id="Not Found" />
         </div>
