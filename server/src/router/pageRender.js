@@ -64,6 +64,11 @@ const pageRenderRouter = (router) => {
     const articleIdxPath = `${config.publicPath}/db/article_index.json`;
     const ads = RF(filePath) || {};
     let articleIdxs = RF(articleIdxPath) || [];
+    // 搜索功能
+    if(articleIdxs.length && ctx.query.keyword) {
+      let keyword = decodeURI(ctx.query.keyword)
+      articleIdxs = articleIdxs.filter(item => item.title.indexOf(keyword) > -1 || (item.desc && item.desc.indexOf(keyword)) > -1)
+    }
     articleIdxs = articleIdxs.map((item) => {
       return {
         ...item,
@@ -88,8 +93,8 @@ const pageRenderRouter = (router) => {
     const article = RF(articlePath) || {};
     const comments = RF(commentPath) || {};
     const ads = RF(adsPath) || {};
-    console.log(ads);
-    // comments.views = comments.views + 1;
+    
+    comments.views = comments.views + 1;
     await ctx.render("detail", {
       viewTitle: article.title,
       topImg: article.face_img,
@@ -148,31 +153,30 @@ const pageRenderRouter = (router) => {
 
   // 渲染分类页
   router.get(api.cates, async (ctx) => {
-    const filePath = `${config.publicPath}/db/ads.json`;
     const articleIdxPath = `${config.publicPath}/db/article_index.json`;
-    const ads = RF(filePath);
     let articleIdxs = RF(articleIdxPath);
-    articleIdxs = articleIdxs.map((item) => {
-      let date = new Date(item.ct);
-      let y = date.getFullYear();
-      let m = date.getMonth() + 1;
-      let d = date.getDate();
-      return {
-        ...item,
-        ct: `${y}/${m}/${d}`,
-      };
-    });
-    const topArticles = articleIdxs.filter((item) => !!item.top);
-    console.log({
-      ads,
-      tops: topArticles,
-      list: articleIdxs,
-    });
-    await ctx.render("index", {
-      ads,
-      tops: topArticles,
-      list: articleIdxs,
-      copyright: "版权所有 @SimpleCMS 研发团队",
+    let resultRush = [];
+
+    if(articleIdxs && articleIdxs.length) {
+      let result = [];
+      articleIdxs.forEach((item) => { result = result.concat(item.label) });
+      // 计数
+      let resultObj = {};
+      result.forEach(item => { resultObj[item] = resultObj[item] ? (resultObj[item] + 1) : 1; } );
+
+      // 生成随机颜色
+      const generateRandomColor = () => {
+        return '#'+('00000'+ (Math.random()*0x1000000<<0).toString(16)).substr(-6);
+      }
+  
+      // 数据清洗
+      for (let [key, value] of Object.entries(resultObj)) {
+        resultRush.push({ k: key, n: value, c: generateRandomColor() })
+      }
+    } 
+    
+    await ctx.render("cates", {
+      labels: resultRush
     });
   });
 };
