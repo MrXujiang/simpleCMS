@@ -35,9 +35,13 @@
   margin-right: 24px;
 }
 
-.labels {
-  margin-top: 20px;
+.forEditor {
+  :global(.for-edit-preview) {
+    display: none;
+  }
+}
 
+.labels {
   .label {
     display: inline-block;
     height: 30px;

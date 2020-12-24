@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react'
 import { Modal, Avatar, Popover } from 'antd'
 import classnames from 'classnames'
-import marked from 'marked'
-// import ForEditor from 'for-editor'
+import ForEditor from 'for-editor'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { ArticleType } from '@/models/article'
@@ -14,22 +13,6 @@ import star from '@/assets/star.svg'
 import tag from '@/assets/tag.svg'
 
 import styles from './index.less'
-
-// marked.setOptions({
-//   renderer: new marked.Renderer(),
-//   highlight: function(code, language) {
-//     const hljs = require('highlight.js');
-//     const validLanguage = hljs.getLanguage(language) ? language : 'plaintext';
-//     return hljs.highlight(validLanguage, code).value;
-//   },
-//   pedantic: false,
-//   gfm: true,
-//   breaks: false,
-//   sanitize: false,
-//   smartLists: true,
-//   smartypants: false,
-//   xhtml: false
-// })
 
 interface PreviewModalProps {
   visible: boolean
@@ -86,16 +69,17 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
           123<FormattedMsg id="Views" />
         </div>
       </div>
-      <div dangerouslySetInnerHTML={{ __html: curTab === 'edit' ? editorState.toHTML() : marked(markdown) }} />
-      {/* {curTab === 'edit' ? <div dangerouslySetInnerHTML={{ __html: editorState.toHTML() }} /> : (
-        <ForEditor
-          preview
-          value={markdown}
-          height="100%"
-          style={{ border: 'none', boxShadow: 'none' }}
-          toolbar={{}}
-        />
-      )} */}
+      {curTab === 'edit' ? <div dangerouslySetInnerHTML={{ __html: editorState.toHTML() }} /> : (
+        <div className={styles.forEditor}>
+          <ForEditor
+            preview
+            value={markdown}
+            height="100%"
+            style={{ border: 'none', boxShadow: 'none' }}
+            toolbar={{}}
+          />
+        </div>
+      )}
       <div className={styles.labels}>
         {formValues.label && formValues.label.map(l => (
           <span key={l} className={styles.label}>

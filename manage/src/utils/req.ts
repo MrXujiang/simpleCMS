@@ -3,7 +3,7 @@ import { message } from 'antd'
 import { isDev } from '@/utils'
 
 const instance = axios.create({
-    baseURL: isDev ? 'http://192.168.1.3:3000/api/v0' : 'http://49.234.61.19:3000/api/v0',
+    baseURL: isDev ? 'http://192.168.56.1:3000/api/v0' : 'http://49.234.61.19:3000/api/v0',
     timeout: 10000,
     withCredentials: true
 });
