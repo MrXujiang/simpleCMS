@@ -22,6 +22,8 @@ a {
 
 /* 头部样式 start */
 .headerContainer {
+  position: fixed;
+  top: 0;
   width: calc(100vw - 200px);
   height: 60px;
   background-color: #fff;
@@ -30,6 +32,8 @@ a {
   align-items: center;
   justify-content: space-between;
   min-width: 980px;
+  transition: top 0.3s ease-in;
+  z-index: 50;
 }
 
 /* 头部logo */
@@ -64,7 +68,10 @@ a {
   display: flex;
   justify-content: space-between;
 }
-
+.category .box a:hover {
+  color: #333;
+  font-weight: 600;
+} 
 /* 头部其他 */
 .other {
   width: 479px;

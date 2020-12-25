@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
   padding-bottom: 80px;
+  padding-top: 60px;
 }
 
 .viewContainer .containerWidth {
@@ -17,9 +18,9 @@
 
 .viewContainer .contentWidth .advertisingWidth {
   width: 240px;
-  position: fixed;
+  position: absolute;
   right: calc(50% - 521px);
-  top: 92px;
+  top: 0;
   height: 260px;
   background-color: #fff;
   padding: 4px;
@@ -239,6 +240,7 @@
   resize:none;
   padding-left: 8px;
   padding-top: 8px;
+  border-radius: 4px;
 }
 .viewContainer .commentBox .commentTextarea .review .operation {
   position: absolute;

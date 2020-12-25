@@ -134,7 +134,7 @@ const pageRenderRouter = (router) => {
         },
         {
           avatarUrl: "chenwei",
-          name: "陈伟",
+          name: "The Way",
           job: "FRONT-END ENGINEER",
           desc: "越努力, 越幸运~",
           github: "https://github.com/cw514102209",
@@ -142,8 +142,8 @@ const pageRenderRouter = (router) => {
         {
           avatarUrl: "miaochenhao",
           name: "Duang",
-          job: "ENGINEER",
-          desc: "回老家养猪的设计师~",
+          job: "DESIGNER",
+          desc: "准备回老家养猪的设计师~",
           github: "github.com/mch",
         },
       ],

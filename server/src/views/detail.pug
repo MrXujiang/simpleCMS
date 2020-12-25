@@ -68,6 +68,7 @@ block content
               .commentReply 
                 img(
                   src='/assets/vector.png'
+                  id='replyComments'
                 )
           .commentTextarea 
             .avatar 
@@ -91,6 +92,11 @@ block content
     
     $('#collection').click(function(){
       $('#img_favorites').attr('src','/assets/favorites.png');
+    })
+
+     $('#replyComments').click(function(){
+      $('#js-textarea').focus()
+      $('#js-textarea').val('@游客')
     })
 
     $('#like').click(function(){

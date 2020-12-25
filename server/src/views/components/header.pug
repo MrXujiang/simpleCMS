@@ -1,5 +1,5 @@
 block header
- .headerContainer
+ #headerContainer.headerContainer
     a.logo(href='/')
       img(
         src='/assets/logo.png'
@@ -25,10 +25,14 @@ block header
     
     script.
       const pathname = window.location.pathname.split('/')[1]
+      let css = {
+        color: '#333',
+        fontWeight: '600',
+      }
       if(pathname){
-        $(`#${pathname}`).css('color', '#333')
+        $(`#${pathname}`).css(css)
       }else {
-        $(`#home`).css('color', '#333')
+        $(`#home`).css(css)
       }
       $('#writeBtn').click(function(){
         window.open('/admin');
@@ -41,4 +45,13 @@ block header
           val = $(".js_search").val();
           window.location.href = window.location.pathname + '?keyword=' + event.target.value;
         }
+      });
+      $(document).on("mousewheel DOMMouseScroll", function (e) {
+          var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||  // chrome & ie
+                  (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));              // firefox
+          if (delta > 0) {
+            $('#headerContainer').css('top','0')
+          } else if (delta < 0) {
+            $('#headerContainer').css('top','-60px')
+          }
       });
