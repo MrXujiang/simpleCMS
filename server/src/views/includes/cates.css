@@ -16,3 +16,15 @@
 .labelBox .label i {
     font-style: none;
 }
+
+@media (max-width: 414px) {
+    .labelBox{
+        width: calc(100% - 32px);
+        padding: 16px;
+        padding-top: 60px;
+    }
+    .labelBox .label {
+        margin-bottom: 10px;
+    }
+    
+}
