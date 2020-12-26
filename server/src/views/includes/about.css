@@ -22,14 +22,9 @@
   margin-bottom: 64px;
 } 
 
-.aboutus .imgBox {
+.aboutus .imgBox, .aboutus .imgBox img {
   width: 300px;
-  height: 200px;
-}
-
-.aboutus .imgBox img {
-  width: 300px;
-  height: 200px;
+  height: 100%;
 }
 
 .aboutus .introduction {
@@ -112,24 +107,20 @@
   height: 25px;
 }
 
-.teamBox .name {
+.teamBox div:not(:first-child) {
   width: 142px;
   color: #666;
+}
+
+.teamBox .name {
   font-size: 18px;
   line-height: 18px;
+  margin-bottom: 20px;
 }
 
 .teamBox .teamDesc { 
-  width: 142px;
   font-size: 14px;
   line-height: 24px;
-  color: #666666;
-}
-
-
-
-.name {
-  margin-bottom: 20px;
 }
 
 @media (max-width: 414px) {

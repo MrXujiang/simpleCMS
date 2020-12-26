@@ -28,7 +28,7 @@ block content
           .text 给作者打赏，鼓励TA抓紧创作！
           #reward.icon 
             img(
-              src='/assets/group.png'
+              src='/assets/group.svg'
               id='img-reward'
             )
             img(
@@ -41,7 +41,7 @@ block content
                 src='/assets/emptyLike.png'
                 id='img_like'
               )
-              span #{flover}
+              span#newFlover #{flover}
             //- #collection.collection
             //-   img(
             //-     src='/assets/emptyFavotites.png'
@@ -67,7 +67,7 @@ block content
               .commentContent #{val}
               .commentReply 
                 img(
-                  src='/assets/vector.png'
+                  src='/assets/vector.svg'
                   id='replyComments'
                 )
           .commentTextarea 
@@ -100,7 +100,7 @@ block content
     })
 
     $('#like').click(function(){
-      $('#img_like').attr('src','/assets/like.png');
+      $('#img_like').attr('src','/assets/like.svg');
         fetch('/api/v0/article/flover/add',{
           body: JSON.stringify({id: id}),
           method: 'POST',
@@ -112,7 +112,9 @@ block content
           },
            mode: 'cors'
         }).then((res) => {
-          window.location.reload()
+          let floverValue = $('#newFlover').text()
+          $('#newFlover').text(Number(floverValue) + 1)
+          $('#like').css('pointer-events', 'none')
         })
       })
 

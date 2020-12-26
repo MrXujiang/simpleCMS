@@ -51,7 +51,6 @@
 /* 图片 end */
 /* 标题 start */
 .viewContainer .viewTitle {
-  font-family: Inter;
   font-style: normal;
   font-weight: bold;
   font-size: 40px;
@@ -76,7 +75,6 @@
   margin-right: 8px;
 }
 .viewContainer .authorBox .name, .viewContainer .authorBox .date, .viewContainer .authorBox .views {
-  font-family: PingFang HK;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -87,7 +85,6 @@
 /* 作者信息 end */
 /* 正文 start */
 .viewContainer .descriptionBox>p {
-  font-family: PingFang SC;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -150,7 +147,6 @@
   margin-top: 18px;
 }
 .viewContainer .commentBox .title {
-  font-family: PingFang HK;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -181,7 +177,6 @@
   margin-right: 8px;
 }
 .commentPersonal .name, .commentPersonal .date {
-  font-family: PingFang HK;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -193,7 +188,6 @@
   color: #999999;
 }
 .viewContainer .commentBox .commentInof .commentContent {
-  font-family: PingFang SC;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

@@ -50,7 +50,6 @@ a {
 }
 
 .logo>span {
-  font-family: PingFang HK;
   font-weight: 500;
   font-size: 18px;
   color: #333333;
@@ -122,19 +121,19 @@ a {
   justify-content: space-between;
 }
 
-.noticeBox .notice {
+.noticeBox .notice, .noticeBox .avatar {
   width: 24px;
   height: 24px;
-  background: url(assets/notice.png) no-repeat;
   background-size: 24px;
 }
 
+.noticeBox .notice {
+  background: url(assets/notice.png) no-repeat;
+}
+
 .noticeBox .avatar {
-  width: 24px;
-  height: 24px;
   border-radius: 14px;
   background: url(assets/avatar.png) no-repeat;
-  background-size: 24px;
 }
 
 /* 头部样式 end */
