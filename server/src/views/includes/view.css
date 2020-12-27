@@ -92,6 +92,51 @@
   color: #666666;
   margin: 0;
 }
+.viewContainer .descriptionBox>h2 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-image: linear-gradient(to bottom,transparent 50%, rgba(0,0,0,0.1) 50%) 0 0 100%/1px 0;
+}
+.viewContainer .descriptionBox>p>img {
+  width: 100%;
+}
+.viewContainer .descriptionBox>pre {
+  overflow: auto;
+  background: #f8f8f8;
+}
+
+.viewContainer .descriptionBox>pre>code {
+  font-size: 12px;
+  padding: 15px 12px;
+  margin: 0;
+  word-break: normal;
+  display: block;
+  overflow-x: auto;
+}
+
+.viewContainer .descriptionBox>blockquote {
+  color: #666;
+  padding: 1px 23px;
+  margin: 22px 0;
+  border-left: 4px solid #cbcbcb;
+  background-color: #f8f8f8;
+}
+
+.viewContainer .descriptionBox>blockquote>p {
+  margin: 10px 0;
+}
+
+.viewContainer .descriptionBox a {
+  text-decoration: none;
+  color: #0269c8;
+  border-bottom: 1px solid #d1e9ff;
+}
+
+.viewContainer .descriptionBox strong{
+  font-weight: 700;
+  color: #333;
+}
+
 /* 正文 end */
 /* 打赏 start */
 .viewContainer .exceptional {
