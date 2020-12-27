@@ -9,12 +9,12 @@
   min-height: 500px;
   align-items: center;
   background: #f0f2f5;
-}
 
-.globalIcon {
-  position: absolute;
-  top: 5px;
-  right: 16px;
+  .globalIcon {
+    position: absolute;
+    top: 5px;
+    right: 16px;
+  }
 }
 
 .lang {
@@ -24,18 +24,18 @@
 .header {
   margin: 50px 0 24px;
   text-align: center;
-}
 
-.title {
-  margin-left: 16px;
-  font-size: 33px;
-  font-weight: @font-bold;
-}
-
-.desc {
-  margin-top: 12px;
-  margin-bottom: 40px;
-  color: @placeholder-color;
+  .title {
+    margin-left: 16px;
+    font-size: 33px;
+    font-weight: @font-bold;
+  }
+  
+  .desc {
+    margin-top: 12px;
+    margin-bottom: 40px;
+    color: @placeholder-color;
+  }
 }
 
 .footer {
@@ -47,55 +47,8 @@
   text-align: center;
   color: rgba(0, 0, 0, .45);
   font-size: @size-normal;
-}
 
-.footerTop {
-  margin-bottom: 8px;
-}
-
-// login
-.form {
-  width: 368px;
-  margin: 0 auto;
-
-  :global(.ant-input-affix-wrapper) {
-    height: 40px;
-
-    :global(.ant-input-prefix) {
-      color: rgba(0, 0, 0, 0.25)
-    }
+  .top {
+    margin-bottom: 8px;
   }
 }
-
-// .otherWay {
-//   margin-top: 24px;
-//   line-height: 24px;
-//   text-align: left;
-
-//   .emailIcon {
-//     margin-left: 16px;
-//     color: rgba(0, 0, 0, 0.45);
-//     font-size: @size-mid-large;
-//     vertical-align: middle;
-//     cursor: pointer;
-//     transition: color @trans-speed;
-
-//     &:hover {
-//       color: #1890ff;
-//     }
-//   }
-
-//   .forgotText {
-//     float: right;
-//     color: #1890ff;
-//     text-decoration: none;
-//     background-color: transparent;
-//     outline: none;
-//     cursor: pointer;
-//     transition: color @trans-speed;
-
-//     &:hover {
-//       color: #40a9ff;
-//     }
-//   }
-// }

@@ -11,7 +11,7 @@ import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
 import { ConnectState } from '@/models/connect'
 
-import styles from '../index.less'
+import styles from './index.less'
 
 interface LoginProps {
   dispatch: Dispatch

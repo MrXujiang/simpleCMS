@@ -56,7 +56,7 @@ const UserLayout: React.FC<UserLayoutProps> = ({ children, lang, dispatch }) => 
       </header>
       {children}
       <footer className={styles.footer}>
-        <div className={styles.footerTop}>
+        <div className={styles.top}>
           <FormattedMsg id={title} />
         </div>
         <FormattedMsg id="Copyright" /> <CopyrightOutlined /> <FormattedMsg id="CopyrightText" />

@@ -124,7 +124,7 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
 
   return (
     <React.Fragment>
-      <header className={isDraftPage ? styles.header : styles.btns}>
+      <div className={isDraftPage ? styles.text : styles.btns}>
         {isDraftPage ? <FormattedMsg id="Drafts" /> : (
           <React.Fragment>
             <Button danger style={{ marginRight: 5 }} onClick={go.bind(this, '/draft')}>
@@ -137,7 +137,7 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
             </Button>
           </React.Fragment>
         )}
-      </header>
+      </div>
       <Table
         className={styles.table}
         size="small"

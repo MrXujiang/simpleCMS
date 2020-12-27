@@ -95,7 +95,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
           name="advertForm"
           onFinish={onFinish}
         >
-          <header className={styles.header}>
+          <header>
             <FormattedMsg id="Top advert" />
           </header>
           <Form.Item
@@ -130,7 +130,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
               placeholder={formatMsg('Please enter a description')}
             />
           </Form.Item>
-          <header className={styles.header}>
+          <header>
             <FormattedMsg id="Side advert" />
           </header>
           <Form.Item

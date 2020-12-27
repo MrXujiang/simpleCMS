@@ -7,36 +7,36 @@
   height: 100px;
   margin-bottom: 20px;
   font-weight: @font-bold;
-}
 
-.statistic {
-  width: 20%;
-  height: 100px;
-  margin-right: 20px;
-  text-align: center;
-  border: 1px solid @border-color;
+  .statistic {
+    width: 20%;
+    height: 100px;
+    margin-right: 20px;
+    text-align: center;
+    border: 1px solid @border-color;
+  
+    &:last-child {
+      margin-right: 0;
+    }
 
-  &:last-child {
-    margin-right: 0;
+    .title {
+      margin-top: 25px;
+    }
   }
-}
-
-.title {
-  margin-top: 25px;
 }
 
 .charts {
   text-align: center;
-}
 
-.chart {
-  display: inline-block;
-  width: calc(50% - 20px);
-  height: (calc((100vh - @header-height - 260px) / 2));
-  margin-bottom: 40px;
-}
+  .chart {
+    display: inline-block;
+    width: calc(50% - 20px);
+    height: (calc((100vh - @header-height - 260px) / 2));
+    margin-bottom: 40px;
 
-.text {
-  text-align: center;
-  font-weight: @font-bold;
+    .text {
+      text-align: center;
+      font-weight: @font-bold;
+    }
+  }
 }

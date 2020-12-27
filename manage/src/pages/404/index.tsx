@@ -27,12 +27,12 @@ const NotFound = () => {
 
   return (
     <div className={styles.notFoundWrapper}>
-      <img className={styles.img} src={notFoundImg} alt="404" />
-      <div className={styles.notFound}>
-        <div className={styles.title}>
+      <img src={notFoundImg} alt="404" />
+      <div>
+        <span>
           <FormattedMsg id="Not Found" />
-        </div>
-        <p className={styles.desc}>
+        </span>
+        <p>
           <FormattedMsg
             id="NOT_FOUND_DESC"
             values={{
