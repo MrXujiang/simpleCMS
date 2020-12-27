@@ -111,7 +111,7 @@
   width: 24px;
   height: 24px;
   border-radius: 14px;
-  background: url(assets/avatar.png) no-repeat;
+  background: url(assets/avatar.svg) no-repeat;
   background-size: 24px;
   margin-right: 8px;
 }

@@ -133,7 +133,7 @@ a {
 
 .noticeBox .avatar {
   border-radius: 14px;
-  background: url(assets/avatar.png) no-repeat;
+  background: url(assets/avatar.svg) no-repeat;
 }
 
 /* 头部样式 end */

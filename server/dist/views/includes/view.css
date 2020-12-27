@@ -30,7 +30,7 @@
   width: 32px;
   height: 32px;
   border-radius: 14px;
-  background: url(assets/avatar.png) no-repeat;
+  background: url(assets/avatar.svg) no-repeat;
   background-size: 32px;
   margin-right: 8px;
 }
@@ -87,7 +87,7 @@
   width: 32px;
   height: 32px;
   border-radius: 14px;
-  background: url(assets/avatar.png) no-repeat;
+  background: url(assets/avatar.svg) no-repeat;
   background-size: 32px;
   margin-right: 8px;
 }
@@ -124,7 +124,7 @@
   width: 32px;
   height: 32px;
   border-radius: 14px;
-  background: url(assets/avatar.png) no-repeat;
+  background: url(assets/avatar.svg) no-repeat;
   background-size: 32px;
   margin-right: 8px;
 }

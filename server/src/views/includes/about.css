@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: center;
   min-width: 1024px;
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 110px);
   padding-bottom: 50px;
   padding-top: 60px;
 }

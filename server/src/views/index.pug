@@ -29,8 +29,8 @@ block content
                     object-fit='contain'
                   )
                 .updataContent
-                  .updatatitle #{val.title}
-                  .updatatContent #{val.desc}
+                  .updatatitle(title=val.title) #{val.title}
+                  .updatatContent(title=val.desc) #{val.desc}
                   .updataOther
                     .author #{val.author}
                     .date #{val.ct}
@@ -45,14 +45,15 @@ block content
                     //-       src='/assets/favorites.png'
                     //-     )
                     //-     span 34
-          .columnBox
-            .title 编辑推荐
-            each val in tops
-              a.item(href=`/detail?fid=${val.fid}`, target='_blank')
-                img(
-                  src=val.face_img
-                  class='listImg'
-                )
-                .content
-                  .title #{val.title}
-                  .introduction #{val.author}  #{val.ct}
+          if (tops.length > 0)
+            .columnBox
+              .title 编辑推荐
+              each val in tops
+                a.item(href=`/detail?fid=${val.fid}`, target='_blank')
+                  img(
+                    src=val.face_img
+                    class='listImg'
+                  )
+                  .content
+                    .title #{val.title}
+                    .introduction #{val.author}  #{val.ct}
