@@ -132,6 +132,10 @@
   border-bottom: 1px solid #d1e9ff;
 }
 
+.viewContainer .descriptionBox a>strong {
+  color: #0269c8;
+}
+
 .viewContainer .descriptionBox strong{
   font-weight: 700;
   color: #333;
