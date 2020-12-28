@@ -42,10 +42,6 @@ const Login: React.FC<LoginProps> = ({ dispatch, isLoading }) => {
       name="loginForm"
       className={styles.form}
       onFinish={onFinish}
-      initialValues={{
-        username: 'test',
-        password: '12345678',
-      }}
     >
       <Form.Item
         name="username"
