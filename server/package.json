@@ -36,7 +36,7 @@
     "nodemon": "^1.19.1"
   },
   "scripts": {
-    "start": "set NODE_ENV=development&& nodemon -w src --exec \"babel-node src\"",
+    "start": "export NODE_ENV=development && nodemon -w src --exec \"babel-node src\"",
     "build": "babel src --out-dir dist",
     "run-build": "node dist",
     "test": "echo \"Error: no test specified\" && exit 1"
