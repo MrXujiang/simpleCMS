@@ -337,6 +337,7 @@
     margin: 0;
     display: flex;
     justify-content: center;
+    min-width: 0;
   }
   .viewContainer .containerWidth {
     width: calc(100% - 32px);
