@@ -14,8 +14,9 @@ const NotFound = () => {
       setTime(prevTime => {
         if (prevTime === 1) {
           history.replace('/dashboard')
+          return 0
         }
-        return prevTime - 1
+        return Math.max(prevTime - 1, 0)
       })
     }, 1000)
     return () => {

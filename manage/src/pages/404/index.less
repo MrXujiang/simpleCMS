@@ -1,4 +1,5 @@
 @import '~less/variables';
+@import '~less/mixins';
 
 .notFoundWrapper {
   height: 100%;
@@ -25,10 +26,7 @@
 
       & + p {
         text-shadow: 0 4px 8px rgba(36, 46, 66, 0.1);
-        font-size: @size-tiny-large;
-        font-weight: @font-bold;
-        line-height: 1.4;
-        color: #242e42;
+        .TypographyTitleH4(#242e42);
         text-align: left;
       }
     }
