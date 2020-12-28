@@ -77,7 +77,7 @@
 }
 .viewContainer .authorBox .name, .viewContainer .authorBox .date, .viewContainer .authorBox .views {
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #666666;
@@ -161,13 +161,18 @@
   margin-bottom: 8px;
 }
 .viewContainer .exceptional .icon {
-  height: 150px;
+  width: 150px;
+  /* height: 150px; */
   display: flex;
   justify-content: center;
   align-items: center;
+  display: table-cell;
+  vertical-align: middle;
 }
 .viewContainer .exceptional .icon img {
   cursor: pointer;
+  width: 100%;
+  display: block;
 }
 .viewContainer .exceptional .icon #img-reward {
   transition: all 0.5s;

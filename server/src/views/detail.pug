@@ -32,7 +32,7 @@ block content
               id='img-reward'
             )
             img(
-              src='/assets/rectangle.png', 
+              src=payCode, 
               id='img-payCode'
             )
           .reward 
@@ -120,17 +120,22 @@ block content
 
     $('#commentButton').click(function(){
         let textArea = $('#js-textarea').val()
-        fetch('/api/v0/article/comment/save',{
-          body: JSON.stringify({id: id , comment: textArea}),
-          method: 'POST',
-          credentials: 'include',
-          cache: 'no-cache',
-          headers: {
-            'user-agent': 'Mozilla/4.0 MDN Example',
-            'content-type': 'application/json'
-          },
-           mode: 'cors'
-        }).then((res) => {
-          window.location.reload()
-        })
+        if(textArea){
+          fetch('/api/v0/article/comment/save',{
+            body: JSON.stringify({id: id , comment: textArea}),
+            method: 'POST',
+            credentials: 'include',
+            cache: 'no-cache',
+            headers: {
+              'user-agent': 'Mozilla/4.0 MDN Example',
+              'content-type': 'application/json'
+            },
+            mode: 'cors'
+          }).then((res) => {
+            window.location.reload()
+          })
+        }else {
+          $('#js-textarea').css('border-color','red')
+          $('#js-textarea').attr('placeholder',"评论不能为空...");
+        }
       })

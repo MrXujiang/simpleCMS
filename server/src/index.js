@@ -108,7 +108,7 @@ async function start() {
         glob.sync(`${config.publicPath}/db/comments/*.json`).forEach(item => {
             const row = RF(item);
             result.flovers += row.flover;
-            result.comments += row.comments.length;
+            result.comments += row.comments.length || row.comments.length;
             result.views += row.views;
         });
 
