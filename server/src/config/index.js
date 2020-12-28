@@ -20,10 +20,10 @@ function getIPAdress() {
 }
 
 const IP = getIPAdress();
-const serverPort = isDev ? 3000 : 3000;
+const serverPort = isDev ? 3000 : 80;
 const staticPath = isDev
   ? `http://${IP}:${serverPort}`
-  : `http://49.234.61.19:${serverPort}`;
+  : `http://175.27.130.220:${serverPort}`;
 const publicPath = resolve(__dirname, "../../public");
 const appStaticPath = resolve(__dirname, "../../static");
 const routerPath = resolve(__dirname, "../router");
