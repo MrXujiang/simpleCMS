@@ -68,11 +68,11 @@
   margin-bottom: 24px;
 }
 .viewContainer .authorBox .avatar {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 14px;
   background: url(assets/avatar.svg) no-repeat;
-  background-size: 32px;
+  background-size: 24px;
   margin-right: 8px;
 }
 .viewContainer .authorBox .name, .viewContainer .authorBox .date, .viewContainer .authorBox .views {
@@ -164,9 +164,10 @@
 .viewContainer .exceptional .icon {
   width: 150px;
   /* height: 150px; */
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
+  text-align: center;
   display: table-cell;
   vertical-align: middle;
 }
@@ -176,6 +177,8 @@
   display: block;
 }
 .viewContainer .exceptional .icon #img-reward {
+  width: 50px;
+  display: unset;
   transition: all 0.5s;
 }
 .viewContainer .exceptional .icon #img-reward:hover {
@@ -332,7 +335,7 @@
   padding: 45px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1064px) {
   .viewContainer{ 
     width: 100%;
     min-width: 0;

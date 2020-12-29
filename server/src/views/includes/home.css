@@ -79,12 +79,14 @@
   flex: 1;
   display: flex;
   flex-wrap: wrap;
+
 }
 .recommendBox .childBox .updataBox .childUpdata {
   margin-bottom: 20px;
   width: 200px;
   background-color: #fff;
   margin-right: 40px;
+  border-radius: 4px;
 }
 .recommendBox .childBox .updataBox .childUpdata .imgWrap {
   display: block;
@@ -108,7 +110,7 @@
   margin-bottom: 8px;
 }
 .contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle {
-  width: 188px;
+  width: 168px;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -118,6 +120,15 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle {
+  letter-spacing: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space:unset;
 }
 .contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle:hover {
   color: #51B266;
