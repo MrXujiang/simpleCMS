@@ -405,7 +405,6 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
           >
             <Tabs.TabPane tab={<FormattedMsg id="Text editor" />} key="edit">
               <BraftEditor
-                style={{ height: 580 }}
                 value={editorState}
                 extendControls={extendControls}
                 excludeControls={excludeControls}
