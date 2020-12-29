@@ -43,7 +43,10 @@ block header
       $(document).keyup(function(event){
         if(event.keyCode ==13){
           val = $(".js_search").val();
-          window.location.href = window.location.pathname + '?keyword=' + event.target.value;
+          if(val){
+            let href = window.location.origin + '?keyword=' + event.target.value;
+            window.open(href)
+          }
         }
       });
       $(document).on("mousewheel DOMMouseScroll", function (e) {
