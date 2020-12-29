@@ -82,9 +82,9 @@
 }
 .recommendBox .childBox .updataBox .childUpdata {
   margin-bottom: 20px;
-  width: 220px;
+  width: 200px;
   background-color: #fff;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 .recommendBox .childBox .updataBox .childUpdata .imgWrap {
   display: block;
@@ -123,7 +123,7 @@
   color: #51B266;
 }
 .contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatContent {
-  width: 188px;
+  width: 168px;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

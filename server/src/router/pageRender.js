@@ -93,7 +93,7 @@ const pageRenderRouter = (router) => {
     const article = RF(articlePath) || {};
     const comments = RF(commentPath) || {};
     const ads = RF(adsPath) || {};
-    
+    console.log(article.payCode)
     comments.views = comments.views + 1;
     await ctx.render("detail", {
       viewTitle: article.title,

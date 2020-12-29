@@ -25,16 +25,17 @@ block content
         .descriptionBox
           != descriptionBox
         .exceptional
-          .text 给作者打赏，鼓励TA抓紧创作！
-          #reward.icon 
-            img(
-              src='/assets/group.svg'
-              id='img-reward'
-            )
-            img(
-              src='/assets/rectangle.png', 
-              id='img-payCode'
-            )
+          if(payCode)
+            .text 给作者打赏，鼓励TA抓紧创作！
+            #reward.icon 
+              img(
+                src='/assets/group.svg'
+                id='img-reward'
+              )
+              img(
+                src=payCode, 
+                id='img-payCode'
+              )
           .reward 
             #like.like 
               img(
@@ -120,17 +121,22 @@ block content
 
     $('#commentButton').click(function(){
         let textArea = $('#js-textarea').val()
-        fetch('/api/v0/article/comment/save',{
-          body: JSON.stringify({id: id , comment: textArea}),
-          method: 'POST',
-          credentials: 'include',
-          cache: 'no-cache',
-          headers: {
-            'user-agent': 'Mozilla/4.0 MDN Example',
-            'content-type': 'application/json'
-          },
-           mode: 'cors'
-        }).then((res) => {
-          window.location.reload()
-        })
+        if(textArea){
+          fetch('/api/v0/article/comment/save',{
+            body: JSON.stringify({id: id , comment: textArea}),
+            method: 'POST',
+            credentials: 'include',
+            cache: 'no-cache',
+            headers: {
+              'user-agent': 'Mozilla/4.0 MDN Example',
+              'content-type': 'application/json'
+            },
+            mode: 'cors'
+          }).then((res) => {
+            window.location.reload()
+          })
+        }else {
+          $('#js-textarea').css('border-color','red')
+          $('#js-textarea').attr('placeholder',"评论不能为空...");
+        }
       })
