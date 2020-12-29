@@ -146,11 +146,12 @@
 /* 打赏 start */
 .viewContainer .exceptional {
   width: 100%;
-  height: 300px;
+  max-height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin: 20px 0;
 }
 .viewContainer .exceptional .text {
   font-style: normal;
@@ -329,6 +330,23 @@
   max-width: 980px;
   margin: 0 auto;
   padding: 45px;
+}
+
+@media (max-width: 1024px) {
+  .viewContainer{ 
+    width: 100%;
+    min-width: 0;
+  }
+  .viewContainer .containerWidth { 
+    width: 100%;
+  }
+  .viewContainer .contentWidth {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .viewContainer .contentWidth .advertisingWidth {
+    display: none;
+  }
 }
 
 @media (max-width: 767px) {

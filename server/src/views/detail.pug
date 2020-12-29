@@ -25,16 +25,17 @@ block content
         .descriptionBox
           != descriptionBox
         .exceptional
-          .text 给作者打赏，鼓励TA抓紧创作！
-          #reward.icon 
-            img(
-              src='/assets/group.svg'
-              id='img-reward'
-            )
-            img(
-              src=payCode, 
-              id='img-payCode'
-            )
+          if(payCode)
+            .text 给作者打赏，鼓励TA抓紧创作！
+            #reward.icon 
+              img(
+                src='/assets/group.svg'
+                id='img-reward'
+              )
+              img(
+                src=payCode, 
+                id='img-payCode'
+              )
           .reward 
             #like.like 
               img(
