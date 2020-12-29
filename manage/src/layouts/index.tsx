@@ -13,7 +13,7 @@ import { IntlContext } from '@/utils/context/intl'
 import Header from './header'
 import Sider from './sider'
 
-import styles from './global.less'
+import styles from './index.less'
 
 const cache = createIntlCache()
 

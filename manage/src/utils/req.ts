@@ -3,7 +3,7 @@ import { message } from 'antd'
 import { isDev } from '@/utils'
 
 const instance = axios.create({
-  baseURL: isDev ? 'http://192.168.56.1:3000/api/v0' : 'http://175.27.130.220/api/v0',
+  baseURL: isDev ? 'http://192.168.56.1:3000/api/v0' : 'http://cms.zhikume.cn/api/v0',
   timeout: 10000,
   withCredentials: true
 })
@@ -24,7 +24,6 @@ instance.interceptors.response.use(function(response) {
   }
   return response.data.result
 }, function(error) {
-  // 对响应错误做点什么
   const { response } = error
   if (response.status === 404) {
     message.error('请求资源未发现')
