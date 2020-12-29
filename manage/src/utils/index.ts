@@ -19,4 +19,4 @@ export const getFormdata: (info: any) => void = info => {
 
 export const phoneRE = /^1[0-9]{10}$/
 
-export const SERVER_URL = isDev ? '192.168.1.3:3000' : '49.234.61.19:3000'
+export const SERVER_URL = isDev ? 'http://192.168.56.1:3000' : 'http://cms.zhikume.cn'

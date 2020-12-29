@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { message } from 'antd'
-import { isDev } from '@/utils'
+import { SERVER_URL } from '@/utils'
 
 const instance = axios.create({
-  baseURL: isDev ? 'http://192.168.56.1:3000/api/v0' : 'http://cms.zhikume.cn/api/v0',
+  baseURL: `${SERVER_URL}/api/v0`,
   timeout: 10000,
   withCredentials: true
 })

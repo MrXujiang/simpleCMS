@@ -179,7 +179,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
             </div>
             <Upload
               name="file"
-              action={`http://${SERVER_URL}/api/v0/files/upload/free`}
+              action={`${SERVER_URL}/api/v0/files/upload/free`}
               onChange={onUpload}
               showUploadList={false}
             >

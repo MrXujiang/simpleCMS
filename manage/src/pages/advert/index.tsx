@@ -113,7 +113,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
             <Upload
               name="file"
               listType="picture-card"
-              action={`http://${SERVER_URL}/api/v0/files/upload/free`}
+              action={`${SERVER_URL}/api/v0/files/upload/free`}
               onChange={onUpload.bind(this, 'top')}
               showUploadList={false}
             >
@@ -148,7 +148,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
             <Upload
               name="file"
               listType="picture-card"
-              action={`http://${SERVER_URL}/api/v0/files/upload/free`}
+              action={`${SERVER_URL}/api/v0/files/upload/free`}
               onChange={onUpload.bind(this, 'side')}
               showUploadList={false}
             >

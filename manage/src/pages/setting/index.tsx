@@ -79,7 +79,7 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
             <Upload
               name="file"
               listType="picture-card"
-              action={`http://${SERVER_URL}/api/v0/files/upload/free`}
+              action={`${SERVER_URL}/api/v0/files/upload/free`}
               onChange={onUpload}
               showUploadList={false}
             >

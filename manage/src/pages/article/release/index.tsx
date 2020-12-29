@@ -200,7 +200,7 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
       component: (
         <Upload
           name="file"
-          action={`http://${SERVER_URL}/api/v0/files/upload/free`}
+          action={`${SERVER_URL}/api/v0/files/upload/free`}
           showUploadList={false}
           onChange={editorUploadHandler}
         >
@@ -338,7 +338,7 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
               <Upload
                 name="file"
                 listType="picture-card"
-                action={`http://${SERVER_URL}/api/v0/files/upload/free`}
+                action={`${SERVER_URL}/api/v0/files/upload/free`}
                 onChange={onFaceImageUpload}
                 showUploadList={false}
               >
@@ -366,7 +366,7 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
               <Upload
                 name="file"
                 listType="picture-card"
-                action={`http://${SERVER_URL}/api/v0/files/upload/free`}
+                action={`${SERVER_URL}/api/v0/files/upload/free`}
                 onChange={onPayUpload}
                 showUploadList={false}
               >
