@@ -11,11 +11,12 @@ block content
   .viewContainer
     .containerWidth 
       .contentWidth
-        .imgBox
-          img(
-            src=topImg
-            class='viewImg'
-          )
+        if(topImg)
+          .imgBox
+            img(
+              src=topImg
+              class='viewImg'
+            )
         .viewTitle #{viewTitle}
         .authorBox
           .avatar

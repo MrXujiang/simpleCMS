@@ -104,7 +104,7 @@ const pageRenderRouter = (router) => {
       payCode: article.payCode,
       commentInfoList: comments.comments || [],
       flover: comments.flover,
-      views: comments.views,
+      views: comments.views || 0,
       ads: ads.sideAd || {},
       copyright: "版权所有 @SimpleCMS 研发团队",
     });
@@ -176,7 +176,8 @@ const pageRenderRouter = (router) => {
     } 
     
     await ctx.render("cates", {
-      labels: resultRush
+      labels: resultRush,
+      copyright: "版权所有 @SimpleCMS 研发团队",
     });
   });
 };

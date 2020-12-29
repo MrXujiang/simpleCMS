@@ -113,6 +113,7 @@
 .teamBox .avatar .maskBackground img{
   width: 25px;
   height: 25px;
+  z-index: 1;
 }
 
 .teamBox div:not(:first-child) {
