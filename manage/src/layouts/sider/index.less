@@ -1,5 +1,13 @@
 @import '~less/variables';
 
+.sider {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 2;
+}
+
 .logo {
   display: flex;
   justify-content: center;
@@ -8,13 +16,9 @@
   margin: 16px;
 }
 
-.show {
+.title {
   margin-left: 10px;
   font-size: @size-tiny-large;
   font-weight: @font-bold;
   color: @white;
-}
-
-.hide {
-  display: none;
 }

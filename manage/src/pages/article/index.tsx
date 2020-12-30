@@ -146,6 +146,7 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
         dataSource={isDraftPage ? draftList : articleList}
         rowKey="fid"
         pagination={false}
+        scroll={{ y: 'calc(100vh - 48px - 92px - 32px - 20px - 39px)' }}
       />
     </React.Fragment>
   )

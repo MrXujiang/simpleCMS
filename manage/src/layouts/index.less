@@ -7,17 +7,18 @@
 }
 
 .basicLayout {
-  height: 100vh;
+  position: relative;
+  min-height: 100vh;
 
-  & > :global(.ant-layout) {
+  .contentLayout {
+    position: relative;
     overflow-x: hidden;
   }
 }
 
 .content {
-  overflow-y: scroll;
-  min-width: @content-width;
+  min-width: 1000px;
   background: @white;
-  margin: 10px 0 10px 10px;
+  margin: 58px 10px 10px 150px;
   padding: 20px;
 }

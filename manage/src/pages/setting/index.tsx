@@ -40,7 +40,6 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
       const imageUrl = getImageUrl(info)
       setLoading(false)
       setImageUrl(imageUrl)
-      message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }

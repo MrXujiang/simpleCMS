@@ -12,6 +12,7 @@ import { ConnectState } from '@/models/connect'
 import { IntlContext } from '@/utils/context/intl'
 import Header from './header'
 import Sider from './sider'
+import Footer from './footer'
 
 import styles from './index.less'
 
@@ -24,10 +25,6 @@ interface BasicLayoutProps {
 }
 
 const BasicLayout: React.FC<BasicLayoutProps> = ({ children, location, lang }) => {
-  const [ collapsed, setCollapsed ] = useState<boolean>(false)
-
-  const toggle: () => void = useCallback(() => setCollapsed(prevCollapsed => !prevCollapsed), [])
-
   const getLocale: (lang: string, type: string) => any = useCallback((lang, type) => {
     let language = null
     switch (lang) {
@@ -67,12 +64,13 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children, location, lang }) =
             </React.Fragment>
           ) : (
             <Layout className={styles.basicLayout}>
-              <Sider collapsed={collapsed} location={location} />
-              <Layout>
-                <Header collapsed={collapsed} toggle={toggle} />
+              <Sider location={location} />
+              <Layout className={styles.contentLayout}>
+                <Header />
                 <Layout.Content className={styles.content}>
                   {children}
-                </Layout.Content>
+                  </Layout.Content>
+                  <Footer />
               </Layout>
             </Layout>
           )}

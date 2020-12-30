@@ -2,6 +2,7 @@ import React, { useCallback, useState, useEffect, useContext, useRef, useMemo } 
 import { Form, Input, Button, Select, message, Spin, Tabs, Upload } from 'antd'
 import { PictureFilled } from '@ant-design/icons'
 import { connect, Dispatch, history } from 'umi'
+import ImgCrop from 'antd-img-crop'
 import moment from 'moment'
 
 import BraftEditor from 'braft-editor'
@@ -335,17 +336,19 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
               label={<FormattedMsg id="Cover" />}
               name="face_img"
             >
-              <Upload
-                name="file"
-                listType="picture-card"
-                action={`${SERVER_URL}/api/v0/files/upload/free`}
-                onChange={onFaceImageUpload}
-                showUploadList={false}
-              >
-                {faceImg
-                  ? <img src={faceImg} alt="face_img" style={{ width: 102, height: 102 }} />
-                  : <UploadBtn loading={faceImgLoading} />}
-              </Upload>
+              <ImgCrop rotate aspect={1000 / 640}>
+                <Upload
+                  name="file"
+                  listType="picture-card"
+                  action={`${SERVER_URL}/api/v0/files/upload/free`}
+                  onChange={onFaceImageUpload}
+                  showUploadList={false}
+                >
+                  {faceImg
+                    ? <img src={faceImg} alt="face_img" style={{ width: 102, height: 102 }} />
+                    : <UploadBtn loading={faceImgLoading} />}
+                </Upload>
+              </ImgCrop>
             </Form.Item>
             <Form.Item
               label={<FormattedMsg id="Description" />}

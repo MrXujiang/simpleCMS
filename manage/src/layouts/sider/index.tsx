@@ -10,32 +10,25 @@ import { siderMenus, showMenus } from '../schema'
 import styles from './index.less'
 
 interface SiderProps {
-  collapsed: boolean
-  location: {
-    pathname: string
-  }
+  location: { pathname: string }
 }
 
-const SiderLayput: React.FC<SiderProps> = ({ collapsed, location: { pathname } }) => {
-  const curKey = useMemo(() => {
-    return pathname.lastIndexOf('/') !== 0
-      ? pathname.slice(1, pathname.lastIndexOf('/'))
-      : pathname.slice(1)
-  }, [pathname])
+const SiderLayput: React.FC<SiderProps> = ({ location: { pathname } }) => {
+  const curKey = useMemo(() => pathname.slice(1), [pathname])
   
-  const [ selectedKey, setSelectedKey ] = useState<any>(curKey)
+  const [ selectedKey, setSelectedKey ] = useState<string>(curKey)
   
-  const onMenuClick = useCallback(({ key }: { key: React.Key }) => setSelectedKey(key), [])
+  const onMenuClick = useCallback(({ key }) => setSelectedKey(key), [])
 
   useEffect(() => setSelectedKey(curKey), [pathname])
 
   return (
-    <Layout.Sider width={168} trigger={null} collapsible collapsed={collapsed}>
+    <Layout.Sider className={styles.sider} width={140}>
       <div className={styles.logo}>
         <Link to="/">
           <img src={logo} alt="logo" width={30} height={30} />
         </Link>
-        <span className={collapsed ? styles.hide : styles.show}>
+        <span className={styles.title}>
           <FormattedMsg id={title} />
         </span>
       </div>

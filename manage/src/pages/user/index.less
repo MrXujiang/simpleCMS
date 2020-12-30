@@ -44,10 +44,18 @@
   width: 100%;
   margin-bottom: 24px;
   text-align: center;
-  color: rgba(0, 0, 0, .45);
+  color: @text-light-color;
   font-size: @size-normal;
 
-  .top {
+  div {
     margin-bottom: 8px;
+
+    a {
+      color: @text-light-color;
+    }
+
+    a:hover {
+      color: @primary;
+    }
   }
 }

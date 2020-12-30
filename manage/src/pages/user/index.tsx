@@ -4,7 +4,7 @@ import { CopyrightOutlined, GlobalOutlined } from '@ant-design/icons'
 import { connect, Dispatch } from 'umi'
 
 import logo from 'assets/logo.svg'
-import { title } from '@/utils'
+import { title, IP_URL, IP_ADDRESS } from '@/utils'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { ConnectState } from '@/models/connect'
 
@@ -56,8 +56,8 @@ const UserLayout: React.FC<UserLayoutProps> = ({ children, lang, dispatch }) => 
       </header>
       {children}
       <footer className={styles.footer}>
-        <div className={styles.top}>
-          <FormattedMsg id={title} />
+        <div>
+          <a href={IP_URL} target="_blank">{IP_ADDRESS}</a>
         </div>
         <FormattedMsg id="Copyright" /> <CopyrightOutlined /> <FormattedMsg id="CopyrightText" />
       </footer>

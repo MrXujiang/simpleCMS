@@ -20,3 +20,7 @@ export const getFormdata: (info: any) => void = info => {
 export const phoneRE = /^1[0-9]{10}$/
 
 export const SERVER_URL = isDev ? 'http://192.168.56.1:3000' : 'http://cms.zhikume.cn'
+
+export const IP_URL = 'https://beian.miit.gov.cn/'
+
+export const IP_ADDRESS = '鄂ICP备18024675号-2'

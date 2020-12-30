@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useContext, useEffect } from 'react'
+import React, { useCallback, useMemo, useContext, useEffect, useState } from 'react'
 import { Form, Input, Select, Button, Upload, message, Spin, Avatar } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { connect, Dispatch } from 'umi'
@@ -31,6 +31,7 @@ interface modifyFormValues {
 const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
   const [form] = Form.useForm()
   const formatMsg = useContext<any>(IntlContext)
+  const [tx, setTx] = useState<string>('')
 
   const prefixSelector: JSX.Element = useMemo(() => (
     <Form.Item name="prefix" noStyle>
@@ -44,7 +45,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
   const onFinish: (data: modifyFormValues) => void = useCallback(values => {
     dispatch({
       type: 'user/saveUserInfo',
-      payload: values,
+      payload: tx ? Object.assign({}, values, {tx}) : values,
     }).then(() => {
       message.success(formatMsg('Update successful'))
       // 同步 rightContent 的用户昵称
@@ -52,22 +53,12 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
         dispatch({ type: 'user/getUserInfo' })
       }
     })
-  }, [formatMsg, currentUser])
+  }, [formatMsg, currentUser, tx])
 
   const onUpload: (info: any) => void = useCallback(info => {
     if (info.file.status === 'done') {
-      const imageUrl = getImageUrl(info)
-      dispatch({
-        type: 'user/saveUserInfo',
-        payload: Object.assign(
-          {},
-          currentUser,
-          {tx: imageUrl},
-        )
-      }).then(() => {
-        dispatch({ type: 'user/getUserInfo' })
-      })
-      message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
+      const tx = getImageUrl(info)
+      setTx(tx)
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }
@@ -76,6 +67,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
   useEffect(() => {
     if (!isEmpty(currentUser)) {
       form.setFieldsValue(currentUser)
+      currentUser.tx && setTx(currentUser.tx)
     }
   }, [currentUser])
   
@@ -92,7 +84,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
               name="modifyForm"
               form={form}
               onFinish={onFinish}
-              initialValues={{ prefix: '86', country: 'china' }}
+              initialValues={{ prefix: '86' }}
               scrollToFirstError
             >
               <Form.Item
@@ -168,12 +160,12 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
           </div>
           <div className={styles.right}>
             <div className={styles.avatar}>
-              {currentUser.tx ? <Avatar src={currentUser.tx} style={{ width: 144, height: 144 }} /> : (
+              {tx ? <Avatar src={tx} style={{ width: 144, height: 144 }} /> : (
                 <img
                   alt="avatar"
                   width={144}
                   height={144}
-                  src={currentUser.tx ? currentUser.tx : avatar}
+                  src={avatar}
                 />
               )}
             </div>

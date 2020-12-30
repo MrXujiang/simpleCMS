@@ -38,7 +38,6 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
       const imageUrl = getImageUrl(info)
       type === 'top' ? setTopLoading(false) : setSideLoading(false)
       type === 'top' ? setTopImageUrl(imageUrl) : setSideImageUrl(imageUrl)
-      message.success(`${info.file.name} ${formatMsg('Uploaded successfully')}`)
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }
