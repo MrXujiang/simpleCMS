@@ -65,11 +65,16 @@ const pageRenderRouter = (router) => {
     const ads = RF(filePath) || {};
     let articleIdxs = RF(articleIdxPath) || [];
     // 搜索功能
-    if(articleIdxs.length && ctx.query.keyword) {
-      let keyword = decodeURI(ctx.query.keyword)
-      articleIdxs = articleIdxs.filter(item => item.title.indexOf(keyword) > -1 || (item.desc && item.desc.indexOf(keyword)) > -1)
+    if (articleIdxs.length && ctx.query.keyword) {
+      let keyword = decodeURI(ctx.query.keyword);
+      articleIdxs = articleIdxs.filter(
+        (item) =>
+          item.title.indexOf(keyword) > -1 ||
+          (item.desc && item.desc.indexOf(keyword)) > -1
+      );
     }
     articleIdxs = articleIdxs.map((item) => {
+      item.label = item.label.join("/");
       return {
         ...item,
         ct: formatTime(item.ct),
@@ -93,14 +98,13 @@ const pageRenderRouter = (router) => {
     const article = RF(articlePath) || {};
     const comments = RF(commentPath) || {};
     const ads = RF(adsPath) || {};
-    console.log(article.payCode)
     comments.views = comments.views + 1;
     await ctx.render("detail", {
       viewTitle: article.title,
       topImg: article.face_img,
       authorInfo: { name: article.author, date: formatTime(article.ct, "-") },
       label: article.label,
-      descriptionBox: article.html,
+      descriptionBox: article.html || article.content,
       payCode: article.payCode,
       commentInfoList: comments.comments || [],
       flover: comments.flover,
@@ -157,24 +161,31 @@ const pageRenderRouter = (router) => {
     let articleIdxs = RF(articleIdxPath);
     let resultRush = [];
 
-    if(articleIdxs && articleIdxs.length) {
+    if (articleIdxs && articleIdxs.length) {
       let result = [];
-      articleIdxs.forEach((item) => { result = result.concat(item.label) });
+      articleIdxs.forEach((item) => {
+        result = result.concat(item.label);
+      });
       // 计数
       let resultObj = {};
-      result.forEach(item => { resultObj[item] = resultObj[item] ? (resultObj[item] + 1) : 1; } );
+      result.forEach((item) => {
+        resultObj[item] = resultObj[item] ? resultObj[item] + 1 : 1;
+      });
 
       // 生成随机颜色
       const generateRandomColor = () => {
-        return '#'+('00000'+ (Math.random()*0x1000000<<0).toString(16)).substr(-6);
-      }
-  
+        return (
+          "#" +
+          ("00000" + ((Math.random() * 0x1000000) << 0).toString(16)).substr(-6)
+        );
+      };
+
       // 数据清洗
       for (let [key, value] of Object.entries(resultObj)) {
-        resultRush.push({ k: key, n: value, c: generateRandomColor() })
+        resultRush.push({ k: key, n: value, c: generateRandomColor() });
       }
-    } 
-    
+    }
+
     await ctx.render("cates", {
       labels: resultRush,
       copyright: "版权所有 @SimpleCMS 研发团队",

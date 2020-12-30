@@ -2,12 +2,11 @@
 /* 内容样式 start*/
 .contentContainer{
   margin: auto;
-  margin-top: 32px;
   display: flex;
   justify-content: center;
   min-width: 1024px;
   padding-bottom: 50px;
-  padding-top: 60px;
+  padding-top: 92px;
 }
 .homeWidth {
   width: 960px;
@@ -100,7 +99,7 @@
   object-fit: contain;
 }
 .recommendBox .childBox .updataBox .childUpdata .updataContent {
-  padding: 8px 16px 16px;
+  padding: 8px;
 }
 .recommendBox .childBox .updataBox .childUpdata .updataContent .updataAuthor {
   height: 24px;
@@ -109,43 +108,33 @@
   align-items: center;
   margin-bottom: 8px;
 }
-.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle {
+.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle,.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatContent {
   width: 168px;
   font-style: normal;
+  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle {
   font-weight: 600;
   font-size: 16px;
   line-height: 22px;
   color: #333333;
-  margin-bottom: 8px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle {
-  letter-spacing: 0;
-  overflow: hidden;
-  display: -webkit-box;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  white-space:unset;
+  min-height: 44px;
 }
 .contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle:hover {
   color: #51B266;
 }
 .contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatContent {
-  width: 168px;
-  font-style: normal;
-  font-weight: normal;
   font-size: 14px;
   line-height: 180%;
-  min-height: 1em;
+  min-height: 50px;
   text-align: justify;
   color: #999999;
-  margin-bottom: 8px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 .recommendBox .childBox .updataBox .childUpdata .updataContent .updataOther {
   display: flex;
@@ -237,7 +226,7 @@
     margin: 0;
     padding: 16px;
     padding-bottom: 80px;
-    padding-top: 76px;
+    padding-top: 96px;
   }
   .contentContainer .homeWidth {
     width: 100%;

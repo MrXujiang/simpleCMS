@@ -103,7 +103,7 @@
 }
 .viewContainer .descriptionBox>pre {
   overflow: auto;
-  background: #f8f8f8;
+  background: #eee;
 }
 
 .viewContainer .descriptionBox>pre>code {
@@ -140,6 +140,10 @@
 .viewContainer .descriptionBox strong{
   font-weight: 700;
   color: #333;
+}
+
+.viewContainer .descriptionBox ul > li {
+  margin-bottom: 2px;
 }
 
 /* 正文 end */

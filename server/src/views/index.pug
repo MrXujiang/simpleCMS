@@ -30,7 +30,7 @@ block content
                   )
                 .updataContent
                   .updatatitle(title=val.title) #{val.title}
-                  .updatatContent(title=val.desc) #{val.desc}
+                  .updatatContent(title=val.desc) #{val.desc || val.label} 
                   .updataOther
                     .author #{val.author}
                     .date #{val.ct}
