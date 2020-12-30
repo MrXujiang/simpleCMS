@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   min-width: 1024px;
-  padding-bottom: 80px;
+  padding-bottom: 100px;
   padding-top: 60px;
 }
 
@@ -144,6 +144,7 @@
 
 .viewContainer .descriptionBox ul > li {
   margin-bottom: 2px;
+  min-height: 26px;
 }
 
 /* 正文 end */

@@ -63,7 +63,7 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
           {labels.map((l: string, i: number) => {
             let color = i % 2 === 1 ? 'volcano' : '#51B266'
             return (
-              <Tag color={color} key={l}>
+              <Tag color={color} key={l} className={styles.tag}>
                 {l.toUpperCase()}
               </Tag>
             )
