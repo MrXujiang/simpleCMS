@@ -78,3 +78,8 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+server/public/uploads
+server/public/db
+server/dist
+manage/dist
