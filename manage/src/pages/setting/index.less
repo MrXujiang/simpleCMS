@@ -2,3 +2,11 @@
   width: 500px;
   margin-left: 200px;
 }
+
+@media screen and(max-width: 575px) {
+  .settingWrapper {
+    :global(.ant-form-item-control) {
+      margin-left: 0;
+    }
+  }
+}

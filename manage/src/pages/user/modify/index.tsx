@@ -26,6 +26,7 @@ interface modifyFormValues {
   country: string
   addr: string
   phone: string
+  tx?: string
 }
 
 const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
@@ -49,7 +50,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
     }).then(() => {
       message.success(formatMsg('Update successful'))
       // 同步 rightContent 的用户昵称
-      if (values.username !== currentUser.username) {
+      if (values.username !== currentUser.username || tx !== currentUser.tx) {
         dispatch({ type: 'user/getUserInfo' })
       }
     })

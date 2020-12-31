@@ -6,19 +6,38 @@
   }
 }
 
-.basicLayout {
-  position: relative;
-  min-height: 100vh;
+html {
+  .scrollbar(@width: 0px, @trackBg: rgb(240, 242, 245), @thumbBg: #fff);
+}
 
+.scrollbar(@width: 8px, @trackBg: #f0f2f5, @thumbBg: #333, @thumbHoverBg: #222) {
+  &::-webkit-scrollbar {
+    width: @width;
+    height: @width;
+  }
+  &::-webkit-scrollbar-track {
+    background: @trackBg;
+    border-radius: 2px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: @thumbBg;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: @thumbHoverBg;
+  }
+}
+
+.basicLayout {
   .contentLayout {
-    position: relative;
     overflow-x: hidden;
   }
 }
 
 .content {
+  min-height: calc(100vh - @header-height - 20px - 32px);
   min-width: @content-width;
-  background: @white;
   margin: 58px 10px 10px 150px;
   padding: 20px;
+  background: @white;
 }

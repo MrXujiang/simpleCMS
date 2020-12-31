@@ -164,7 +164,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
               placeholder={formatMsg('Please enter a description')}
             />
           </Form.Item>
-          <Form.Item style={{ float: 'right' }}>
+          <Form.Item className={styles.submit}>
             <Button type="primary" htmlType="submit">
               <FormattedMsg id="Publish advert" />
             </Button>

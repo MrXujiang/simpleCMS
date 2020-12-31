@@ -64,7 +64,7 @@ const RightContent: React.FC<RightContentProps> = ({ currentUser, lang, dispatch
       <Menu.Divider />
       <Menu.Item key="zh-cn">
         <span className={styles.lang}>CN</span>
-        <FormattedMsg id="Simplified Chinese" />
+        简体中文
       </Menu.Item>
     </Menu>
   ), [lang])
@@ -79,7 +79,7 @@ const RightContent: React.FC<RightContentProps> = ({ currentUser, lang, dispatch
         <Dropdown
           overlayClassName={styles.overlay}
           overlay={actionsDropdown}
-          placement="bottomRight"
+          placement="bottomCenter"
         >
           <span className={styles.currentUser}>
             <Avatar size="small" className={styles.avatar} src={currentUser.tx || avatar} alt="avatar" />
@@ -92,7 +92,7 @@ const RightContent: React.FC<RightContentProps> = ({ currentUser, lang, dispatch
       <Dropdown
         overlayClassName={styles.overlay}
         overlay={globalLanguageDropdown}
-        placement="bottomRight"
+        placement="bottomCenter"
       >
         <GlobalOutlined style={{ cursor: 'pointer' }} />
       </Dropdown>

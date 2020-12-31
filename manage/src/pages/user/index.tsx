@@ -12,11 +12,12 @@ import styles from './index.less'
 
 interface UserLayoutProps {
   children: JSX.Element
+  location: any
   lang: string
   dispatch: Dispatch
 }
 
-const UserLayout: React.FC<UserLayoutProps> = ({ children, lang, dispatch }) => {
+const UserLayout: React.FC<UserLayoutProps> = ({ children, location, lang, dispatch }) => {
   const handleChangeLanguage: (key: { key: React.Key }) => void = useCallback(({ key }) => {
     dispatch({ type: 'user/changeLocale', payload: key })
   }, [])
@@ -30,12 +31,16 @@ const UserLayout: React.FC<UserLayoutProps> = ({ children, lang, dispatch }) => 
       <Menu.Divider />
       <Menu.Item key="zh-cn">
         <span className={styles.lang}>CN</span>
-        <FormattedMsg id="Simplified Chinese" />
+        简体中文
       </Menu.Item>
     </Menu>
   ), [lang])
 
-  return (
+  return location.pathname !== '/user/login' ? (
+    <React.Fragment>
+      {children}
+    </React.Fragment>
+  ) : (
     <div className={styles.userLayout}>
       <div className={styles.globalIcon}>
         <Dropdown

@@ -32,7 +32,12 @@ const SiderLayput: React.FC<SiderProps> = ({ location: { pathname } }) => {
           <FormattedMsg id={title} />
         </span>
       </div>
-      <Menu theme="dark" selectedKeys={[selectedKey]} mode="inline" onClick={onMenuClick}>
+      <Menu
+        theme="dark"
+        mode="inline"
+        selectedKeys={[selectedKey]}
+        onClick={onMenuClick}
+      >
         {showMenus(siderMenus)}
       </Menu>
     </Layout.Sider>
