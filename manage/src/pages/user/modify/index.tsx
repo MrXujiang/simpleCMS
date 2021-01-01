@@ -121,7 +121,6 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
               <Form.Item
                 name="country"
                 label={<FormattedMsg id="Country" />}
-                rules={[{ required: true, message: <FormattedMsg id="Please select your country" /> }]}
               >
                 <Select placeholder={formatMsg('Please select your country')}>
                   <Select.Option value="china">
@@ -132,7 +131,6 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
               <Form.Item
                 name="addr"
                 label={<FormattedMsg id="Detailed address" />}
-                rules={[{ required: true, message: <FormattedMsg id="Please enter your detailed address" /> }]}
               >
                 <Input placeholder={formatMsg('Please enter your detailed address')} />
               </Form.Item>
@@ -140,9 +138,6 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
                 name="phone"
                 label={<FormattedMsg id="Mobile phone number" />}
                 rules={[{
-                  required: true,
-                  message: <FormattedMsg id="Please enter your mobile phone number" />,
-                }, {
                   pattern: phoneRE,
                   message: <FormattedMsg id="Invalid cell phone number" />
                 }]}
