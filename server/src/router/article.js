@@ -270,7 +270,7 @@ const articleRouter = (router, apiPath) => {
   );
 
   // 取消锁定
-  router.post(api.cancelTLockArticle,
+  router.post(api.cancelLockArticle,
     auth,
     ctx => {
       const { fid } = ctx.query
