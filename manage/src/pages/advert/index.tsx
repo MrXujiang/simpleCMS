@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useContext, useState } from 'react'
+import React, { useEffect, useCallback, useContext, useState, useMemo } from 'react'
 import { Form, message, Spin, Input, Upload, Button } from 'antd'
 import { connect, Dispatch } from 'umi'
 
@@ -20,7 +20,8 @@ const layout = {
   wrapperCol: { span: 18 },
 }
 
-const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) => {
+const Advert: React.FC<AdvertProps> = ({ dispatch, isLoading }) => {
+  const isSuper = useMemo(() => localStorage.getItem('role') === '1', [localStorage.getItem('role')])
   const formatMsg = useContext<any>(IntlContext)
   const [form] = Form.useForm()
 
@@ -62,6 +63,8 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
     })
   }, [formatMsg, topImageUrl, sideImageUrl])
 
+  const showMsg = useCallback(() => message.warning(formatMsg('NOT_ALLOW')), [formatMsg])
+
   useEffect(() => {
     dispatch({ type: 'advert/get' }).then((res: any) => {
       if (res.topAd) {
@@ -102,7 +105,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
             name="topLink"
             rules={[{ required: true, message: <FormattedMsg id="Please enter the link" /> }]}
           >
-            <Input placeholder={formatMsg('Please enter the link')} />
+            <Input disabled={!isSuper} placeholder={formatMsg('Please enter the link')} />
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Picture" />}
@@ -110,6 +113,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
             rules={[{ required: true, message: <FormattedMsg id="Please upload pictures" /> }]}
           >
             <Upload
+              disabled={!isSuper}
               name="file"
               listType="picture-card"
               action={`${SERVER_URL}/api/v0/files/upload/free`}
@@ -125,6 +129,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
             rules={[{ required: true, message: <FormattedMsg id="Please enter a description" /> }]}
           >
             <Input.TextArea
+              disabled={!isSuper}
               autoSize={{ minRows: 3 }}
               placeholder={formatMsg('Please enter a description')}
             />
@@ -137,7 +142,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
             name="sideLink"
             rules={[{ required: true, message: <FormattedMsg id="Please enter the link" /> }]}
           >
-            <Input placeholder={formatMsg('Please enter the link')} />
+            <Input disabled={!isSuper} placeholder={formatMsg('Please enter the link')} />
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Picture" />}
@@ -145,6 +150,7 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
             rules={[{ required: true, message: <FormattedMsg id="Please upload pictures" /> }]}
           >
             <Upload
+              disabled={!isSuper}
               name="file"
               listType="picture-card"
               action={`${SERVER_URL}/api/v0/files/upload/free`}
@@ -160,14 +166,21 @@ const Advert: (props: AdvertProps) => JSX.Element = ({ dispatch, isLoading }) =>
             rules={[{ required: true, message: <FormattedMsg id="Please enter a description" /> }]}
           >
             <Input.TextArea
+              disabled={!isSuper}
               autoSize={{ minRows: 3 }}
               placeholder={formatMsg('Please enter a description')}
             />
           </Form.Item>
           <Form.Item className={styles.submit}>
-            <Button type="primary" htmlType="submit">
-              <FormattedMsg id="Publish advert" />
-            </Button>
+            {!isSuper ? (
+              <Button type="primary"  onClick={showMsg}>
+                <FormattedMsg id="Publish advert" />
+              </Button>
+            ): (
+              <Button type="primary" htmlType="submit">
+                <FormattedMsg id="Publish advert" />
+              </Button>
+            )}
           </Form.Item>
         </Form>
       </Spin>

@@ -10,10 +10,10 @@ export async function saveUserInfo(data: CurrentUser): Promise<any> {
 }
 
 interface LoginParams {
-  username: string,
-  password: string,
+  name: string,
+  pwd: string,
 }
 
-export async function login({ username, password }: LoginParams): Promise<any> {
-  return request.post('/user/login', { name: username, pwd: password }).catch(e => console.error(e))
+export async function login({ name, pwd }: LoginParams): Promise<any> {
+  return request.post('/user/login', { name, pwd }).catch(e => console.error(e))
 }

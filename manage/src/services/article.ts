@@ -61,3 +61,11 @@ export async function upload(file: any): Promise<any> {
 export async function weeklog(): Promise<any> {
   return request.get('/articles/weeklog')
 }
+
+export async function lock(fid: string): Promise<any> {
+  return request.post(`/article/lock?fid=${fid}`)
+}
+
+export async function unlock(fid: string): Promise<any> {
+  return request.post(`/article/unlock?fid=${fid}`)
+}

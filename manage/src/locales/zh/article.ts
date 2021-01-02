@@ -32,5 +32,5 @@ export default {
   PayCode: '赞赏二维码',
   'Start editing...': '开始编辑...',
   'Reward authors and encourage them to work harder!': '给作者打赏，鼓励TA抓紧创作！',
-  'Has exceptional': '{count} 人已经打赏'
+  'Has exceptional': '{count} 人已经打赏',
 }

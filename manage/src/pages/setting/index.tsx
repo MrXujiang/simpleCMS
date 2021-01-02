@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState, useMemo } from 'react'
 import { Form, Input, Button, Upload, message, Spin } from 'antd'
 import { connect, Dispatch } from 'umi'
 
@@ -13,7 +13,8 @@ import styles from './index.less'
 
 interface SettingProps {
   dispatch: Dispatch
-  isLoading: boolean}
+  isLoading: boolean
+}
 
 const layout = {
   labelCol: { span: 7 },
@@ -25,6 +26,7 @@ const tailLayout = {
 }
 
 const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
+  const isSuper = useMemo(() => localStorage.getItem('role') === '1', [localStorage.getItem('role')])
   const formatMsg = useContext<any>(IntlContext)
   const [form] = Form.useForm()
 
@@ -52,6 +54,8 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
     })
   }, [formatMsg, imageUrl])
 
+  const showMsg = useCallback(() => message.warning(formatMsg('NOT_ALLOW')), [formatMsg])
+
   useEffect(() => {
     dispatch({ type: 'setting/getWebsite' }).then((res: WebsiteType) => {
       form.setFieldsValue(res)
@@ -77,6 +81,7 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
           >
             <Upload
               name="file"
+              disabled={!isSuper}
               listType="picture-card"
               action={`${SERVER_URL}/api/v0/files/upload/free`}
               onChange={onUpload}
@@ -90,7 +95,7 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
             name="title"
             rules={[{ required: true, message: <FormattedMsg id="Please input your website name" /> }]}
           >
-            <Input placeholder={formatMsg('Please input your website name')} />
+            <Input disabled={!isSuper} placeholder={formatMsg('Please input your website name')} />
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Website description" />}
@@ -98,6 +103,7 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
             rules={[{ required: true, message: 'Please enter your website description' }]}
           >
             <Input.TextArea
+              disabled={!isSuper}
               autoSize={{ minRows: 3 }}
               placeholder={formatMsg('Please enter your website description')}
             />
@@ -107,19 +113,25 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
             name="r_text"
             rules={[{ required: true, message: <FormattedMsg id="Please enter your text" /> }]}
           >
-            <Input placeholder={formatMsg('Please enter your text')} />
+            <Input disabled={!isSuper} placeholder={formatMsg('Please enter your text')} />
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Website link" />}
             name="r_link"
             rules={[{ required: true, message: <FormattedMsg id="Please enter your link" /> }]}
           >
-            <Input placeholder={formatMsg('Please enter your link')} />
+            <Input disabled={!isSuper} placeholder={formatMsg('Please enter your link')} />
           </Form.Item>
           <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              <FormattedMsg id="Submit" />
-            </Button>
+            {!isSuper ? (
+              <Button type="primary" onClick={showMsg}>
+                <FormattedMsg id="Submit" />
+              </Button>
+            ): (
+              <Button type="primary" htmlType="submit">
+                <FormattedMsg id="Submit" />
+              </Button>
+            )}
           </Form.Item>
         </Form>
       </Spin>

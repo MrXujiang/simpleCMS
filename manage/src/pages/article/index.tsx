@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { connect, Dispatch, history } from 'umi'
 import { Button, Table, Space, Tag } from 'antd'
+import { UnlockOutlined, LockOutlined } from '@ant-design/icons'
 import { ColumnsType } from 'antd/es/table'
 import moment from 'moment'
 
 import { ConnectState } from '@/models/connect'
 import { ArticleList, ArticleType } from '@/models/article'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
-import { TIME_FORMAT } from '@/utils/index'
+import { TIME_FORMAT } from '@/utils'
 
 import styles from './index.less'
 
@@ -19,14 +20,11 @@ interface ArticleProps {
 }
 
 const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isLoading }) => {
+  const isSuper = useMemo(() => localStorage.getItem('role') === '1', [localStorage.getItem('role')])
   const isDraftPage = useMemo(() => location.pathname.includes('draft'), [location.pathname])
 
-  const handleTop: (fid: string) => void = useCallback((fid) => {
-    dispatch({ type: 'article/top', payload: fid })
-  }, [])
-
-  const cancelTop: (fid: string) => void = useCallback((fid) => {
-    dispatch({ type: 'article/untop', payload: fid })
+  const toggle: (fid: string, type: string) => void = useCallback((fid, type) => {
+    dispatch({ type: `article/${type}`, payload: fid })
   }, [])
 
   const handleDelete: (data: ArticleType) => void = useCallback(({fid}) => {
@@ -75,13 +73,13 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
       title: <FormattedMsg id="Visible" />,
       dataIndex: 'visible',
       key: 'visible',
-      render: visible => <FormattedMsg id={visible ? 'For all to see' : 'Only visible to oneself'} />
+      render: visible => <FormattedMsg id={visible ? 'For all to see' : 'Only visible to oneself'} />,
     },
     {
       title: <FormattedMsg id="Creation time" />,
       dataIndex: 'ct',
       key: 'Creation time',
-      render: ct => moment(ct).format(TIME_FORMAT)
+      render: ct => moment(ct).format(TIME_FORMAT),
     },
     {
       title: <FormattedMsg id="Update time" />,
@@ -93,23 +91,37 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
       title: <FormattedMsg id="Action" />,
       key: 'action',
       render: (_, record) => (
-        <Space size="middle">
+        <Space size="small">
           {!isDraftPage && record.top && (
-            <a onClick={cancelTop.bind(this, record.fid)}>
+            <a onClick={toggle.bind(this, record.fid, 'untop')}>
               <FormattedMsg id="Cancel top" />
             </a>
           )}
           {!isDraftPage && !record.top && (
-            <a onClick={handleTop.bind(this, record.fid)}>
+            <a onClick={toggle.bind(this, record.fid, 'top')}>
               <FormattedMsg id="Set top" />
             </a>
           )}
-          <a onClick={handleEdit.bind(this, record)}>
-            <FormattedMsg id="Edit" />
-          </a>
-          <a onClick={handleDelete.bind(this, record)}>
-            <FormattedMsg id="Delete" />
-          </a>
+          {(isSuper || (!isSuper && !record.lock)) && (
+            <React.Fragment>
+              <a onClick={handleEdit.bind(this, record)}>
+                <FormattedMsg id="Edit" />
+              </a>
+              <a onClick={handleDelete.bind(this, record)}>
+                <FormattedMsg id="Delete" />
+              </a>
+            </React.Fragment>
+          )}
+          {isSuper && !record.lock && (
+            <a onClick={toggle.bind(this, record.fid, 'lock')}>
+              <LockOutlined />
+            </a>
+          )}
+          {isSuper && record.lock && (
+            <a onClick={toggle.bind(this, record.fid, 'unlock')}>
+              <UnlockOutlined />
+            </a>
+          )}
         </Space>
       ),
     },

@@ -44,7 +44,7 @@ const Login: React.FC<LoginProps> = ({ dispatch, isLoading }) => {
       onFinish={onFinish}
     >
       <Form.Item
-        name="username"
+        name="name"
         rules={[{ required: true, message: <FormattedMsg id="Please enter your username" /> }]}
       >
         <Input
@@ -53,7 +53,7 @@ const Login: React.FC<LoginProps> = ({ dispatch, isLoading }) => {
         />
       </Form.Item>
       <Form.Item
-        name="password"
+        name="pwd"
         rules={[{ required: true, message: <FormattedMsg id="Please enter your password" /> }]}
       >
         <Input

@@ -30,18 +30,19 @@ interface modifyFormValues {
 }
 
 const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => {
+  const isSuper = useMemo(() => localStorage.getItem('role') === '1', [localStorage.getItem('role')])
   const [form] = Form.useForm()
   const formatMsg = useContext<any>(IntlContext)
   const [tx, setTx] = useState<string>('')
 
   const prefixSelector: JSX.Element = useMemo(() => (
     <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
+      <Select disabled={!isSuper} style={{ width: 70 }}>
         <Select.Option value="86">+86</Select.Option>
         <Select.Option value="87">+87</Select.Option>
       </Select>
     </Form.Item>
-  ), [])
+  ), [isSuper])
 
   const onFinish: (data: modifyFormValues) => void = useCallback(values => {
     dispatch({
@@ -56,6 +57,8 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
     })
   }, [formatMsg, currentUser, tx])
 
+  const showMsg = useCallback(() => message.warning(formatMsg('NOT_ALLOW')), [formatMsg])
+
   const onUpload: (info: any) => void = useCallback(info => {
     if (info.file.status === 'done') {
       const tx = getImageUrl(info)
@@ -63,7 +66,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
     }
-  }, [formatMsg, currentUser])
+  }, [formatMsg])
 
   useEffect(() => {
     if (!isEmpty(currentUser)) {
@@ -99,14 +102,14 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
                   message: <FormattedMsg id="Please enter your email address" />,
                 }]}
               >
-                <Input placeholder={formatMsg('Please enter your email address')} />
+                <Input disabled={!isSuper} placeholder={formatMsg('Please enter your email address')} />
               </Form.Item>
               <Form.Item
                 name="username"
                 label={<FormattedMsg id="Username" />}
                 rules={[{ required: true, message: <FormattedMsg id="Please enter your username" /> }]}
               >
-                <Input placeholder={formatMsg('Please enter your username')} />
+                <Input disabled={!isSuper} placeholder={formatMsg('Please enter your username')} />
               </Form.Item>
               <Form.Item
                 name="desc"
@@ -114,6 +117,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
                 rules={[{ required: true, message: <FormattedMsg id="Please enter your personal profile" /> }]}
               >
                 <Input.TextArea
+                  disabled={!isSuper}
                   autoSize={{ minRows: 3 }}
                   placeholder={formatMsg('Please enter your personal profile')}
                 />
@@ -122,7 +126,10 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
                 name="country"
                 label={<FormattedMsg id="Country" />}
               >
-                <Select placeholder={formatMsg('Please select your country')}>
+                <Select
+                  disabled={!isSuper}
+                  placeholder={formatMsg('Please select your country')}
+                >
                   <Select.Option value="china">
                     <FormattedMsg id="China" />
                   </Select.Option>
@@ -132,7 +139,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
                 name="addr"
                 label={<FormattedMsg id="Detailed address" />}
               >
-                <Input placeholder={formatMsg('Please enter your detailed address')} />
+                <Input disabled={!isSuper} placeholder={formatMsg('Please enter your detailed address')} />
               </Form.Item>
               <Form.Item
                 name="phone"
@@ -143,14 +150,21 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
                 }]}
               >
                 <Input
+                  disabled={!isSuper}
                   addonBefore={prefixSelector} style={{ width: '100%' }}
                   placeholder={formatMsg('Please enter your mobile phone number')}
                 />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit" block>
-                  <FormattedMsg id="Update basic information" />
-                </Button>
+                {isSuper ? (
+                  <Button type="primary" htmlType="submit" block>
+                    <FormattedMsg id="Update basic information" />
+                  </Button>
+                ) : (
+                  <Button type="primary" onClick={showMsg} block>
+                    <FormattedMsg id="Update basic information" />
+                  </Button>
+                )}
               </Form.Item>
             </Form>
           </div>
@@ -171,7 +185,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
               onChange={onUpload}
               showUploadList={false}
             >
-              <Button icon={<UploadOutlined />}>
+              <Button disabled={!isSuper} icon={<UploadOutlined />}>
                 <FormattedMsg id="Replace the avatar" />
               </Button>
             </Upload>

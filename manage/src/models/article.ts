@@ -3,7 +3,7 @@ import { Effect, Reducer } from 'umi'
 import {
   getAll, getAllDrafts, getArticleDetail, getDraftDetail,
   del, delDraft, add, mod, save, edit, anazly, top, untop,
-  upload, weeklog,
+  upload, weeklog, lock, unlock,
 } from '@/services/article'
 
 export interface ArticleType {
@@ -20,6 +20,7 @@ export interface ArticleType {
   ct: number
   ut: number
   top: boolean
+  lock: boolean
 }
 
 export type ArticleList = ArticleType[]
@@ -60,6 +61,8 @@ interface ArticleModelType {
     untop: Effect,
     upload: Effect,
     weeklog: Effect,
+    lock: Effect,
+    unlock: Effect,
   }
   reducers: {
     startLoading: Reducer,
@@ -87,12 +90,14 @@ const ArticleModel: ArticleModelType = {
       label: [],
       visible: 1,
       face_img: '',
+      payCode: '',
       content: '',
       html: '',
       type: 0,
       ct: 0,
       ut: 0,
       top: false,
+      lock: false,
     },
     draftDetail: {
       fid: '',
@@ -101,12 +106,14 @@ const ArticleModel: ArticleModelType = {
       label: [],
       visible: 1,
       face_img: '',
+      payCode: '',
       content: '',
       html: '',
       type: 0,
       ct: 0,
       ut: 0,
       top: false,
+      lock: false,
     },
     anazly: {
       flovers: 0,
@@ -231,6 +238,18 @@ const ArticleModel: ArticleModelType = {
           payload: res,
         })
       }
+      yield put({ type: 'closeLoading' })
+    },
+    *lock({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      yield call(lock, payload)
+      yield put({ type: 'getAll' })
+      yield put({ type: 'closeLoading' })
+    },
+    *unlock({ payload }, { call, put }) {
+      yield put({ type: 'startLoading' })
+      yield call(unlock, payload)
+      yield put({ type: 'getAll' })
       yield put({ type: 'closeLoading' })
     },
   },
