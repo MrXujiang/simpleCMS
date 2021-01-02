@@ -23,6 +23,8 @@ const articleRouter = (router, apiPath) => {
     all: apiPath + '/articles/all',
     topArticle: apiPath + '/article/top',
     cancelTopArticle: apiPath + '/article/untop',
+    lockArticle: apiPath + '/article/lock',
+    cancelLockArticle: apiPath + '/article/unlock',
     getArticleNum: apiPath + '/articles/num',
     getAnazly: apiPath + '/articles/anazly',
     getWeekLog: apiPath + '/articles/weeklog',
@@ -234,6 +236,58 @@ const articleRouter = (router, apiPath) => {
 
         ctx.status = 200
         ctx.body = htr(200, null, '已取消置顶')
+      }else {
+        ctx.status = 500
+        ctx.body = htr(500, null, '参数不能为空')
+      } 
+    }
+  );
+
+  // 锁定文章
+  router.post(api.lockArticle,
+    auth,
+    ctx => {
+      const { fid } = ctx.query
+      if(fid) {
+        const articleIdxPath = `${config.publicPath}/db/article_index.json`
+        let articleIdxs = RF(articleIdxPath)
+        articleIdxs = articleIdxs.map(item => {
+          return {
+            ...item,
+            lock: item.fid === fid ? true : !!item.lock
+          }
+        })
+
+        WF(articleIdxPath, articleIdxs)
+
+        ctx.status = 200
+        ctx.body = htr(200, null, '已锁定')
+      }else {
+        ctx.status = 500
+        ctx.body = htr(500, null, '参数不能为空')
+      } 
+    }
+  );
+
+  // 取消锁定
+  router.post(api.cancelTLockArticle,
+    auth,
+    ctx => {
+      const { fid } = ctx.query
+      if(fid) {
+        const articleIdxPath = `${config.publicPath}/db/article_index.json`
+        let articleIdxs = RF(articleIdxPath)
+        articleIdxs = articleIdxs.map(item => {
+          return {
+            ...item,
+            lock: item.fid === fid ? false : !!item.lock
+          }
+        })
+
+        WF(articleIdxPath, articleIdxs)
+
+        ctx.status = 200
+        ctx.body = htr(200, null, '已取消锁定')
       }else {
         ctx.status = 500
         ctx.body = htr(500, null, '参数不能为空')
