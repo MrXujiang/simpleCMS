@@ -1,5 +1,4 @@
 import request from '@/utils/req'
-
 import { AdvertType } from '@/models/advert'
 
 export async function get(): Promise<any> {

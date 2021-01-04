@@ -7,5 +7,4 @@ export default {
   'Total lovers': '总点赞数',
   flovers: '点赞数',
   'Total AD clicks': '广告点击总数',
-  People: '人',
 }

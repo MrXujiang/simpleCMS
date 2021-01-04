@@ -10,7 +10,6 @@ import {
 } from '@ant-design/icons'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 
-// Sider
 export const siderMenus: any[] = [
   {
     key: 'dashboard',

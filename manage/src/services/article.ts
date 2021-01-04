@@ -1,5 +1,4 @@
 import request from '@/utils/req'
-
 import { ArticleType } from '@/models/article'
 
 export async function getAll(): Promise<any> {
