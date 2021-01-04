@@ -3,6 +3,29 @@
   height: 100vh;
   position: relative;
 }
+.homeContainer .loginLogo {
+  height: 60px;
+  width: 168px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.homeContainer .loginLogo .logoPicture {
+  width: 32px;
+  height: 32px;
+  margin-right: 5px;
+}
+
+.homeContainer .loginLogo>span {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 25px;
+  color: #333333;
+}
 .homeBackGround {
   width: 100vw;
   height: 90vh;
@@ -45,7 +68,7 @@
   align-items: center;
   height: 40px;
 }
-.homeContent .btnBox > div {
+.homeContent .btnBox > a {
   width: 96px;
   height: 100%;
   display: flex;
@@ -53,6 +76,7 @@
   align-items: center;
   border-radius: 4px;
   margin-right: 20px;
+  cursor: pointer;
 }
 .homeContent .btnBox .startUse {
   background-color: #51B266;
@@ -61,4 +85,5 @@
 .homeContent .btnBox .goGithub {
   background-color: #fff;
   color: #74DC87;
+  filter: drop-shadow(0px 2px 5px rgba(81, 178, 102, 0.2));
 }

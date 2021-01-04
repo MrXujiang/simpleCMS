@@ -8,6 +8,12 @@ block style
 
 block content
   .homeContainer
+    .loginLogo
+      img(
+        src='/assets/logo.png'
+        class='logoPicture'
+      )
+      span 趣写
     .homeBackGround
       img(
         src='assets/home.png'
@@ -16,7 +22,17 @@ block content
       .title #{homeTitle}
       .content #{homeContent}
       .btnBox
-        .startUse 立即使用
-        .goGithub Github 
-  
+        a.startUse(
+          herf='/home'
+          id='startUse'
+        ) 立即使用
+        a.goGithub(
+          href='https://github.com/MrXujiang/simpleCMS'
+          target='_blank'
+        ) Github 
+
+  script. 
+    $('#startUse').click(function(){
+      window.open('/home','_self');
+    })
     
