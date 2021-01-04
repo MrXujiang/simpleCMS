@@ -52,6 +52,7 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
       title: <FormattedMsg id="Author" />,
       dataIndex: 'author',
       key: 'author',
+      render: author => author || '-',
     },
     {
       title: <FormattedMsg id="Label" />,

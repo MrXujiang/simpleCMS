@@ -77,7 +77,7 @@ const articleRouter = (router, apiPath) => {
     auth,
     async ctx => {
       let { fid, title, author, label, top, face_img, visible, type, desc, payCode, content, ct } = ctx.request.body;
-      if(fid && title && author && label && content) {
+      if(fid && title && label && content) {
         // 1. 更新文件
         const filePath = `${config.publicPath}/db/articles/${fid}.json`
         const ut = Date.now()
