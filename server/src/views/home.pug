@@ -1,0 +1,22 @@
+extends ./layouts/default
+
+block title
+  title SimpleCMS | 趣写
+
+block style
+  include ./includes/home.css
+
+block content
+  .homeContainer
+    .homeBackGround
+      img(
+        src='assets/home.png'
+      )
+    .homeContent
+      .title #{homeTitle}
+      .content #{homeContent}
+      .btnBox
+        .startUse 立即使用
+        .goGithub Github 
+  
+    

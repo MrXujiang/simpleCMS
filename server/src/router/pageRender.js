@@ -21,13 +21,24 @@ const formatTime = (timeStemp, flag = "/") => {
 const pageRenderRouter = (router) => {
   // api路径
   const api = {
+    index: "/",
     login: "/login",
     registered: "/registered",
-    home: "/",
+    home: "/home",
     detail: "/detail",
     cates: "/cates",
     about: "/about",
   };
+
+  // 登录
+  router.get(api.index, async (ctx) => {
+    await ctx.render("home", {
+      isHome: true,
+      homeTitle: "趣写, 让写作更有趣",
+      homeContent:
+        "simpleCMS是一款开源cms系统, 主要为个人/团队快速开发博客或者知识共享平台, 类似于hexo, worldpress, 但是他们往往需要复杂的搭建过程, 我们将复杂度降到最低, 并且有详细的部署教程, 你只需要有一台服务器, 就能轻松拥有一个属于你的博客平台.",
+    });
+  });
 
   // 登录
   router.get(api.login, async (ctx) => {
