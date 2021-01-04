@@ -34,7 +34,7 @@ function generateRandomStr(n) {
 
 const xib = {
   /**
-   * 加密字符串(0, 2, 6, 7)
+   * 加密字符串
    */
   xip(str = '') {
     let strArr = str.split('');
@@ -44,7 +44,7 @@ const xib = {
     return strArr.join('')
   },
   /**
-   * 解密字符串(0, 2, 6, 7)
+   * 解密字符串
    */
   uxip(str = '') {
     let dotIndexArr = [0, 2, 6, 7].map((n,i) => n + (i * 4));

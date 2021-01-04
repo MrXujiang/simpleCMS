@@ -1,4 +1,3 @@
-import fs from 'fs'
 import { RF, WF } from '../lib/upload'
 import { auth } from '../service'
 import config from '../config'
