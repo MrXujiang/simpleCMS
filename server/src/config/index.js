@@ -23,7 +23,7 @@ const IP = getIPAdress();
 const serverPort = isDev ? 3000 : 80;
 const staticPath = isDev
   ? `http://${IP}:${serverPort}`
-  : `http://175.27.130.220:${serverPort}`;
+  : `http://xxx/xxxx/xxx:${serverPort}`;
 const publicPath = resolve(__dirname, "../../public");
 const appStaticPath = resolve(__dirname, "../../static");
 const routerPath = resolve(__dirname, "../router");

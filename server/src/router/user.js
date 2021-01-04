@@ -1,7 +1,5 @@
-import fs from 'fs'
-import { delFile, WF, RF } from '../lib/upload'
-import { uuid, xib } from '../lib/tool'
-import { auth } from '../service'
+import { RF } from '../lib/upload'
+import { xib } from '../lib/tool'
 import config from '../config'
 import htr from '../lib/htr'
 /**

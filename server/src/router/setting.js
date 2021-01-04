@@ -1,5 +1,4 @@
-import fs from 'fs'
-import { WF, RF, delFile } from '../lib/upload'
+import { WF, RF } from '../lib/upload'
 import { auth } from '../service'
 import config from '../config'
 import htr from '../lib/htr'

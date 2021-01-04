@@ -6,7 +6,6 @@ import glob from "glob";
 import config from "./config";
 import cors from "koa2-cors";
 import Router from "@koa/router";
-// import http from 'http';
 import compress from "koa-compress";
 import views from "koa-views";
 import logger from "koa-logger";
@@ -18,8 +17,6 @@ const router = new Router();
 // 启动逻辑
 async function start() {
   const app = new koa();
-  // const server = http.createServer(app.callback());
-  // const io = require('socket.io')(server);
 
   app.use(logger());
   // 开启gzip
@@ -33,13 +30,7 @@ async function start() {
     cors({
       origin: function (ctx) {
         const whiteList = [
-          "http://192.168.1.8:3000",
-          "http://192.168.3.15:8000",
-          "http://192.168.1.3:8000",
-          "http://192.168.56.1:8000",
-          "http://192.168.3.6:8002",
-          "http://192.168.31.195:8000",
-          "http://cms.zhikume.cn",
+          "http://xxxx/xxxx/xxx:30xx",  // 你的服务器跨域白名单
         ]; //可跨域白名单
         if (
           whiteList.includes(ctx.request.header.origin) &&
@@ -83,15 +74,6 @@ async function start() {
   app.use(views(resolve(__dirname, "./views"), { extension: "pug" }));
 
   app.use(router.routes()).use(router.allowedMethods());
-
-  // // io
-  // io.on('connection', (socket) => {
-  //     console.log('a user connected');
-  //     socket.on('doc load', (msg) => {
-  //       console.log('doc load', msg)
-  //       io.emit('getData', users)
-  //     })
-  //   });
 
   // 定时任务
   const anazlyDaily = schedule.scheduleJob("59 59 23 * * *", function () {
