@@ -148,7 +148,7 @@ const pageRenderRouter = (router) => {
           name: "Duang",
           job: "DESIGNER",
           desc: "准备回老家养猪的设计师~",
-          github: "github.com/mch",
+          github: "",
         },
       ],
       copyright: "版权所有 @SimpleCMS 研发团队",

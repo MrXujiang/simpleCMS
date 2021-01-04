@@ -26,8 +26,8 @@ block content
               )
               .jobTitle #{team.job}
               a.maskBackground(
-                href=team.github
-                target='_blank'
+                href=team.github || 'javascript:void(0);'
+                target=team.github ? '_blank' : '_self'
               ) 
                 img(
                   src='assets/gitIcon.png'
