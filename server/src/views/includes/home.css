@@ -13,13 +13,11 @@
   top: 0;
   left: 0;
 }
-
 .homeContainer .loginLogo .logoPicture {
   width: 32px;
   height: 32px;
   margin-right: 5px;
 }
-
 .homeContainer .loginLogo>span {
   font-weight: 500;
   font-size: 18px;
@@ -43,6 +41,9 @@
   left: 7%;
   max-width: 650px;
 }
+.homeContent .imgBox{
+  display: none;
+}
 .homeContent .title {
   padding: 10px 49px;
   width: calc(100% - 98px) ;
@@ -61,6 +62,7 @@
   letter-spacing: 0.14em;
   color: #333333;
   margin-bottom: 48px;
+  text-align: justify;
 }
 .homeContent .btnBox {
   width: 100%;
@@ -86,4 +88,39 @@
   background-color: #fff;
   color: #74DC87;
   filter: drop-shadow(0px 2px 5px rgba(81, 178, 102, 0.2));
+}
+
+@media (max-width: 414px) {
+  .homeBackGround {
+    display: none;
+  }
+  .homeContainer .loginLogo {
+    width: 100px;
+  }
+  .homeContent {
+    padding-top: 100px;
+    width: 90vw;
+    position: unset;
+    margin: auto;
+  }
+  .homeContent .title {
+    font-size: 22px;
+    padding: 10px 73px;
+    width: calc(100% - 146px);
+    line-height: 50px;
+    height: 50px;
+  }
+  .homeContent .btnBox {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    transform: translateY(-140px);
+  }
+  .homeContent .imgBox{
+    display: block;
+    opacity: 0.5;
+  }
+  .homeContent .imgBox>img {
+    width: 100%;
+  }
 }
