@@ -28,10 +28,12 @@ const CATES = [
   'PHP', 'Go', 'Python', 'AI', '算法',
 ]
 
+/* eslint-disable */
 enum Visible {
   oneself,
   all,
 }
+/* eslint-enable */
 
 interface ReleaseArticleProps {
   dispatch: Dispatch
@@ -93,25 +95,27 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
         message.error(formatMsg('Article content cannot be empty'))
         return
       }
-  
+
       let content
       let type
       switch (curTab) {
-        case 'edit':
-          content = editorState.toHTML()
-          type = 0
-          break
-        case 'markdown':
-          content = markdown
-          type = 1
-          break
+      case 'edit':
+        content = editorState.toHTML()
+        type = 0
+        break
+      case 'markdown':
+        content = markdown
+        type = 1
+        break
       }
-      
-      let args = {
+
+      const { state: { id = '', draft = false, top = false } = {} } = location
+      const args = {
         ...values,
         content,
         type,
-        fid: location.query.id ? location.query.id : '',
+        fid: id || '',
+        top,
       }
       if (faceImg) {
         args.face_img = faceImg
@@ -121,39 +125,39 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
       }
 
       switch (action) {
-        case 'save':
-          dispatch({
-            type: location.query.draft ? 'article/edit' : 'article/save',
-            payload: location.query.draft
-              ? Object.assign({}, args, {ct: draftDetail.ct, fid: location.query.id})
-              : args,
-          }).then((res: any) => {
-            if (res.fid) {
-              history.replace('/draft')
-            }
-          })
+      case 'save':
+        dispatch({
+          type: draft ? 'article/edit' : 'article/save',
+          payload: draft
+            ? Object.assign({}, args, { ct: draftDetail.ct, fid: id })
+            : args,
+        }).then((res: any) => {
+          if (res.fid) {
+            history.replace('/draft')
+          }
+        })
         break
-        case 'preview':
-          setVisible(true)
+      case 'preview':
+        setVisible(true)
         break
-        default:
-          dispatch({
-            type: !location.query.draft && location.query.id
-              ? 'article/mod'
-              : 'article/add',
-            payload: !location.query.draft && location.query.id
-              ? Object.assign({}, args, {ct: articleDetail.ct, fid: location.query.id})
-              : args,
-          }).then((res: any) => {
-            if (res.fid) {
-              history.replace('/article')
-            }
-          })
+      default:
+        dispatch({
+          type: !draft && id
+            ? 'article/mod'
+            : 'article/add',
+          payload: !draft && id
+            ? Object.assign({}, args, { ct: articleDetail.ct, fid: id })
+            : args,
+        }).then((res: any) => {
+          if (res.fid) {
+            history.replace('/article')
+          }
+        })
         break
       }
     }, [
       curTab, editorState, markdown, formatMsg, faceImg, payCode,
-      location.query.draft, location.query.id, articleDetail, draftDetail
+      location.state, articleDetail, draftDetail,
     ])
 
   const handleAction: (action: string) => void = useCallback(action => {
@@ -185,7 +189,7 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
       const imageUrl = getImageUrl(info)
       setEditorState(ContentUtils.insertMedias(editorState, [{
         type: 'IMAGE',
-        url: imageUrl
+        url: imageUrl,
       }]))
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} ${formatMsg('Uploaded failed')}`)
@@ -209,8 +213,8 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
             <PictureFilled />
           </button>
         </Upload>
-      )
-    }
+      ),
+    },
   ], [editorUploadHandler])
 
   const handleEditorChange: (value: any) => void = useCallback(editorState => setEditorState(editorState), [])
@@ -226,23 +230,27 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
 
   const handleCancel: () => void = useCallback(() => setVisible(false), [])
 
-  const time = useMemo(() => moment(
-    location.query.draft
-      ? draftDetail.ct
-      : location.query.id
-        ? articleDetail.ct
-        : undefined
-  ).format(TIME_FORMAT), [location.query.draft, location.query.id, draftDetail, articleDetail])
+  const time = useMemo(() => {
+    const { state: { id = '', draft = false } = {} } = location
+    return moment(
+      draft
+        ? draftDetail.ct
+        : id
+          ? articleDetail.ct
+          : undefined,
+    ).format(TIME_FORMAT)
+  }, [location.state, draftDetail, articleDetail])
 
   useEffect(() => {
-    if (location.query.id) {
+    const { state: { id = '', draft = false } = {} } = location
+    if (id) {
       dispatch({
-        type: location.query.draft ? 'article/getDraftDetail' : 'article/getArticleDetail',
-        payload: location.query.id
+        type: draft ? 'article/getDraftDetail' : 'article/getArticleDetail',
+        payload: id,
       }).then((res: ArticleType) => {
         form.setFieldsValue(res)
         if (res.content) {
-          if (!!res.type) {
+          if (res.type) {
             setCurTab('markdown')
             setMarkdown(res.content)
           } else {
@@ -274,7 +282,7 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
             name="releaseArticleForm"
             onFinish={onFinish}
             initialValues={{
-              visible: 1
+              visible: 1,
             }}
           >
             <Form.Item
@@ -283,7 +291,7 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
               name="title"
               rules={[{
                 required: true,
-                message: <FormattedMsg id="Please input articles title" />
+                message: <FormattedMsg id="Please input articles title" />,
               }]}
             >
               <Input style={{ width: 180 }} placeholder={formatMsg('Please input articles title')} />
@@ -294,7 +302,7 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
               name="label"
               rules={[{
                 required: true,
-                message: <FormattedMsg id="Please select articles label" />
+                message: <FormattedMsg id="Please select articles label" />,
               }]}
             >
               <Select
@@ -357,7 +365,7 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
                 type: 'string',
                 min: 0,
                 max: 20,
-                message: <FormattedMsg id="The description should not exceed 20 words" />
+                message: <FormattedMsg id="The description should not exceed 20 words" />,
               }]}
             >
               <Input.TextArea placeholder={formatMsg('Please enter description')} rows={4} />
@@ -403,7 +411,7 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
             activeKey={curTab}
             onChange={toggleTabs}
             tabBarStyle={{
-              margin: 0
+              margin: 0,
             }}
           >
             <Tabs.TabPane tab={<FormattedMsg id="Text editor" />} key="edit">

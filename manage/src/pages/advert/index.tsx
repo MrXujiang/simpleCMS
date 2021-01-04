@@ -172,15 +172,17 @@ const Advert: React.FC<AdvertProps> = ({ dispatch, isLoading }) => {
             />
           </Form.Item>
           <Form.Item className={styles.submit}>
-            {!isSuper ? (
-              <Button type="primary"  onClick={showMsg}>
-                <FormattedMsg id="Publish advert" />
-              </Button>
-            ): (
-              <Button type="primary" htmlType="submit">
-                <FormattedMsg id="Publish advert" />
-              </Button>
-            )}
+            {!isSuper
+              ? (
+                <Button type="primary" onClick={showMsg}>
+                  <FormattedMsg id="Publish advert" />
+                </Button>
+              )
+              : (
+                <Button type="primary" htmlType="submit">
+                  <FormattedMsg id="Publish advert" />
+                </Button>
+              )}
           </Form.Item>
         </Form>
       </Spin>

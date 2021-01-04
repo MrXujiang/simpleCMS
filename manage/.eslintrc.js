@@ -24,5 +24,6 @@ module.exports = {
     'object-shorthand': ['error', 'always'],
     camelcase: 0,
     'generator-star-spacing': ['error', 'neither'],
+    'react/display-name': 0,
   },
 }

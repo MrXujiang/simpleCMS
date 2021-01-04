@@ -55,10 +55,10 @@ const SettingModel: SettingModelType = {
   },
   reducers: {
     'startLoading'(state) {
-      return {...state, isLoading: true}
+      return { ...state, isLoading: true }
     },
     'closeLoading'(state) {
-      return {...state, isLoading: false}
+      return { ...state, isLoading: false }
     },
   },
 }
