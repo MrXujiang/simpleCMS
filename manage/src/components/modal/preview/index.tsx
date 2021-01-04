@@ -69,17 +69,19 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
           123<FormattedMsg id="Views" />
         </div>
       </div>
-      {curTab === 'edit' ? <div dangerouslySetInnerHTML={{ __html: editorState.toHTML() }} /> : (
-        <div className={styles.forEditor}>
-          <ForEditor
-            preview
-            value={markdown}
-            height="100%"
-            style={{ border: 'none', boxShadow: 'none' }}
-            toolbar={{}}
-          />
-        </div>
-      )}
+      {curTab === 'edit'
+        ? <div dangerouslySetInnerHTML={{ __html: editorState.toHTML() }} />
+        : (
+          <div className={styles.forEditor}>
+            <ForEditor
+              preview
+              value={markdown}
+              height="100%"
+              style={{ border: 'none', boxShadow: 'none' }}
+              toolbar={{}}
+            />
+          </div>
+        )}
       <div className={styles.labels}>
         {formValues.label && formValues.label.map(l => (
           <span key={l} className={styles.label}>
@@ -92,11 +94,13 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
         <div className={styles.text}>
           <FormattedMsg id="Reward authors and encourage them to work harder!" />
         </div>
-        {payCode ? (
-          <Popover content={payCodeImg} trigger="click">
-            <img className={styles.rewardImg} src={reward} alt="reward_img" />
-          </Popover>
-        ) : <img className={styles.rewardImg} src={reward} alt="reward_img" />}
+        {payCode
+          ? (
+            <Popover content={payCodeImg} trigger="click">
+              <img className={styles.rewardImg} src={reward} alt="reward_img" />
+            </Popover>
+          )
+          : <img className={styles.rewardImg} src={reward} alt="reward_img" />}
         <div className={classnames(styles.text, styles.already)}>
           <FormattedMsg id="Has exceptional" values={{ count: 99 }} />
         </div>

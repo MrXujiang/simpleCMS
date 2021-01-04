@@ -70,6 +70,7 @@ const ForgetForm: React.FC<ForgetFormProps> = ({ dispatch, isLoading }) => {
               if (!value || getFieldValue('password') === value) {
                 return Promise.resolve()
               }
+              // eslint-disable-next-line prefer-promise-reject-errors
               return Promise.reject(<FormattedMsg id="The two passwords you entered do not match" />)
             },
           }),

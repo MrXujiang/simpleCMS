@@ -5,13 +5,13 @@ import { SERVER_URL } from '@/utils'
 const instance = axios.create({
   baseURL: `${SERVER_URL}/api/v0`,
   timeout: 10000,
-  withCredentials: true
+  withCredentials: true,
 })
 
 instance.interceptors.request.use(function(config) {
-  let n = localStorage.getItem('nickname')
+  const n = localStorage.getItem('nickname')
   config.headers = {
-    'x-requested-with': encodeURIComponent(n ? n : '')
+    'x-requested-with': encodeURIComponent(n || ''),
   }
   return config
 }, function(error) {

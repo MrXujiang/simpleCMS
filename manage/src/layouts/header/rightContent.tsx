@@ -1,12 +1,11 @@
 import React, { useMemo, useCallback, useEffect } from 'react'
 import { Dropdown, Menu, Avatar, Spin } from 'antd'
-import { history } from 'umi'
+import { history, connect, Dispatch } from 'umi'
 import {
   SettingOutlined,
   LogoutOutlined,
   GlobalOutlined,
 } from '@ant-design/icons'
-import { connect, Dispatch } from 'umi'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { ConnectState } from '@/models/connect'
@@ -24,23 +23,24 @@ interface RightContentProps {
 const RightContent: React.FC<RightContentProps> = ({ currentUser, lang, dispatch }) => {
   const onMenuClick: (params: { key: React.Key }) => void = useCallback(({ key }) => {
     switch (key) {
-      case 'logout':
-        history.replace('/user/login')
-        break
-      case 'settings':
-        history.push('/modify')
-        break
-      case 'zh-cn':
-        localStorage.setItem('simpleCMSLang', 'zh-cn')
-        dispatch({ type: 'user/changeLocale', payload: 'zh-cn' })
-        break
-      case 'en':
-        localStorage.setItem('simpleCMSLang', 'en')
-        dispatch({ type: 'user/changeLocale', payload: 'en' })
-        break
+    case 'logout':
+      history.replace('/user/login')
+      break
+    case 'settings':
+      history.push('/modify')
+      break
+    case 'zh-cn':
+      localStorage.setItem('simpleCMSLang', 'zh-cn')
+      dispatch({ type: 'user/changeLocale', payload: 'zh-cn' })
+      break
+    case 'en':
+      localStorage.setItem('simpleCMSLang', 'en')
+      dispatch({ type: 'user/changeLocale', payload: 'en' })
+      break
     }
   }, [])
-  
+
+  // eslint-disable-next-line no-undef
   const actionsDropdown: JSX.Element = useMemo(() => (
     <Menu onClick={onMenuClick}>
       <Menu.Item key="settings">
@@ -55,6 +55,7 @@ const RightContent: React.FC<RightContentProps> = ({ currentUser, lang, dispatch
     </Menu>
   ), [])
 
+  // eslint-disable-next-line no-undef
   const globalLanguageDropdown: JSX.Element = useMemo(() => (
     <Menu selectedKeys={[lang]} onClick={onMenuClick}>
       <Menu.Item key="en">
@@ -75,20 +76,22 @@ const RightContent: React.FC<RightContentProps> = ({ currentUser, lang, dispatch
 
   return (
     <div className={styles.rightContent}>
-      {currentUser && currentUser.username ? (
-        <Dropdown
-          overlayClassName={styles.overlay}
-          overlay={actionsDropdown}
-          placement="bottomCenter"
-        >
-          <span className={styles.currentUser}>
-            <Avatar size="small" className={styles.avatar} src={currentUser.tx || avatar} alt="avatar" />
-            <span>{currentUser.username}</span>
-          </span>
-        </Dropdown>
-      ) : (
-        <Spin size="small" style={{ marginRight: 10 }} />
-      )}
+      {currentUser && currentUser.username
+        ? (
+          <Dropdown
+            overlayClassName={styles.overlay}
+            overlay={actionsDropdown}
+            placement="bottomCenter"
+          >
+            <span className={styles.currentUser}>
+              <Avatar size="small" className={styles.avatar} src={currentUser.tx || avatar} alt="avatar" />
+              <span>{currentUser.username}</span>
+            </span>
+          </Dropdown>
+        )
+        : (
+          <Spin size="small" style={{ marginRight: 10 }} />
+        )}
       <Dropdown
         overlayClassName={styles.overlay}
         overlay={globalLanguageDropdown}

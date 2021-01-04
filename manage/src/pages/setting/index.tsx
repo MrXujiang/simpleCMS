@@ -48,7 +48,7 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
   }, [formatMsg])
 
   const onFinish: (values: WebsiteType) => void = useCallback(values => {
-    const finalValues = Object.assign({}, values, {logo: imageUrl})
+    const finalValues = Object.assign({}, values, { logo: imageUrl })
     dispatch({ type: 'setting/saveWebsite', payload: finalValues }).then(() => {
       message.success(formatMsg('Update successful'))
     })
@@ -123,15 +123,17 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
             <Input disabled={!isSuper} placeholder={formatMsg('Please enter your link')} />
           </Form.Item>
           <Form.Item {...tailLayout}>
-            {!isSuper ? (
-              <Button type="primary" onClick={showMsg}>
-                <FormattedMsg id="Submit" />
-              </Button>
-            ): (
-              <Button type="primary" htmlType="submit">
-                <FormattedMsg id="Submit" />
-              </Button>
-            )}
+            {!isSuper
+              ? (
+                <Button type="primary" onClick={showMsg}>
+                  <FormattedMsg id="Submit" />
+                </Button>
+              )
+              : (
+                <Button type="primary" htmlType="submit">
+                  <FormattedMsg id="Submit" />
+                </Button>
+              )}
           </Form.Item>
         </Form>
       </Spin>

@@ -4,7 +4,6 @@ import { Form, Input, Button } from 'antd'
 import {
   UserOutlined,
   LockOutlined,
-  // MailOutlined,
 } from '@ant-design/icons'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
@@ -25,7 +24,7 @@ interface LoginFormValues {
 
 const Login: React.FC<LoginProps> = ({ dispatch, isLoading }) => {
   const formatMsg = useContext<any>(IntlContext)
-  
+
   const onFinish: (data: LoginFormValues) => void = useCallback(values => {
     dispatch({ type: 'user/login', payload: values }).then((res: any) => {
       if (res && res.uid) {
@@ -78,6 +77,6 @@ const Login: React.FC<LoginProps> = ({ dispatch, isLoading }) => {
   )
 }
 
-export default connect(({user}: ConnectState) => ({
+export default connect(({ user }: ConnectState) => ({
   isLoading: user.isLoading,
 }))(Login)

@@ -37,7 +37,7 @@ const NotFound = () => {
           <FormattedMsg
             id="NOT_FOUND_DESC"
             values={{
-              time: time,
+              time,
             }}
           />
         </p>

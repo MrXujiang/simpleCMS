@@ -183,25 +183,25 @@ const ArticleModel: ArticleModelType = {
     },
     *add({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
-      const res =  yield call(add, payload)
+      const res = yield call(add, payload)
       yield put({ type: 'closeLoading' })
       return res || {}
     },
     *mod({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
-      const res =  yield call(mod, payload)
+      const res = yield call(mod, payload)
       yield put({ type: 'closeLoading' })
       return res || {}
     },
     *save({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
-      const res =  yield call(save, payload)
+      const res = yield call(save, payload)
       yield put({ type: 'closeLoading' })
       return res || {}
     },
     *edit({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
-      const res =  yield call(edit, payload)
+      const res = yield call(edit, payload)
       yield put({ type: 'closeLoading' })
       return res || {}
     },
@@ -255,34 +255,34 @@ const ArticleModel: ArticleModelType = {
   },
   reducers: {
     'startLoading'(state) {
-      return {...state, isLoading: true}
+      return { ...state, isLoading: true }
     },
     'closeLoading'(state) {
-      return {...state, isLoading: false}
+      return { ...state, isLoading: false }
     },
     'startWeekLogLoading'(state) {
-      return {...state, isWeekLogLoading: true}
+      return { ...state, isWeekLogLoading: true }
     },
     'closeWeekLogLoading'(state) {
-      return {...state, isWeekLogLoading: false}
+      return { ...state, isWeekLogLoading: false }
     },
     'saveAll'(state, { payload }) {
-      return {...state, articleList: payload}
+      return { ...state, articleList: payload }
     },
     'saveAllDrafts'(state, { payload }) {
-      return {...state, draftList: payload}
+      return { ...state, draftList: payload }
     },
     'saveArticleDetail'(state, { payload }) {
-      return {...state, articleDetail: payload}
+      return { ...state, articleDetail: payload }
     },
     'saveDraftDetail'(state, { payload }) {
-      return {...state, draftDetail: payload}
+      return { ...state, draftDetail: payload }
     },
     'saveAnazly'(state, { payload }) {
-      return {...state, anazly: payload}
+      return { ...state, anazly: payload }
     },
     'saveWeeklog'(state, { payload }) {
-      return {...state, weekLog: payload}
+      return { ...state, weekLog: payload }
     },
   },
 }

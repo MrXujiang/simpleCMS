@@ -38,7 +38,7 @@ const Dashboard: React.FC<DashboardProps> = ({
 
         const data: any[] = []
         for (let i = 1, l = chartData.length; i < l; i++) {
-          data.push({day: String(i), value: chartData[i]})
+          data.push({ day: String(i), value: chartData[i] })
         }
 
         const baseProps = {
@@ -53,20 +53,22 @@ const Dashboard: React.FC<DashboardProps> = ({
             value: { alias: formatMsg(key) },
           },
         }
-        
-        const props = key === 'flovers' ? {
-          ...baseProps,
-          columnStyle: {
-            cursor: 'pointer'
+
+        const props = key === 'flovers'
+          ? {
+            ...baseProps,
+            columnStyle: {
+              cursor: 'pointer',
+            },
           }
-        } : {
-          ...baseProps,
-          point: {
-            size: 5,
-            shape: 'diamond',
-          },
-        }
-        
+          : {
+            ...baseProps,
+            point: {
+              size: 5,
+              shape: 'diamond',
+            },
+          }
+
         charts.push(<div className={styles.chart} key={key}>
           <div className={styles.text}>
             {YD}

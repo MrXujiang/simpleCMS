@@ -72,16 +72,16 @@ const UserModel: UserModelType = {
   },
   reducers: {
     'startLoading'(state) {
-      return {...state, isLoading: true}
+      return { ...state, isLoading: true }
     },
     'closeLoading'(state) {
-      return {...state, isLoading: false}
+      return { ...state, isLoading: false }
     },
     'changeLocale'(state, { payload }) {
       return { ...state, lang: payload }
     },
     'saveCurrentUser'(state, { payload }) {
-      return {...state, currentUser: payload}
+      return { ...state, currentUser: payload }
     },
   },
 }

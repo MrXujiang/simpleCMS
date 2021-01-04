@@ -35,6 +35,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
   const formatMsg = useContext<any>(IntlContext)
   const [tx, setTx] = useState<string>('')
 
+  // eslint-disable-next-line no-undef
   const prefixSelector: JSX.Element = useMemo(() => (
     <Form.Item name="prefix" noStyle>
       <Select disabled={!isSuper} style={{ width: 70 }}>
@@ -47,7 +48,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
   const onFinish: (data: modifyFormValues) => void = useCallback(values => {
     dispatch({
       type: 'user/saveUserInfo',
-      payload: tx ? Object.assign({}, values, {tx}) : values,
+      payload: tx ? Object.assign({}, values, { tx }) : values,
     }).then(() => {
       message.success(formatMsg('Update successful'))
       // 同步 rightContent 的用户昵称
@@ -74,7 +75,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
       currentUser.tx && setTx(currentUser.tx)
     }
   }, [currentUser])
-  
+
   return (
     <React.Fragment>
       <header className={styles.header}>
@@ -146,7 +147,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
                 label={<FormattedMsg id="Mobile phone number" />}
                 rules={[{
                   pattern: phoneRE,
-                  message: <FormattedMsg id="Invalid cell phone number" />
+                  message: <FormattedMsg id="Invalid cell phone number" />,
                 }]}
               >
                 <Input
@@ -156,28 +157,32 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
                 />
               </Form.Item>
               <Form.Item>
-                {isSuper ? (
-                  <Button type="primary" htmlType="submit" block>
-                    <FormattedMsg id="Update basic information" />
-                  </Button>
-                ) : (
-                  <Button type="primary" onClick={showMsg} block>
-                    <FormattedMsg id="Update basic information" />
-                  </Button>
-                )}
+                {isSuper
+                  ? (
+                    <Button type="primary" htmlType="submit" block>
+                      <FormattedMsg id="Update basic information" />
+                    </Button>
+                  )
+                  : (
+                    <Button type="primary" onClick={showMsg} block>
+                      <FormattedMsg id="Update basic information" />
+                    </Button>
+                  )}
               </Form.Item>
             </Form>
           </div>
           <div className={styles.right}>
             <div className={styles.avatar}>
-              {tx ? <Avatar src={tx} style={{ width: 144, height: 144 }} /> : (
-                <img
-                  alt="avatar"
-                  width={144}
-                  height={144}
-                  src={avatar}
-                />
-              )}
+              {tx
+                ? <Avatar src={tx} style={{ width: 144, height: 144 }} />
+                : (
+                  <img
+                    alt="avatar"
+                    width={144}
+                    height={144}
+                    src={avatar}
+                  />
+                )}
             </div>
             <Upload
               name="file"

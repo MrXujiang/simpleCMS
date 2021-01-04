@@ -8,20 +8,21 @@
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
-    "*.{js,jsx,less,md,json}": [
-      "prettier --write"
+    "*.{ts,tsx}": [
+      "eslint --fix"
     ],
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write"
+    "*.{js,jsx}": [
+      "eslint --fix"
     ]
   },
   "dependencies": {
     "@ant-design/charts": "^1.0.6",
-    "@ant-design/pro-layout": "^5.0.12",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.26",
     "antd-img-crop": "^3.13.2",
@@ -29,14 +30,25 @@
     "braft-editor": "^2.3.9",
     "classnames": "^2.2.6",
     "for-editor": "^0.3.5",
-    "lint-staged": "^10.0.7",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
-    "prettier": "^1.19.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-intl": "^5.10.1",
     "umi": "^3.2.26",
     "yorkie": "^2.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "4.0.1",
+    "@typescript-eslint/parser": "4.0.1",
+    "eslint": "^7.17.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.22.0",
+    "husky": "^4.3.6",
+    "lint-staged": "^10.5.3",
+    "typescript": "4.0.2"
   }
 }

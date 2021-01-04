@@ -15,9 +15,9 @@ interface SiderProps {
 
 const SiderLayput: React.FC<SiderProps> = ({ location: { pathname } }) => {
   const curKey = useMemo(() => pathname.slice(1), [pathname])
-  
-  const [ selectedKey, setSelectedKey ] = useState<string>(curKey)
-  
+
+  const [selectedKey, setSelectedKey] = useState<string>(curKey)
+
   const onMenuClick = useCallback(({ key }) => setSelectedKey(key), [])
 
   useEffect(() => setSelectedKey(curKey), [pathname])

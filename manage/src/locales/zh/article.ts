@@ -1,6 +1,6 @@
 export default {
-  'Published': '发布',
-  'Drafts': '草稿箱',
+  Published: '发布',
+  Drafts: '草稿箱',
   'Save drafts': '存草稿',
   Comments: '评论',
   Likes: '点赞',

@@ -6,8 +6,8 @@ interface UploadBtnProps {
   loading: boolean
 }
 
-const UploadBtn: React.FC<UploadBtnProps> = ({loading}) => {
-  return useMemo(() =>(
+const UploadBtn: React.FC<UploadBtnProps> = ({ loading }) => {
+  return useMemo(() => (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>
