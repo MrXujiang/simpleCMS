@@ -27,17 +27,18 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
     dispatch({ type: `article/${type}`, payload: fid })
   }, [])
 
-  const handleDelete: (data: ArticleType) => void = useCallback(({fid}) => {
+  const handleDelete: (data: ArticleType) => void = useCallback(({ fid }) => {
     dispatch({ type: isDraftPage ? 'article/delDraft' : 'article/del', payload: fid })
   }, [isDraftPage])
 
-  const handleEdit: (data: ArticleType) => void = useCallback(({fid}) => {
+  const handleEdit: (data: ArticleType) => void = useCallback(({ fid, top }) => {
     history.push({
       pathname: '/release',
-      query: isDraftPage ? {
+      state: {
         id: fid,
-        draft: true,
-      } : { id: fid },
+        draft: isDraftPage,
+        top,
+      },
     })
   }, [isDraftPage])
 
@@ -51,6 +52,7 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
       title: <FormattedMsg id="Author" />,
       dataIndex: 'author',
       key: 'author',
+      render: author => author || '-',
     },
     {
       title: <FormattedMsg id="Label" />,
@@ -59,7 +61,7 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
       render: labels => (
         <>
           {labels.map((l: string, i: number) => {
-            let color = i % 2 === 1 ? 'volcano' : '#51B266'
+            const color = i % 2 === 1 ? 'volcano' : '#51B266'
             return (
               <Tag color={color} key={l} className={styles.tag}>
                 {l.toUpperCase()}
@@ -85,7 +87,7 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
       title: <FormattedMsg id="Update time" />,
       dataIndex: 'ut',
       key: 'Update time',
-      render: ut => ut ? moment(ut).format(TIME_FORMAT) : '-'
+      render: ut => ut ? moment(ut).format(TIME_FORMAT) : '-',
     },
     {
       title: <FormattedMsg id="Action" />,
@@ -137,18 +139,20 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
   return (
     <React.Fragment>
       <div className={isDraftPage ? styles.text : styles.btns}>
-        {isDraftPage ? <FormattedMsg id="Drafts" /> : (
-          <React.Fragment>
-            <Button danger style={{ marginRight: 5 }} onClick={go.bind(this, '/draft')}>
-              <FormattedMsg id="Drafts" />
+        {isDraftPage
+          ? <FormattedMsg id="Drafts" />
+          : (
+            <React.Fragment>
+              <Button danger style={{ marginRight: 5 }} onClick={go.bind(this, '/draft')}>
+                <FormattedMsg id="Drafts" />
               &nbsp;
               ({draftList.length})
-            </Button>
-            <Button type="primary" onClick={go.bind(this, '/release')}>
-              <FormattedMsg id="Publish articles" />
-            </Button>
-          </React.Fragment>
-        )}
+              </Button>
+              <Button type="primary" onClick={go.bind(this, '/release')}>
+                <FormattedMsg id="Publish articles" />
+              </Button>
+            </React.Fragment>
+          )}
       </div>
       <Table
         className={styles.table}

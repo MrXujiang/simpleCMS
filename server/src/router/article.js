@@ -76,8 +76,8 @@ const articleRouter = (router, apiPath) => {
   router.put(api.mod,
     auth,
     async ctx => {
-      let { fid, title, author, label, face_img, visible, type, desc, payCode, content, ct } = ctx.request.body;
-      if(fid && title && author && label && content) {
+      let { fid, title, author, label, top, face_img, visible, type, desc, payCode, content, ct } = ctx.request.body;
+      if(fid && title && label && content) {
         // 1. 更新文件
         const filePath = `${config.publicPath}/db/articles/${fid}.json`
         const ut = Date.now()
@@ -99,7 +99,7 @@ const articleRouter = (router, apiPath) => {
           articles = articles.map(item => {
             if(item.fid === fid) {
               return {
-                fid, title, author, label, face_img, desc, visible, ct, ut
+                fid, title, author, top, label, face_img, desc, visible, ct, ut
               }
             }
             return item
