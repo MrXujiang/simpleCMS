@@ -269,8 +269,8 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
   }, [])
 
   return (
-    <React.Fragment>
-      <header className={styles.header}>
+    <div className={styles.releaseWrapper}>
+      <header>
         <FormattedMsg id="Publish articles" />
       </header>
       <Spin spinning={isLoading}>
@@ -386,7 +386,7 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
                   : <UploadBtn loading={payCodeLoading} />}
               </Upload>
             </Form.Item>
-            <Form.Item className={styles.btns}>
+            <Form.Item>
               <Button type="primary" htmlType="submit" className={styles.btn}>
                 <FormattedMsg id="Published" />
               </Button>
@@ -464,7 +464,7 @@ const ReleaseArticle: React.FC<ReleaseArticleProps> = ({ dispatch, location, art
         payCode={payCode}
         currentUser={currentUser}
       />
-    </React.Fragment>
+    </div>
   )
 }
 

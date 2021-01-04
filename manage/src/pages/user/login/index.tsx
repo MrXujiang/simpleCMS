@@ -34,12 +34,10 @@ const Login: React.FC<LoginProps> = ({ dispatch, isLoading }) => {
     })
   }, [])
 
-  // const go = () => history.push('/user/forget')
-
   return (
     <Form
       name="loginForm"
-      className={styles.form}
+      className={styles.loginForm}
       onFinish={onFinish}
     >
       <Form.Item
@@ -66,12 +64,6 @@ const Login: React.FC<LoginProps> = ({ dispatch, isLoading }) => {
         <Button block type="primary" htmlType="submit" loading={isLoading}>
           <FormattedMsg id="Login" />
         </Button>
-        {/* <div className={styles.otherWay}>
-          <FormattedMsg id="Other login methods" /> <MailOutlined className={styles.emailIcon} />
-          <span className={styles.forgotText} onClick={go}>
-            <FormattedMsg id="Forgot password" />
-          </span>
-        </div> */}
       </Form.Item>
     </Form>
   )

@@ -54,20 +54,19 @@ const UserLayout: React.FC<UserLayoutProps> = ({ children, location, lang, dispa
             <GlobalOutlined style={{ cursor: 'pointer' }} />
           </Dropdown>
         </div>
-        <header className={styles.header}>
+        <header>
           <img src={logo} width={45} height={45} alt="logo" style={{ verticalAlign: 'bottom' }} />
-          <span className={styles.title}>
+          <span>
             <FormattedMsg id={title} />
           </span>
-          <div className={styles.desc}>
+          <div>
             <FormattedMsg id="simpleCMS" />: <FormattedMsg id="simpleCMS_DESC" />
           </div>
         </header>
         {children}
-        <footer className={styles.footer}>
-          <div>
-            <a href={IP_URL} target="_blank" rel="noreferrer">{IP_ADDRESS}</a>
-          </div>
+        <footer>
+          <a href={IP_URL} target="_blank" rel="noreferrer">{IP_ADDRESS}</a>
+          <br />
           <FormattedMsg id="Copyright" /> <CopyrightOutlined /> <FormattedMsg id="CopyrightText" />
         </footer>
       </div>

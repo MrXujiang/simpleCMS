@@ -1,8 +1,10 @@
 @import '~less/variables';
 @import '~less/mixins';
 
-.header {
-  .TypographyTitleH4()
+.releaseWrapper {
+  header {
+    .TypographyTitleH4()
+  }
 }
 
 .releaseForm {
@@ -15,19 +17,19 @@
   :global(.ant-upload) {
     margin-bottom: 0;
   }
-}
 
-.btns {
-  position: fixed;
-  left: 10px;
-  bottom: 42px;
-  width: calc(100vw - 160px);
-  min-width: @content-width;
-  margin-left: 140px;
-  text-align: center;
-  z-index: 2;
+  & > :global(.ant-form-item:last-child) {
+    position: fixed;
+    left: 10px;
+    bottom: 42px;
+    width: calc(100vw - 160px);
+    min-width: @content-width;
+    margin-left: 140px;
+    text-align: center;
+    z-index: 2;
 
-  button:not(:last-child) {
-    margin-right: 10px;
+    button:not(:last-child) {
+      margin-right: 10px;
+    }
   }
 }

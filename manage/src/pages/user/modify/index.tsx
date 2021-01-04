@@ -77,8 +77,8 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
   }, [currentUser])
 
   return (
-    <React.Fragment>
-      <header className={styles.header}>
+    <div className={styles.modifyWrapper}>
+      <header>
         <FormattedMsg id="Basic Setting" />
       </header>
       <Spin spinning={isLoading}>
@@ -197,7 +197,7 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
           </div>
         </section>
       </Spin>
-    </React.Fragment>
+    </div>
   )
 }
 

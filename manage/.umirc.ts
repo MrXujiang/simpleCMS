@@ -45,10 +45,6 @@ export default defineConfig({
               path: '/user/login',
               component: '@/pages/user/login',
             },
-            {
-              path: '/user/forget',
-              component: '@/pages/user/forget',
-            },
             { component: '@/pages/404' }
           ],
         },

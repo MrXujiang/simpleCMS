@@ -171,7 +171,7 @@ const Advert: React.FC<AdvertProps> = ({ dispatch, isLoading }) => {
               placeholder={formatMsg('Please enter a description')}
             />
           </Form.Item>
-          <Form.Item className={styles.submit}>
+          <Form.Item>
             {!isSuper
               ? (
                 <Button type="primary" onClick={showMsg}>
