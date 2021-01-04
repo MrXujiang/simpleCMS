@@ -10,7 +10,7 @@ html
     block style
   include ../includes/scripts
  body
-    if url === '/login' || url === '/registered'
+    if url === '/login' || url === '/registered' || isHome
       block content
     else
       include ../components/header.pug

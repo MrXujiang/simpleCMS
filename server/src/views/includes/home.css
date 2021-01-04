@@ -1,271 +1,64 @@
-
-/* 内容样式 start*/
-.contentContainer{
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  min-width: 1024px;
-  padding-bottom: 70px;
-  padding-top: 92px;
+.homeContainer {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
 }
-.homeWidth {
-  width: 960px;
-}
-.contentContainer .carouselBox{
-  min-width: 920px;
-  height: 264px;
-  background: #FFFFFF;
-  border: 1px solid #E2E2E2;
-  box-shadow: 0px 5px 4px rgba(221, 221, 221, 0.25);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  overflow: hidden;
-}
-.contentContainer .carouselBox .content{
-  width: calc(100% - 600px);
-  padding: 40px;
-}
-.contentContainer .carouselBox .content .title {
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 36px;
-  color: #2D3748;
-}
-.contentContainer .carouselBox .content .introduction {
-  margin-top: 16px;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 17px;
-  text-align: justify;
-  color: #718096;
-}
-.contentContainer .carouselBox .adImg{
-  width: 600px;
-  height: 100%;
+.homeBackGround {
+  width: 100vw;
+  height: 90vh;
   display: table-cell;
   vertical-align: middle;
 }
-.contentContainer .adImg > img{
-  width: 100%;
-  display: block;
-}
-
-.contentContainer .recommendBox {
-  margin-top: 32px;
-  min-width: 920px;
-  min-height: 300px;
-  position: relative;
-}
-.contentContainer .recommendBox .title{
-  height: 25px;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 25px;
-  color: #333333;
-  margin-bottom: 16px;
-}
-.contentContainer .recommendBox .title > span{
-  margin-right: 32px;
-}
-.contentContainer .recommendBox .childBox {
-  display: flex;
-}
-.contentContainer .recommendBox .childBox .updataBox {
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
-
-}
-.recommendBox .childBox .updataBox .childUpdata {
-  margin-bottom: 20px;
-  width: 200px;
-  background-color: #fff;
-  margin-right: 40px;
-  border-radius: 4px;
-}
-.recommendBox .childBox .updataBox .childUpdata .imgWrap {
-  display: block;
-  width: 100%;
-  height: 160px;
-  overflow: hidden;
-}
-.updataBox .childUpdata .imgWrap img {
+.homeBackGround>img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  display: block;
 }
-.recommendBox .childBox .updataBox .childUpdata .updataContent {
-  padding: 8px;
+.homeContent {
+  position: absolute;
+  top: 25%;
+  left: 7%;
+  max-width: 650px;
 }
-.recommendBox .childBox .updataBox .childUpdata .updataContent .updataAuthor {
-  height: 24px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-}
-.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle,.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatContent {
-  width: 168px;
-  font-style: normal;
-  margin-bottom: 8px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  letter-spacing: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 22px;
-  color: #333333;
-  min-height: 44px;
-}
-.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatitle:hover {
-  color: #51B266;
-}
-.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .updatatContent {
-  font-size: 14px;
-  line-height: 180%;
-  min-height: 50px;
-  text-align: justify;
-  color: #999999;
-}
-.recommendBox .childBox .updataBox .childUpdata .updataContent .updataOther {
-  display: flex;
-  justify-content: space-between;
-}
-.childUpdata .updataContent .date, .childUpdata .updataContent .author {
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 17px;
-  color: #999999;
-}
-.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .icon {
-  display: flex;
-  align-items: center;
-}
-.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .icon >div {
-  width: 35px;
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-}
-.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .icon >div >img{
-  width: 14px;
-  height: 14px;
-  margin-right: 4px;
-}
-.contentContainer .recommendBox .childBox .updataBox .childUpdata .updataContent .icon >div >span {
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 17px;
-  color: #999999;
-}
-.contentContainer .recommendBox .childBox .columnBox {
-  align-self: flex-start;
-  width: 200px;
-  padding: 16px;
-  background: #FFFFFF;
-  box-shadow: 0px 5px 4px rgba(221, 221, 221, 0.25);
-  border-radius: 4px;
-}
-.contentContainer .recommendBox .childBox .columnBox .title {
-  font-style: normal;
+.homeContent .title {
+  padding: 10px 49px;
+  width: calc(100% - 98px) ;
+  height: 90px;
+  background-color: #74DC87;
   font-weight: 500;
+  font-size: 64px;
+  line-height: 90px;
+  color: #fff;
+  border-radius: 7px;
+  margin-bottom: 44px;
+}
+.homeContent .content {
   font-size: 18px;
-  line-height: 25px;
-  color: #000;
+  line-height: 31px;
+  letter-spacing: 0.14em;
+  color: #333333;
+  margin-bottom: 48px;
 }
-.contentContainer .recommendBox .childBox .columnBox .item {
-  height: 58px;
-  margin-bottom: 16px;
+.homeContent .btnBox {
   width: 100%;
-}
-.childBox .columnBox .item {
-  margin-bottom: 16px;
   display: flex;
+  align-items: center;
+  height: 40px;
 }
-.childBox .columnBox .item > img {
-  width: 48px;
+.homeContent .btnBox > div {
+  width: 96px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  margin-right: 20px;
 }
-.childBox .columnBox .content {
-  margin-left: 12px;
+.homeContent .btnBox .startUse {
+  background-color: #51B266;
+  color: #fff;
 }
-.childBox .columnBox .content > .title {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px !important;
-  line-height: 20px;
-  color: #000;
-  margin-bottom: 4px;
-}
-.childBox .columnBox .content > .title:hover {
-  color: #51B266;
-}
-.contentContainer .recommendBox .childBox .columnBox .content .introduction {
-  font-style: normal;
-  font-weight: 300;
-  font-size: 12px;
-  line-height: 17px;
-  color: #000;
-}
-/* 内容样式 end */
-
-@media (max-width: 414px) {
-  .contentContainer {
-    width: calc(100% - 32px);
-    min-width: 0;
-    margin: 0;
-    padding: 16px;
-    padding-bottom: 80px;
-    padding-top: 96px;
-  }
-  .contentContainer .homeWidth {
-    width: 100%;
-  }
-  .contentContainer .homeWidth .carouselBox {
-    display: none;
-  }
-  .contentContainer .homeWidth .recommendBox .title {
-    display: none;
-  }
-  .contentContainer .homeWidth .recommendBox {
-    width: 100%;
-    min-width: 0;
-    margin-top: 0;
-  }
-  .contentContainer .homeWidth .recommendBox .childBox .updataBox {
-    display: flex;
-    flex-direction: column;
-  }
-  .recommendBox .childBox .updataBox .childUpdata {
-    width: 100%;
-    min-height: 300px;
-    margin-right: 0;
-    display: flex;
-    justify-content: space-between;
-    flex-flow: wrap;
-  }
-  .recommendBox .childBox .updataBox .childUpdata .imgWrap {
-    display: table-cell;
-    vertical-align: middle;
-    height: 180px;
-  }
-  .recommendBox .childBox .updataBox .childUpdata .imgWrap img {
-    max-width: 100%;
-    margin: auto;
-    display: block;
-  }
-
-  .contentContainer .homeWidth .columnBox {
-    display: none;
-  }
+.homeContent .btnBox .goGithub {
+  background-color: #fff;
+  color: #74DC87;
 }
