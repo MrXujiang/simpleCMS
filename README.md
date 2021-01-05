@@ -19,6 +19,6 @@
 
 <img alt="simpleCMS" src="http://cms.zhikume.cn/assets/about.png" />
 
-# 技术反馈和交流群 | Technical feedback and communication
+### 技术反馈和交流群 | Technical feedback and communication
 
 ![技术反馈和交流群](./TCG.jpg)

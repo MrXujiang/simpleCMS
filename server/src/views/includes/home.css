@@ -109,10 +109,12 @@
   }
   .homeContent .title {
     font-size: 22px;
-    padding: 10px 73px;
-    width: calc(100% - 146px);
-    line-height: 50px;
+    padding: 0;
+    width: 100%;
     height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .homeContent .btnBox {
     margin-top: 20px;
