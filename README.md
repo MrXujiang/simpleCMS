@@ -21,4 +21,4 @@
 
 ### 技术反馈和交流群 | Technical feedback and communication
 
-![技术反馈和交流群](./TCG.jpg)
+<img alt="技术反馈和交流群" src="./TCG.jpg" width="400" />
