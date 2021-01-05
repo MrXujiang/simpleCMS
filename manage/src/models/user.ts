@@ -60,7 +60,9 @@ const UserModel: UserModelType = {
     *login({ payload }, { call, put }) {
       yield put({ type: 'startLoading' })
       const res = yield call(login, payload)
-      localStorage.setItem('role', res.role)
+      if (res) {
+        localStorage.setItem('role', res.role)
+      }
       yield put({ type: 'closeLoading' })
       return res || {}
     },
