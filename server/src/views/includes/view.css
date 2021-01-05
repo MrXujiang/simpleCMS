@@ -25,6 +25,7 @@
   height: 260px;
   background-color: #fff;
   padding: 4px;
+  cursor: pointer;
 }
 .viewContainer .advertisingWidth .imgBox{
   width: 100%;
