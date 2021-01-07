@@ -100,7 +100,7 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
           <Form.Item
             label={<FormattedMsg id="Website description" />}
             name="desc"
-            rules={[{ required: true, message: 'Please enter your website description' }]}
+            rules={[{ required: true, message: <FormattedMsg id="Please enter your website description" /> }]}
           >
             <Input.TextArea
               disabled={!isSuper}
@@ -111,16 +111,16 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
           <Form.Item
             label={<FormattedMsg id="Website text" />}
             name="r_text"
-            rules={[{ required: true, message: <FormattedMsg id="Please enter your text" /> }]}
+            rules={[{ required: true, message: <FormattedMsg id="Please enter your website text" /> }]}
           >
-            <Input disabled={!isSuper} placeholder={formatMsg('Please enter your text')} />
+            <Input disabled={!isSuper} placeholder={formatMsg('Please enter your website text')} />
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Website link" />}
             name="r_link"
-            rules={[{ required: true, message: <FormattedMsg id="Please enter your link" /> }]}
+            rules={[{ required: true, message: <FormattedMsg id="Please enter your website link" /> }]}
           >
-            <Input disabled={!isSuper} placeholder={formatMsg('Please enter your link')} />
+            <Input disabled={!isSuper} placeholder={formatMsg('Please enter your website link')} />
           </Form.Item>
           <Form.Item {...tailLayout}>
             {!isSuper

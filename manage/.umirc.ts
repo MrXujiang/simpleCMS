@@ -51,7 +51,7 @@ export default defineConfig({
         { path: '/dashboard', component: '@/pages/dashboard' },
         { path: '/article', component: '@/pages/article' },
         { path: '/draft', component: '@/pages/article' },
-        { path: '/release', component: '@/pages/article/release' },
+        { path: '/release', component: '@/pages/release' },
         { path: '/advert', component: '@/pages/advert' },
         { path: '/payment', component: '@/pages/payment' },
         { path: '/setting', component: '@/pages/setting' },

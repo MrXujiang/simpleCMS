@@ -96,12 +96,12 @@ const Article: React.FC<ArticleProps> = ({ dispatch, articleList, draftList, isL
         <Space size="small">
           {!isDraftPage && record.top && (
             <a onClick={toggle.bind(this, record.fid, 'untop')}>
-              <FormattedMsg id="Cancel top" />
+              <FormattedMsg id="UnTop" />
             </a>
           )}
           {!isDraftPage && !record.top && (
             <a onClick={toggle.bind(this, record.fid, 'top')}>
-              <FormattedMsg id="Set top" />
+              <FormattedMsg id="Top" />
             </a>
           )}
           {(isSuper || (!isSuper && !record.lock)) && (

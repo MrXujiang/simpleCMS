@@ -6,10 +6,10 @@ import moment from 'moment'
 
 import { ConnectState } from '@/models/connect'
 import { AnazlyType, ArticleList } from '@/models/article'
+import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import { IntlContext } from '@/utils/context/intl'
 
 import styles from './index.less'
-import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 
 interface DashboardProps {
   isLoading: boolean

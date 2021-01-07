@@ -25,7 +25,7 @@ const SiderLayput: React.FC<SiderProps> = ({ location: { pathname } }) => {
   return (
     <Layout.Sider className={styles.sider} width={140}>
       <div className={styles.logo}>
-        <Link to="/">
+        <Link to="/dashboard">
           <img src={logo} alt="logo" width={30} height={30} />
         </Link>
         <span className={styles.title}>
