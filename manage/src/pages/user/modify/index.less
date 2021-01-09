@@ -9,21 +9,26 @@
   }
 }
 
+.disabled {
+  :global(.ant-form-item:not(:last-child)) {
+    pointer-events: none;
+  }
+}
+
 .basicView {
   display: flex;
   flex: 1;
   justify-content: center;
   padding-top: 12px;
-}
 
-.left {
-  min-width: 40%;
-  max-width: 50%;
+  form {
+    min-width: 40%;
+  }
 }
   
-.right {
+.avatarUpload {
   text-align: center;
-  padding-left: 104px;
+  padding-left: 100px;
 }
 
 .avatar {

@@ -72,15 +72,13 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
       {curTab === 'edit'
         ? <div dangerouslySetInnerHTML={{ __html: editorState.toHTML() }} />
         : (
-          <div className={styles.forEditor}>
-            <ForEditor
-              preview
-              value={markdown}
-              height="100%"
-              style={{ border: 'none', boxShadow: 'none' }}
-              toolbar={{}}
-            />
-          </div>
+          <ForEditor
+            preview
+            value={markdown}
+            height="100%"
+            style={{ border: 'none', boxShadow: 'none' }}
+            toolbar={{}}
+          />
         )}
       <div className={styles.labels}>
         {formValues.label && formValues.label.map(l => (

@@ -9,4 +9,5 @@ export default {
   'Website link': '备案链接',
   'Please enter your website link': '请输入您的备案链接',
   'Please upload your logo': '请上传您的logo',
+  Theme: '主题',
 }

@@ -1,13 +1,18 @@
 import React, { useCallback, useContext, useEffect, useState, useMemo } from 'react'
-import { Form, Input, Button, Upload, message, Spin } from 'antd'
+import { Form, Input, Button, Upload, message, Spin, Radio, Image } from 'antd'
 import { connect, Dispatch } from 'umi'
+import classnames from 'classnames'
 
 import UploadBtn from '@/components/uploadBtn'
-import { ConnectState } from '@/models/connect'
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
-import { IntlContext } from '@/utils/context/intl'
 import { WebsiteType } from '@/models/setting'
+import { ConnectState } from '@/models/connect'
+import { IntlContext } from '@/utils/context/intl'
 import { getImageUrl, SERVER_URL } from '@/utils'
+
+import theme0 from '@/assets/theme0.png'
+import theme1 from '@/assets/theme1.png'
+import theme2 from '@/assets/theme2.png'
 
 import styles from './index.less'
 
@@ -17,13 +22,15 @@ interface SettingProps {
 }
 
 const layout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 17 },
+  labelCol: { span: 6 },
+  wrapperCol: { span: 18 },
 }
 
 const tailLayout = {
-  wrapperCol: { offset: 7, span: 17 },
+  wrapperCol: { offset: 6, span: 18 },
 }
+
+const themes: string[] = [theme0, theme1, theme2]
 
 const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
   const isSuper = useMemo(() => localStorage.getItem('role') === '1', [localStorage.getItem('role')])
@@ -66,13 +73,14 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
   }, [])
 
   return (
-    <div className={styles.settingWrapper}>
+    <div className={classnames(styles.settingWrapper, { [styles.disabled]: !isSuper })}>
       <Spin spinning={isLoading}>
         <Form
           {...layout}
           form={form}
           name="settingForm"
           onFinish={onFinish}
+          initialValues={{ theme: 0 }}
         >
           <Form.Item
             label="Logo"
@@ -81,7 +89,6 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
           >
             <Upload
               name="file"
-              disabled={!isSuper}
               listType="picture-card"
               action={`${SERVER_URL}/api/v0/files/upload/free`}
               onChange={onUpload}
@@ -95,7 +102,7 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
             name="title"
             rules={[{ required: true, message: <FormattedMsg id="Please input your website name" /> }]}
           >
-            <Input disabled={!isSuper} placeholder={formatMsg('Please input your website name')} />
+            <Input placeholder={formatMsg('Please input your website name')} />
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Website description" />}
@@ -103,7 +110,6 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
             rules={[{ required: true, message: <FormattedMsg id="Please enter your website description" /> }]}
           >
             <Input.TextArea
-              disabled={!isSuper}
               autoSize={{ minRows: 3 }}
               placeholder={formatMsg('Please enter your website description')}
             />
@@ -113,27 +119,35 @@ const Setting: React.FC<SettingProps> = ({ dispatch, isLoading }) => {
             name="r_text"
             rules={[{ required: true, message: <FormattedMsg id="Please enter your website text" /> }]}
           >
-            <Input disabled={!isSuper} placeholder={formatMsg('Please enter your website text')} />
+            <Input placeholder={formatMsg('Please enter your website text')} />
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Website link" />}
             name="r_link"
             rules={[{ required: true, message: <FormattedMsg id="Please enter your website link" /> }]}
           >
-            <Input disabled={!isSuper} placeholder={formatMsg('Please enter your website link')} />
+            <Input placeholder={formatMsg('Please enter your website link')} />
+          </Form.Item>
+          <Form.Item
+            label={<FormattedMsg id="Theme" />}
+            name="theme"
+          >
+            <Radio.Group>
+              {themes.map((theme, index) => (
+                <Radio key={theme} value={index}>
+                  <Image src={theme} width={100} />
+                </Radio>
+              ))}
+            </Radio.Group>
           </Form.Item>
           <Form.Item {...tailLayout}>
-            {!isSuper
-              ? (
-                <Button type="primary" onClick={showMsg}>
-                  <FormattedMsg id="Submit" />
-                </Button>
-              )
-              : (
-                <Button type="primary" htmlType="submit">
-                  <FormattedMsg id="Submit" />
-                </Button>
-              )}
+            <Button
+              type="primary"
+              htmlType={!isSuper ? 'button' : 'submit'}
+              onClick={!isSuper ? showMsg : undefined}
+            >
+              <FormattedMsg id="Submit" />
+            </Button>
           </Form.Item>
         </Form>
       </Spin>

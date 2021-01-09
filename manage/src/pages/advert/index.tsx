@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useContext, useState, useMemo } from 'react'
 import { Form, message, Spin, Input, Upload, Button } from 'antd'
 import { connect, Dispatch } from 'umi'
+import classnames from 'classnames'
 
 import FormattedMsg from '@/components/reactIntl/FormattedMsg'
 import UploadBtn from '@/components/uploadBtn'
@@ -89,7 +90,7 @@ const Advert: React.FC<AdvertProps> = ({ dispatch, isLoading }) => {
   }, [])
 
   return (
-    <div className={styles.advertWrapper}>
+    <div className={classnames(styles.advertWrapper, { [styles.disabled]: !isSuper })}>
       <Spin spinning={isLoading}>
         <Form
           {...layout}
@@ -105,7 +106,7 @@ const Advert: React.FC<AdvertProps> = ({ dispatch, isLoading }) => {
             name="topLink"
             rules={[{ required: true, message: <FormattedMsg id="Please enter the link" /> }]}
           >
-            <Input disabled={!isSuper} placeholder={formatMsg('Please enter the link')} />
+            <Input placeholder={formatMsg('Please enter the link')} />
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Picture" />}
@@ -113,7 +114,6 @@ const Advert: React.FC<AdvertProps> = ({ dispatch, isLoading }) => {
             rules={[{ required: true, message: <FormattedMsg id="Please upload pictures" /> }]}
           >
             <Upload
-              disabled={!isSuper}
               name="file"
               listType="picture-card"
               action={`${SERVER_URL}/api/v0/files/upload/free`}
@@ -129,7 +129,6 @@ const Advert: React.FC<AdvertProps> = ({ dispatch, isLoading }) => {
             rules={[{ required: true, message: <FormattedMsg id="Please enter a description" /> }]}
           >
             <Input.TextArea
-              disabled={!isSuper}
               autoSize={{ minRows: 3 }}
               placeholder={formatMsg('Please enter a description')}
             />
@@ -142,7 +141,7 @@ const Advert: React.FC<AdvertProps> = ({ dispatch, isLoading }) => {
             name="sideLink"
             rules={[{ required: true, message: <FormattedMsg id="Please enter the link" /> }]}
           >
-            <Input disabled={!isSuper} placeholder={formatMsg('Please enter the link')} />
+            <Input placeholder={formatMsg('Please enter the link')} />
           </Form.Item>
           <Form.Item
             label={<FormattedMsg id="Picture" />}
@@ -150,7 +149,6 @@ const Advert: React.FC<AdvertProps> = ({ dispatch, isLoading }) => {
             rules={[{ required: true, message: <FormattedMsg id="Please upload pictures" /> }]}
           >
             <Upload
-              disabled={!isSuper}
               name="file"
               listType="picture-card"
               action={`${SERVER_URL}/api/v0/files/upload/free`}
@@ -166,23 +164,18 @@ const Advert: React.FC<AdvertProps> = ({ dispatch, isLoading }) => {
             rules={[{ required: true, message: <FormattedMsg id="Please enter a description" /> }]}
           >
             <Input.TextArea
-              disabled={!isSuper}
               autoSize={{ minRows: 3 }}
               placeholder={formatMsg('Please enter a description')}
             />
           </Form.Item>
           <Form.Item>
-            {!isSuper
-              ? (
-                <Button type="primary" onClick={showMsg}>
-                  <FormattedMsg id="Publish advert" />
-                </Button>
-              )
-              : (
-                <Button type="primary" htmlType="submit">
-                  <FormattedMsg id="Publish advert" />
-                </Button>
-              )}
+            <Button
+              type="primary"
+              htmlType={!isSuper ? 'button' : 'submit'}
+              onClick={!isSuper ? showMsg : undefined}
+            >
+              <FormattedMsg id="Publish advert" />
+            </Button>
           </Form.Item>
         </Form>
       </Spin>

@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useContext, useEffect, useState } from 're
 import { Form, Input, Select, Button, Upload, message, Spin, Avatar } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { connect, Dispatch } from 'umi'
+import classnames from 'classnames'
 import { isEmpty } from 'lodash'
 
 import { ConnectState } from '@/models/connect'
@@ -38,12 +39,12 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
   // eslint-disable-next-line no-undef
   const prefixSelector: JSX.Element = useMemo(() => (
     <Form.Item name="prefix" noStyle>
-      <Select disabled={!isSuper} style={{ width: 70 }}>
+      <Select style={{ width: 70 }}>
         <Select.Option value="86">+86</Select.Option>
         <Select.Option value="87">+87</Select.Option>
       </Select>
     </Form.Item>
-  ), [isSuper])
+  ), [])
 
   const onFinish: (data: modifyFormValues) => void = useCallback(values => {
     dispatch({
@@ -77,101 +78,90 @@ const Modify: React.FC<ModifyProps> = ({ currentUser, dispatch, isLoading }) => 
   }, [currentUser])
 
   return (
-    <div className={styles.modifyWrapper}>
+    <div className={classnames(styles.modifyWrapper, { [styles.disabled]: !isSuper })}>
       <header>
         <FormattedMsg id="Basic Setting" />
       </header>
       <Spin spinning={isLoading}>
         <section className={styles.basicView}>
-          <div className={styles.left}>
-            <Form
-              layout="vertical"
-              name="modifyForm"
-              form={form}
-              onFinish={onFinish}
-              initialValues={{ prefix: '86' }}
-              scrollToFirstError
+          <Form
+            layout="vertical"
+            name="modifyForm"
+            form={form}
+            onFinish={onFinish}
+            initialValues={{ prefix: '86' }}
+            scrollToFirstError
+          >
+            <Form.Item
+              name="email"
+              label={<FormattedMsg id="Email" />}
+              rules={[{
+                type: 'email',
+                message: <FormattedMsg id="Invalid email" />,
+              }, {
+                required: true,
+                message: <FormattedMsg id="Please enter your email address" />,
+              }]}
             >
-              <Form.Item
-                name="email"
-                label={<FormattedMsg id="Email" />}
-                rules={[{
-                  type: 'email',
-                  message: <FormattedMsg id="Invalid email" />,
-                }, {
-                  required: true,
-                  message: <FormattedMsg id="Please enter your email address" />,
-                }]}
-              >
-                <Input disabled={!isSuper} placeholder={formatMsg('Please enter your email address')} />
-              </Form.Item>
-              <Form.Item
-                name="username"
-                label={<FormattedMsg id="Username" />}
-                rules={[{ required: true, message: <FormattedMsg id="Please enter your username" /> }]}
-              >
-                <Input disabled={!isSuper} placeholder={formatMsg('Please enter your username')} />
-              </Form.Item>
-              <Form.Item
-                name="desc"
-                label={<FormattedMsg id="Personal profile" />}
-                rules={[{ required: true, message: <FormattedMsg id="Please enter your personal profile" /> }]}
-              >
-                <Input.TextArea
-                  disabled={!isSuper}
-                  autoSize={{ minRows: 3 }}
-                  placeholder={formatMsg('Please enter your personal profile')}
-                />
-              </Form.Item>
-              <Form.Item
-                name="country"
-                label={<FormattedMsg id="Country" />}
-              >
-                <Select
-                  disabled={!isSuper}
-                  placeholder={formatMsg('Please select your country')}
-                >
-                  <Select.Option value="china">
-                    <FormattedMsg id="China" />
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="addr"
-                label={<FormattedMsg id="Detailed address" />}
-              >
-                <Input disabled={!isSuper} placeholder={formatMsg('Please enter your detailed address')} />
-              </Form.Item>
-              <Form.Item
-                name="phone"
-                label={<FormattedMsg id="Mobile phone number" />}
-                rules={[{
-                  pattern: phoneRE,
-                  message: <FormattedMsg id="Invalid cell phone number" />,
-                }]}
-              >
-                <Input
-                  disabled={!isSuper}
-                  addonBefore={prefixSelector} style={{ width: '100%' }}
-                  placeholder={formatMsg('Please enter your mobile phone number')}
-                />
-              </Form.Item>
-              <Form.Item>
-                {isSuper
-                  ? (
-                    <Button type="primary" htmlType="submit" block>
-                      <FormattedMsg id="Update basic information" />
-                    </Button>
-                  )
-                  : (
-                    <Button type="primary" onClick={showMsg} block>
-                      <FormattedMsg id="Update basic information" />
-                    </Button>
-                  )}
-              </Form.Item>
-            </Form>
-          </div>
-          <div className={styles.right}>
+              <Input placeholder={formatMsg('Please enter your email address')} />
+            </Form.Item>
+            <Form.Item
+              name="username"
+              label={<FormattedMsg id="Username" />}
+              rules={[{ required: true, message: <FormattedMsg id="Please enter your username" /> }]}
+            >
+              <Input placeholder={formatMsg('Please enter your username')} />
+            </Form.Item>
+            <Form.Item
+              name="desc"
+              label={<FormattedMsg id="Personal profile" />}
+              rules={[{ required: true, message: <FormattedMsg id="Please enter your personal profile" /> }]}
+            >
+              <Input.TextArea
+                autoSize={{ minRows: 3 }}
+                placeholder={formatMsg('Please enter your personal profile')}
+              />
+            </Form.Item>
+            <Form.Item
+              name="country"
+              label={<FormattedMsg id="Country" />}
+            >
+              <Select placeholder={formatMsg('Please select your country')}>
+                <Select.Option value="china">
+                  <FormattedMsg id="China" />
+                </Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="addr"
+              label={<FormattedMsg id="Detailed address" />}
+            >
+              <Input placeholder={formatMsg('Please enter your detailed address')} />
+            </Form.Item>
+            <Form.Item
+              name="phone"
+              label={<FormattedMsg id="Mobile phone number" />}
+              rules={[{
+                pattern: phoneRE,
+                message: <FormattedMsg id="Invalid cell phone number" />,
+              }]}
+            >
+              <Input
+                addonBefore={prefixSelector} style={{ width: '100%' }}
+                placeholder={formatMsg('Please enter your mobile phone number')}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                block
+                type="primary"
+                htmlType={isSuper ? 'submit' : 'button'}
+                onClick={isSuper ? undefined : showMsg}>
+                <FormattedMsg id="Update basic information" />
+              </Button>
+            </Form.Item>
+          </Form>
+          <div className={styles.avatarUpload}>
             <div className={styles.avatar}>
               {tx
                 ? <Avatar src={tx} style={{ width: 144, height: 144 }} />

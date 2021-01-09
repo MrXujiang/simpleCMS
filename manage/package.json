@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@ant-design/charts": "^1.0.6",
+    "@types/classnames": "^2.2.11",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.26",
     "antd-img-crop": "^3.13.2",

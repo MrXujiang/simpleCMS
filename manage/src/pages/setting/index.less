@@ -1,6 +1,12 @@
 .settingWrapper {
-  width: 500px;
+  width: 600px;
   margin-left: 200px;
+}
+
+.disabled {
+  :global(.ant-form-item:not(:last-child)) {
+    pointer-events: none;
+  }
 }
 
 @media screen and(max-width: 575px) {

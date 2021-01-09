@@ -2,7 +2,7 @@
 @import '~less/mixins';
 
 .advertWrapper {
-  width: 500px;
+  width: 600px;
   margin-left: 200px;
 
   header {
@@ -13,6 +13,12 @@
 
   :global(.ant-form-item:last-child) {
     float: right;
+  }
+}
+
+.disabled {
+  :global(.ant-form-item:not(:last-child)) {
+    pointer-events: none;
   }
 }
 
