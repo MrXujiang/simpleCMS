@@ -45,8 +45,8 @@
 |  ----  |  ----  |  ----  | ----————————  |  ----  |
 | 更新用户信息(需登录)  | /setting/userInfo/save | put | {email, username, desc, country, addr, phone, wx, tx, job} | {msg: "更新成功/失败"}
 | 获取用户信息  | /setting/userInfo/get | get | 无需参数 | {email, username, desc, country, addr, phone, wx, tx, job}
-| 更新网站信息(需登录)  | /setting/website/save | put | {logo, title, desc, r_text, r_link} | {msg: "更新成功/失败"}
-| 获取网站信息  | /setting/website/get | get | 无需参数 | {logo, title, desc, r_text, r_link}
+| 更新网站信息(需登录)  | /setting/website/save | put | {logo, title, desc, r_text, r_link, theme} | {msg: "更新成功/失败"}
+| 获取网站信息  | /setting/website/get | get | 无需参数 | {logo, title, desc, r_text, r_link, theme}
 
 ### 5. 广告管理模块
 |  名称   | api地址  |  方法  |  参数  |  resopnse |

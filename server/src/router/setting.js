@@ -55,11 +55,11 @@ const settingRouter = (router, apiPath) => {
   router.put(api.setWebsite,
     auth,
     async ctx => {
-      let { logo, title, desc, r_text, r_link } = ctx.request.body;
+      let { logo, title, desc, r_text, r_link, theme } = ctx.request.body;
       const filePath = `${config.publicPath}/db/setting.json`;
       
       if(title) {
-        const res = WF(filePath, { website: { logo, title, desc, r_text, r_link } }, 1);
+        const res = WF(filePath, { website: { logo, title, desc, r_text, r_link, theme } }, 1);
         if(res) {
           ctx.status = 200
           ctx.body = htr(200, null, '更新成功')
