@@ -1,5 +1,6 @@
 import { WF, RF } from "../lib/upload";
 import config from "../config";
+import marked from '../lib/marked'
 
 const formatTime = (timeStemp, flag = "/") => {
   let date = new Date(timeStemp);
@@ -112,7 +113,7 @@ const pageRenderRouter = (router) => {
       topImg: article.face_img,
       authorInfo: { name: article.author, date: formatTime(article.ct, "-") },
       label: article.label,
-      descriptionBox: article.html || article.content,
+      editor:  article.type ? marked(article.html) : article.content,
       payCode: article.payCode,
       commentInfoList: comments.comments || [],
       flover: comments.flover,

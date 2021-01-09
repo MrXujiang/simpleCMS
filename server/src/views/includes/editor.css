@@ -1,0 +1,149 @@
+.editor-container {
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  color: #2c3e50;
+  line-height: 2;
+}
+
+.editor-container ul, ol, li {
+  margin: 0;
+  padding: 0;
+}
+
+.editor-container p, blockquote, ul, ol, dl, pre {
+  margin-top: 0;
+  margin-bottom: 0.6em;
+}
+
+.editor-container h1, h2 {
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.editor-container h1, h2, h3, h4, h5, h6 {
+  padding: 0;
+  margin: 0 0 0.6em;
+  font-weight: 600;
+
+  text-indent: 0;
+}
+
+.editor-container h1:target, h2:target, h3:target, h4:target, h5:target, h6:target {
+  padding-top: 4.5rem;
+}
+
+.editor-container a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.editor-container a:hover {
+  text-decoration: underline;
+}
+
+.editor-container ul, ol {
+  padding: 0.2em 0.8em;
+}
+
+.editor-container ul > li, ol > li {
+  line-height: 2;
+  padding-left: 0.2em;
+  margin-left: 0.2em;
+  list-style-type: disc;
+}
+
+.editor-container ul > li > p, ol > li > p {
+  text-indent: 0;
+}
+
+.editor-container ul > li > ul:last-child, ol > li > ul:last-child {
+  margin-bottom: 0;
+}
+
+.editor-container ul > li > ul li, ol > li > ul li {
+  list-style-type: circle;
+}
+
+.editor-container ul > li > ul li > ul li, ol > li > ul li > ul li {
+  list-style-type: square;
+}
+
+.editor-container > ul, ol {
+  padding: 0 20px;
+}
+
+.editor-container ol > li {
+  list-style-type: decimal;
+}
+
+.editor-container blockquote {
+  margin: 0;
+  margin-bottom: 0.6em;
+  padding: 0 1em;
+  color: #6a737d;
+  border-left: 0.25em solid #dfe2e5;
+}
+
+.editor-container blockquote p {
+  text-indent: 0;
+}
+
+.editor-container blockquote p:first-child {
+  margin-top: 0;
+}
+
+.editor-container blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.editor-container pre {
+  padding: 0.6em;
+  overflow: auto;
+  line-height: 1.6;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+}
+
+.editor-container pre code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  background: transparent;
+}
+
+.editor-container code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+}
+
+.editor-container hr {
+  margin-bottom: 0.6em;
+  height: 1px;
+  background: #dadada;
+  border: none;
+}
+
+.editor-container table {
+  width: 100%;
+  border: 1px solid #ddd;
+  margin-bottom: 0.6em;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.editor-container table thead {
+  background: #eee;
+}
+
+.editor-container th, td {
+  padding: 0.1em 0.4em;
+  border: 1px solid #ddd;
+}
+
+.editor-container img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  margin-bottom: 0.6em;
+}

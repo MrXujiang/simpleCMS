@@ -4,7 +4,6 @@ import { uuid } from '../lib/tool'
 import { auth } from '../service'
 import config from '../config'
 import htr from '../lib/htr'
-import marked from 'marked'
 import glob from 'glob'
 
 /**
@@ -49,7 +48,7 @@ const articleRouter = (router, apiPath) => {
         const filename = `${config.publicPath}/db/articles/${fid}.json`;
         try {
           // type  0 富文本  1 markdown
-          const res = WF(filename, { fid, title, author, face_img, label, ct, type, desc, payCode, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filename, { fid, title, author, face_img, label, ct, type, desc, payCode, visible, content, html: type ? content : '' })
           if(res) {
             ctx.body = htr(200, {fid}, '文章发布成功')
           }
@@ -82,7 +81,7 @@ const articleRouter = (router, apiPath) => {
         const filePath = `${config.publicPath}/db/articles/${fid}.json`
         const ut = Date.now()
         try {
-          const res = WF(filePath, { fid, title, author, face_img, payCode, label, ct, ut, type, desc, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filePath, { fid, title, author, face_img, payCode, label, ct, ut, type, desc, visible, content, html: type ? content : '' })
           if(res) {
             ctx.body = htr(200, { fid }, '文章修改成功')
           }
@@ -464,7 +463,7 @@ const articleRouter = (router, apiPath) => {
         const ct = Date.now();
         try {
           // type  0 富文本  1 markdown
-          const res = WF(filename, { fid, title, author, face_img, payCode, label, ct, type, desc, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filename, { fid, title, author, face_img, payCode, label, ct, type, desc, visible, content, html: type ? content : '' })
           if(res) {
             ctx.body = htr(200, {fid}, '草稿保存成功')
           }
@@ -498,7 +497,7 @@ const articleRouter = (router, apiPath) => {
         const filePath = `${config.publicPath}/db/drafts/${fid}.json`
         const ut = Date.now()
         try {
-          const res = WF(filePath, { fid, title, author, face_img, payCode, label, ct, ut, type, desc, visible, content, html: type ? marked(content) : '' })
+          const res = WF(filePath, { fid, title, author, face_img, payCode, label, ct, ut, type, desc, visible, content, html: type ? content : '' })
           if(res) {
             ctx.body = htr(200, { fid }, '草稿修改成功')
           }

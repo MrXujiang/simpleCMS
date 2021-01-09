@@ -5,7 +5,8 @@ block title
 
 block style
   include ./includes/view.css
-  include ./includes/md.css
+  include ./includes/tomorrow.css
+  include ./includes/editor.css
 
 block content
   .viewContainer
@@ -23,8 +24,8 @@ block content
           .name #{authorInfo.name}
           .date #{authorInfo.date}
           .views #{views}人围观
-        .descriptionBox
-          != descriptionBox
+        .editor-container
+          != editor
         .exceptional
           if(payCode)
             .text 给作者打赏，鼓励TA抓紧创作！
@@ -120,8 +121,6 @@ block content
           $('#like').css('pointer-events', 'none')
         })
       })
-
-    $('.descriptionBox').find('a').attr('target','_blank')
 
     $('#commentButton').click(function(){
         let textArea = $('#js-textarea').val()
