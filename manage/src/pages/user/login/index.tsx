@@ -46,7 +46,7 @@ const Login: React.FC<LoginProps> = ({ dispatch, isLoading }) => {
       >
         <Input
           prefix={<UserOutlined />}
-          placeholder={formatMsg('Please enter your username')}
+          placeholder={formatMsg('Username') + ': test'}
         />
       </Form.Item>
       <Form.Item
@@ -56,7 +56,7 @@ const Login: React.FC<LoginProps> = ({ dispatch, isLoading }) => {
         <Input
           prefix={<LockOutlined />}
           type="password"
-          placeholder={formatMsg('Please enter your password')}
+          placeholder={formatMsg('Password') + ': 12345678'}
         />
       </Form.Item>
 

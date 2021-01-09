@@ -6,6 +6,7 @@ export default {
   Email: '邮箱',
   'Basic Setting': '基本设置',
   Username: '用户名',
+  Password: '密码',
   Country: '国家',
   China: '中国',
   'Invalid email': '无效的电子邮件',
