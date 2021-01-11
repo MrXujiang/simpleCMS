@@ -1,30 +1,75 @@
 block header
- #headerContainer.headerContainer
-    a.logo(href='/')
-      img(
-        src='/assets/logo.png'
-        class='logoImg'
-      )
-      span 趣写
-    .category
-      .box
-        each val in [{id: 'home',cate: '首页', link: '/home'}, {id: 'cates',cate: '分类', link: '/cates'}, {id:'about', cate: '关于', link: '/about'}]
-          a(
-            href=val.link
-            id=val.id
-          ) #{val.cate}
-    .other
-      #writeBtn.button 写文章
-      input(
-        class='search js_search'
-        placeholder='Search'
-      )
-      .noticeBox 
-        .notice 
-        .avatar
-    
+  #headerContainer.headerContainer(
+    style=(theme === 1 && 'background-color: unset')
+  )
+    .content
+      a.logo(href='/')
+        img(
+          src='/assets/logo.png'
+          class='logoImg'
+        )
+        span 趣写
+      .category
+        if (theme !== 2)
+          .box
+            each val in [{id: 'home',cate: '首页', link: '/home'}, {id: 'cates',cate: '分类', link: '/cates'}, {id:'about', cate: '关于', link: '/about'}]
+              a(
+                href=val.link
+                id=val.id
+              ) #{val.cate}
+        if (theme === 2)
+          #list_icon
+          #three_box.three_box
+            each val in [{id: 'home',cate: '首页', link: '/home'}, {id: 'cates',cate: '分类', link: '/cates'}, {id:'about', cate: '关于', link: '/about'}]
+              a(
+                href=val.link
+                id=val.id
+              ) #{val.cate}
+      if (theme === 0)
+        .other
+          #writeBtn.button 写文章
+          input(
+            class='search js_search'
+            placeholder='Search'
+          )
+          .noticeBox 
+            .avatar
+      if (theme !== 0)
+        .showInfo 
+          .noticeBox 
+            .avatar
+          #writeBtn.button 写文章
+      
     script.
       const pathname = window.location.pathname.split('/')[1]
+      const innerWidth = window.innerWidth
+
+      function isMobile() {
+        var userAgentInfo = navigator.userAgent;
+
+        var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
+
+        var mobile_flag = false;
+
+        //根据userAgent判断是否是手机
+        for (var v = 0; v < mobileAgents.length; v++) {
+            if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+                mobile_flag = true;
+                break;
+            }
+        }
+
+        var screen_width = window.screen.width;
+        var screen_height = window.screen.height;    
+
+        //根据屏幕分辨率判断是否是手机
+        if(screen_width < 500 && screen_height < 800){
+            mobile_flag = true;
+        }
+
+        return mobile_flag;
+      }
+
       let css = {
         color: '#333',
         fontWeight: '600',
@@ -64,4 +109,11 @@ block header
             }
             
           }
+      });
+      let mobile_flag = isMobile();
+      if(mobile_flag){
+        $('#three_box').hide()  
+      }
+      $('#list_icon').click(function(event){
+        $('#three_box').toggle();
       });

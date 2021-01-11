@@ -42,6 +42,13 @@ a {
   transition: top 0.3s ease-in;
   z-index: 50;
 }
+.headerContainer .content {
+  width: 920px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* 头部logo */
 .logo {
@@ -69,15 +76,18 @@ a {
   justify-content: center;
 }
 
-.category .box {
+.category .box, .three_box {
   width: 252px;
   display: flex;
   justify-content: space-between;
 }
-.category .box a:hover {
+.category .box a:hover,.three_box a:hover {
   color: #333;
   font-weight: 600;
 } 
+#list_icon {
+ display: none;
+}
 /* 头部其他 */
 .other {
   width: 479px;
@@ -86,7 +96,14 @@ a {
   justify-content: space-between;
 }
 
-.other .button {
+.showInfo { 
+  width: 176px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#writeBtn {
   height: 40px;
   width: 96px;
   border-radius: 2px;
@@ -151,12 +168,14 @@ a {
     padding: 0 20px;
     flex-wrap: wrap;
     min-width: 0;
+    background-color: #fff !important;
   }
   .headerContainer .logo {
     width: 125px;
   }
   .headerContainer .category {
     flex: 1;
+    justify-content: flex-end;
   }
   .headerContainer .category .box {
     width: 100%;
@@ -164,7 +183,37 @@ a {
     align-items: center;
     justify-content: space-around;
   }
+  #list_icon {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: url(assets/list_icon.svg) no-repeat;
+  }
+  .headerContainer .category .three_box {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: unset;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(18px);
+  }
+  .headerContainer .category .three_box > a{
+    display: block;
+    width: 100%;
+    margin-top: 48px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .headerContainer .other {
+    display: none;
+  }
+  .headerContainer .showInfo {
     display: none;
   }
 }

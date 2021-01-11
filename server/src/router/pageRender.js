@@ -1,6 +1,6 @@
 import { WF, RF } from "../lib/upload";
 import config from "../config";
-import marked from '../lib/marked'
+import marked from "../lib/marked";
 
 const formatTime = (timeStemp, flag = "/") => {
   let date = new Date(timeStemp);
@@ -69,6 +69,8 @@ const pageRenderRouter = (router) => {
 
   // 渲染首页
   router.get(api.home, async (ctx) => {
+    const settingPath = `${config.publicPath}/db/setting.json`;
+    let setting = RF(settingPath) || {};
     const filePath = `${config.publicPath}/db/ads.json`;
     const articleIdxPath = `${config.publicPath}/db/article_index.json`;
     const ads = RF(filePath) || {};
@@ -83,6 +85,13 @@ const pageRenderRouter = (router) => {
       );
     }
     articleIdxs = articleIdxs.map((item) => {
+      const commentPath = `${config.publicPath}/db/comments/${item.fid}.json`;
+      const articlePath = `${config.publicPath}/db/articles/${item.fid}.json`;
+      const comments = RF(commentPath) || {};
+      const article = RF(articlePath) || {};
+      item.name = article.author;
+      item.date = formatTime(article.ct, "-");
+      item.flover = comments.flover;
       item.label = item.label.join("/");
       return {
         ...item,
@@ -91,6 +100,7 @@ const pageRenderRouter = (router) => {
     });
     const topArticles = articleIdxs.filter((item) => !!item.top);
     await ctx.render("index", {
+      theme: setting.website.theme,
       ads,
       tops: topArticles,
       list: articleIdxs,
@@ -100,6 +110,8 @@ const pageRenderRouter = (router) => {
 
   // 渲染详情页
   router.get(api.detail, async (ctx) => {
+    const settingPath = `${config.publicPath}/db/setting.json`;
+    let setting = RF(settingPath) || {};
     const id = ctx.query.fid;
     const articlePath = `${config.publicPath}/db/articles/${id}.json`;
     const commentPath = `${config.publicPath}/db/comments/${id}.json`;
@@ -109,11 +121,12 @@ const pageRenderRouter = (router) => {
     const ads = RF(adsPath) || {};
     comments.views = comments.views + 1;
     await ctx.render("detail", {
+      theme: setting.website.theme,
       viewTitle: article.title,
       topImg: article.face_img,
       authorInfo: { name: article.author, date: formatTime(article.ct, "-") },
       label: article.label,
-      editor:  article.type ? marked(article.html) : article.content,
+      editor: article.type ? marked(article.html) : article.content,
       payCode: article.payCode,
       commentInfoList: comments.comments || [],
       flover: comments.flover,
@@ -126,8 +139,11 @@ const pageRenderRouter = (router) => {
 
   // 渲染关于我们页
   router.get(api.about, async (ctx) => {
+    const settingPath = `${config.publicPath}/db/setting.json`;
+    let setting = RF(settingPath) || {};
     // 头像
     await ctx.render("about", {
+      theme: setting.website.theme,
       introductionInfo:
         "simpleCMS是一款开源cms系统, 主要为个人/团队快速开发博客或者知识共享平台, 类似于hexo, worldpress, 但是他们往往需要复杂的搭建过程, 我们将复杂度降到最低, 并且有详细的部署教程, 你只需要有一台服务器, 就能轻松拥有一个属于你的博客平台.",
       teams: [
@@ -166,10 +182,11 @@ const pageRenderRouter = (router) => {
 
   // 渲染分类页
   router.get(api.cates, async (ctx) => {
+    const settingPath = `${config.publicPath}/db/setting.json`;
+    let setting = RF(settingPath) || {};
     const articleIdxPath = `${config.publicPath}/db/article_index.json`;
     let articleIdxs = RF(articleIdxPath);
     let resultRush = [];
-
     if (articleIdxs && articleIdxs.length) {
       let result = [];
       articleIdxs.forEach((item) => {
@@ -196,6 +213,7 @@ const pageRenderRouter = (router) => {
     }
 
     await ctx.render("cates", {
+      theme: setting.website.theme,
       labels: resultRush,
       copyright: "版权所有 @SimpleCMS 研发团队",
     });

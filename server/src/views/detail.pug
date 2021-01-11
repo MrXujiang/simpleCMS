@@ -19,11 +19,17 @@ block content
               class='viewImg'
             )
         .viewTitle #{viewTitle}
-        .authorBox
-          .avatar
-          .name #{authorInfo.name}
-          .date #{authorInfo.date}
-          .views #{views}人围观
+        .authorBox(
+          style=(theme === 2 && 'justify-content: unset')
+        )
+          .authorInfo
+            .avatar
+            .name #{authorInfo.name}
+            .date #{authorInfo.date}
+          .viewOther
+            .views #{views}浏览
+            .views #{flover}点赞
+            .views #{commentInfoList.length}评论
         .editor-container
           != editor
         .exceptional

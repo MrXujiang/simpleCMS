@@ -9,40 +9,121 @@ block style
 block content
   .contentContainer
    .homeWidth
-      a.carouselBox(href=ads.topAd['link'], target='_blank')
-        .content
-          .title #{ads.topAd['text']}
-        .adImg
-          img(
-            src=ads.topAd['imageUrl']
-          )
-      .recommendBox
-        .title
-          span 最近更新
-        .childBox
-          .updataBox
+      if (theme === 0)
+        a.carouselBox(href=ads.topAd['link'], target='_blank')
+          .content
+            .title #{ads.topAd['text']}
+          .adImg
+            img(
+              src=ads.topAd['imageUrl']
+            )
+        .recommendBox
+          .title
+            span 最近更新
+          .childBox
+            .updataBox
+              each val in list
+                a.childUpdata(href=`/detail?fid=${val.fid}`, target='_blank')
+                  span.imgWrap
+                    img(
+                      src= val.face_img
+                      object-fit='contain'
+                    )
+                  .updataContent
+                    .authorInfo
+                      .avatar 
+                      .author #{val.author}
+                    .updatatitle(title=val.title) #{val.title}
+                    .updatatContent(title=val.desc) #{val.desc || val.label} 
+                    .updataOther
+                      .date #{val.ct}
+                      #homeFloverBox
+                        img(
+                          src='/assets/like.svg'
+                          id='img_like_home'
+                        ) 
+                        span#homeFlover #{val.flover || 0}
+            if (tops.length > 0)
+              .columnBox
+                .title 编辑推荐
+                each val in tops
+                  a.item(href=`/detail?fid=${val.fid}`, target='_blank')
+                    img(
+                      src=val.face_img
+                      class='listImg'
+                    )
+                    .content
+                      .title #{val.title}
+                      .introduction #{val.author}  #{val.ct}
+      if (theme === 1)
+        .recommendBox
+          .title
+            span 最近更新
+          .second_childBox
             each val in list
-              a.childUpdata(href=`/detail?fid=${val.fid}`, target='_blank')
-                span.imgWrap
+              a.horizontal(href=`/detail?fid=${val.fid}`, target='_blank')
+                .second_imgBox
                   img(
                     src= val.face_img
                     object-fit='contain'
                   )
-                .updataContent
-                  .updatatitle(title=val.title) #{val.title}
-                  .updatatContent(title=val.desc) #{val.desc || val.label} 
-                  .updataOther
-                    .author #{val.author}
-                    .date #{val.ct}
-          if (tops.length > 0)
-            .columnBox
-              .title 编辑推荐
-              each val in tops
-                a.item(href=`/detail?fid=${val.fid}`, target='_blank')
-                  img(
-                    src=val.face_img
-                    class='listImg'
-                  )
-                  .content
-                    .title #{val.title}
-                    .introduction #{val.author}  #{val.ct}
+                .second_content
+                  .second_title #{val.title}
+                  .second_desc #{val.desc}
+                  .second_other 
+                    .second_info
+                      .second_avatar
+                      .second_author #{val.author}
+                      .second_date #{val.ct}
+                    .second_flover
+                      img(
+                        src='/assets/like.svg'
+                        id='img_like_home'
+                      ) 
+                      span.homeFlover #{val.flover || 0}
+      if (theme === 2)
+        .three_recommendBox
+          .three_waterfall
+            .three_leftPart
+              each val,index in list
+                if(index%2 === 0)
+                  a.three_positionBox(href=`/detail?fid=${val.fid}`, target='_blank')
+                    .three_title_top #{val.title}
+                    .three_content 
+                      .three_title #{val.title}
+                      .three_desc #{val.desc}
+                      .three_other 
+                        .three_info
+                          .three_avatar
+                          .three_author #{val.author}
+                        .three_date #{val.ct}
+                    .three_img
+                      img(
+                        src= val.face_img
+                        object-fit='contain'
+                      )
+                    
+            .three_rightPart
+              each val,index in list
+                if(index%2 === 1)
+                  a.three_positionBox(href=`/detail?fid=${val.fid}`, target='_blank')
+                    .three_title_top #{val.title}
+                    .three_content 
+                      .three_title #{val.title}
+                      .three_desc #{val.desc}
+                      .three_other 
+                        .three_info
+                          .three_avatar
+                          .three_author #{val.author}
+                        .three_date #{val.ct}
+                    .three_img
+                      img(
+                        src= val.face_img
+                        object-fit='contain'
+                      )
+                  
+                  
+                    
+
+
+
