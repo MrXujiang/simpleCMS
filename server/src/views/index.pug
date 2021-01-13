@@ -69,7 +69,7 @@ block content
                   )
                 .second_content
                   .second_title #{val.title}
-                  .second_desc #{val.desc}
+                  .second_desc #{val.desc || val.label}
                   .second_other 
                     .second_info
                       .second_avatar
@@ -110,7 +110,7 @@ block content
                     .three_title_top #{val.title}
                     .three_content 
                       .three_title #{val.title}
-                      .three_desc #{val.desc}
+                      .three_desc #{val.desc || val.label}
                       .three_other 
                         .three_info
                           .three_avatar

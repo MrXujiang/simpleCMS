@@ -9,7 +9,9 @@ html
     include ../includes/header.css
     block style
   include ../includes/scripts
- body
+ body(
+   style=(theme === 1 && 'background-color: #E5E5E5')
+ )
     if url === '/login' || url === '/registered' || isHome
       block content
     else

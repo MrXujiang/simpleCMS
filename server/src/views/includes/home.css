@@ -57,7 +57,7 @@
   border-radius: 7px;
   margin-bottom: 44px;
 }
-.homeContent .content {
+.homeContent .desc {
   font-size: 18px;
   line-height: 31px;
   letter-spacing: 0.14em;
@@ -110,7 +110,8 @@
     margin: auto;
     transform: translateY(75px);
   }
-  .homeContent .content {
+  .homeContent .desc {
+    line-height: 22px;
     font-size: 12px;
     color: #333;
     margin-bottom: 19px;
