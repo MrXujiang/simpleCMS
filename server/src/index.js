@@ -30,7 +30,7 @@ async function start() {
     cors({
       origin: function (ctx) {
         const whiteList = [
-          "http://xxxx/xxxx/xxx:xxxx", // 你的服务器跨域白名单
+          "http://192.168.1.10:8000", // 你的服务器跨域白名单
         ]; //可跨域白名单
         if (
           whiteList.includes(ctx.request.header.origin) &&
