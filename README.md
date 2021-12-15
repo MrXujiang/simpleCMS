@@ -21,4 +21,4 @@
 
 ### 技术反馈和交流群 | Technical feedback and communication
 
-<img alt="技术反馈和交流群" src="./TCG.jpg" width="400" />
+<img alt="技术反馈和交流群" src="http://cdn.dooring.cn/dr/qtqd_code.png" width="200" />
