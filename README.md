@@ -19,6 +19,22 @@
 
 <img alt="simpleCMS" src="http://cms.zhikume.cn/assets/about.png" />
 
+### 启动教程
+
+1. 安装依赖
+
+
+2. 启动
+
+
+### 部署教程
+
+1. 静态资源打包
+
+2. 服务端部署
+
+
+
 ### 技术反馈和交流群 | Technical feedback and communication
 
 <img alt="技术反馈和交流群" src="http://cdn.dooring.cn/dr/qtqd_code.png" width="200" />
