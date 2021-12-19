@@ -23,15 +23,17 @@ const IP = getIPAdress();
 const serverPort = isDev ? 3000 : 80;
 const staticPath = isDev
   ? `http://${IP}:${serverPort}`
-  : `http://xxx/xxxx/xxx:${serverPort}`;
+  : `http://${IP}:${serverPort}`;
 const publicPath = resolve(__dirname, "../../public");
 const appStaticPath = resolve(__dirname, "../../static");
+const adminPath = resolve(__dirname, "../../static/admin");
 const routerPath = resolve(__dirname, "../router");
 
 export default {
   protocol: "http:",
   host: "localhost",
   serverPort,
+  adminPath,
   staticPath,
   appStaticPath,
   publicPath,

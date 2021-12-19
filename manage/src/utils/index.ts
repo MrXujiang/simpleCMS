@@ -19,7 +19,7 @@ export const getFormdata: (info: any) => void = info => {
 
 export const phoneRE = /^1[0-9]{10}$/
 
-export const SERVER_URL = 'http://192.168.1.10:3000'
+export const SERVER_URL = isDev ? 'http://192.168.1.9:3000' : (window.location.protocol + '//' + window.location.host)
 
 export const IP_URL = 'http://h5.dooring.cn'
 
